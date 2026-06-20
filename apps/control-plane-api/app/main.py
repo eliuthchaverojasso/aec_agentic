@@ -4,13 +4,28 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import landing_admin, auth, clients, compliance, debug, dev, documents, evidence, exports, issues, landing, readiness, seion, viewpoints
-from app.api import landing_admin, models as models_router
-from app.api import landing_admin, projects
-from app.api import requirement_audits
+from app.api import (
+    auth,
+    clients,
+    compliance,
+    debug,
+    dev,
+    documents,
+    evidence,
+    exports,
+    issues,
+    landing,
+    landing_admin,
+    models as models_router,
+    projects,
+    readiness,
+    requirement_audits,
+    seion,
+    viewpoints,
+)
 from app.config import settings
 from app.database import engine, SessionLocal
 from app.services.operation_log_service import finish_operation_failure, finish_operation_success, start_operation
@@ -78,26 +93,35 @@ def root() -> dict[str, str]:
     }
 
 
-# Routers
-app.include_router(exports.router)
-app.include_router(projects.router)
-app.include_router(models_router.router)
-app.include_router(issues.router)
-app.include_router(clients.router)
-app.include_router(documents.router)
-app.include_router(evidence.router)
-app.include_router(readiness.router)
-app.include_router(readiness.actions_router)
-app.include_router(landing.router)
-app.include_router(landing_admin.router)
-app.include_router(landing.projects_router)
-app.include_router(seion.router)
+# Routers.
+# Public surface = unauthenticated system endpoints (/ and /health, defined on
+# the app above) plus the auth router (login + gated register; /profile enforces
+# its own dependency). Every other router requires an authenticated principal.
+auth_required = [Depends(auth.get_current_user)]
+
 app.include_router(auth.router)
-app.include_router(dev.router)
-app.include_router(compliance.router)
-app.include_router(viewpoints.router)
-app.include_router(debug.router)
-app.include_router(requirement_audits.router)
+
+for business_router in (
+    exports.router,
+    projects.router,
+    models_router.router,
+    issues.router,
+    clients.router,
+    documents.router,
+    evidence.router,
+    readiness.router,
+    readiness.actions_router,
+    landing.router,
+    landing_admin.router,
+    landing.projects_router,
+    seion.router,
+    dev.router,
+    compliance.router,
+    viewpoints.router,
+    debug.router,
+    requirement_audits.router,
+):
+    app.include_router(business_router, dependencies=auth_required)
 
 
 

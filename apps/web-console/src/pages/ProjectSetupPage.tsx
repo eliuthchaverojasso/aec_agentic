@@ -57,8 +57,9 @@ const DISCIPLINES = [
   "Fire Protection",
 ];
 
-const DEFAULT_LANDING_ROOT =
-  "C:\\Documents\\Hyperghaps EMA\\EMA-AI\\Pipeline\\pipeline\\landing";
+// Configurable via VITE_DEFAULT_LANDING_ROOT; empty by default so no machine-specific
+// path is shipped. The field stays user-editable in the setup form.
+const DEFAULT_LANDING_ROOT = import.meta.env.VITE_DEFAULT_LANDING_ROOT ?? "";
 
 function formatDateInput(date: Date) {
   return date.toISOString().slice(0, 10);

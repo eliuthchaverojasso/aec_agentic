@@ -6,10 +6,19 @@ requires-python = ">=3.11"
 dependencies = []
 
 [tool.pytest.ini_options]
+# One command discovers every suite. `tests/` holds the fast unit/contract/
+# conformance/architecture suite; `apps/control-plane-api/tests` is the migrated
+# EMA suite, auto-marked `integration` by conftest.py and deselected by default
+# so `pytest` (and a no-Docker CI lane) is green. Run the DB suite explicitly
+# with `-m integration` (or `scripts/test.ps1 -Integration`).
 testpaths = [
-  "apps/control-plane-api/tests",
-  "packages/python/control-plane-core/tests",
-  "packages/python/policy-engine/tests"
+  "tests",
+  "apps/control-plane-api/tests"
+]
+addopts = ["--strict-markers", "-m", "not integration"]
+markers = [
+  "integration: requires a live PostgreSQL database (migrated EMA suite)",
+  "noauth: exercise the real auth dependency (skip the test-identity injection)",
 ]
 pythonpath = [
   "apps/control-plane-api",

@@ -5,7 +5,7 @@ React + Vite + TypeScript frontend for the EMA AI pilot dashboard.
 ## Local run
 
 ```powershell
-cd "D:\Documents\Shokworks\Hyperghaps EMA\Framework\Pipeline\pipeline\frontend"
+cd apps/web-console
 npm install
 npm run dev
 ```

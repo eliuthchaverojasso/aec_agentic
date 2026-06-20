@@ -131,7 +131,7 @@ def _decode_access_token(token: str) -> dict[str, str | int | None]:
     return payload
 
 
-def _get_current_user(
+def get_current_user(
     request: Request,
     credentials: HTTPAuthorizationCredentials | None = Security(_bearer_scheme),
     db: Session = Depends(get_db),
@@ -171,6 +171,11 @@ def _get_current_user(
 
 @router.post("/register", response_model=AuthRegisterResponse, status_code=status.HTTP_201_CREATED)
 def register_user(payload: AuthRegisterRequest, db: Session = Depends(get_db)) -> AuthRegisterResponse:
+    if not settings.allow_public_registration:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Public registration is disabled",
+        )
     name = payload.name.strip()
     if not name:
         raise HTTPException(status_code=400, detail="Name is required")
@@ -249,5 +254,5 @@ def login_user(payload: AuthLoginRequest, db: Session = Depends(get_db)) -> Auth
 
 
 @router.get("/profile", response_model=AuthProfileResponse)
-def get_profile(current_user: AppUser = Depends(_get_current_user)) -> AuthProfileResponse:
+def get_profile(current_user: AppUser = Depends(get_current_user)) -> AuthProfileResponse:
     return AuthProfileResponse(user=AuthUserOut.model_validate(current_user))

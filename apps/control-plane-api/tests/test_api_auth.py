@@ -1,8 +1,35 @@
 from uuid import uuid4
 
+import pytest
 from fastapi.testclient import TestClient
 
+from app.config import settings
 from app.main import app
+
+# These tests exercise the real authentication flow (login, register, the 401 on
+# /profile), so they must NOT receive the test-identity injection from conftest.
+pytestmark = pytest.mark.noauth
+
+
+@pytest.fixture(autouse=True)
+def _enable_public_registration():
+    """Registration defaults to OFF; turn it on for the register/login tests."""
+    original = settings.allow_public_registration
+    settings.allow_public_registration = True
+    try:
+        yield
+    finally:
+        settings.allow_public_registration = original
+
+
+def test_register_disabled_returns_403():
+    settings.allow_public_registration = False
+    response = TestClient(app).post(
+        "/api/v1/auth/register",
+        json={"name": "Nope", "email": f"disabled-{uuid4().hex[:8]}@example.com", "password": "ChangeMe123!"},
+    )
+    assert response.status_code == 403
+    assert response.json()["detail"] == "Public registration is disabled"
 
 
 def test_register_user_success_and_case_insensitive_conflict():

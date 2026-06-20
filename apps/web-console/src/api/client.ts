@@ -53,23 +53,52 @@
   LoginResponse,
 } from "../types";
 
+// Production/staging MUST set VITE_API_BASE_URL to an HTTPS endpoint: the bearer
+// token attached below must never travel over plain HTTP to a public host. The
+// fallback is a safe local-dev default only (was a public http:// demo host).
 export const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ||
-  "http://ema-ai-demo.shokworks.io:8010";
+  "http://localhost:8010";
+
+// Keys shared with AuthContext, which owns writing/clearing the session.
+const AUTH_TOKEN_KEY = "ema_token";
+const AUTH_USER_KEY = "ema_user";
+
+function readToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return (
+    window.localStorage.getItem(AUTH_TOKEN_KEY) ||
+    window.sessionStorage.getItem(AUTH_TOKEN_KEY)
+  );
+}
+
+function clearStoredSession(): void {
+  if (typeof window === "undefined") return;
+  for (const store of [window.localStorage, window.sessionStorage]) {
+    store.removeItem(AUTH_TOKEN_KEY);
+    store.removeItem(AUTH_USER_KEY);
+  }
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const isFormData =
     typeof FormData !== "undefined" && init?.body instanceof FormData;
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...init,
-    headers: isFormData
-      ? init?.headers
-      : init?.body
-        ? { "Content-Type": "application/json", ...(init.headers || {}) }
-        : init?.headers,
-  });
+  const token = readToken();
+  const headers: Record<string, string> = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    // Let the browser set the multipart Content-Type (with boundary) for FormData.
+    ...(!isFormData && init?.body ? { "Content-Type": "application/json" } : {}),
+    ...((init?.headers as Record<string, string> | undefined) ?? {}),
+  };
+
+  const response = await fetch(`${API_BASE_URL}${path}`, { ...init, headers });
   if (!response.ok) {
+    // Session expired/invalid -> clear stored auth so the app routes back to
+    // login. Skip the login call itself, where 401 just means bad credentials.
+    if (response.status === 401 && path !== "/api/v1/auth/login") {
+      clearStoredSession();
+    }
     throw new Error(`${response.status} ${response.statusText}`);
   }
   return response.json() as Promise<T>;
