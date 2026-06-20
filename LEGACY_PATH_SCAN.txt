@@ -1,0 +1,103 @@
+LEGACY_PATH_SCAN.txt
+Generated: 2026-06-20T10:39:35Z by Phase 0 verification
+Patterns: 'Hyperghaps EMA', 'EMA-AI', legacy absolute paths
+============================================================
+
+## SUMMARY
+Total tracked hits (incl. docs/legacy): 91
+Files with hits OUTSIDE docs/legacy (live/active): 6
+
+## LIVE / ACTIVE FILES (must be remediated for portability)
+.organism/manifest.yaml:6:  path: "C:\\Documents\\Hyperghaps EMA\\EMA-AI"
+apps/revit-addin/installer/EMAExtractor.MultiYear.iss:5:#define StageDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\EMAExtractor\RevitAddinPackage"
+apps/revit-addin/installer/EMAExtractor.MultiYear.iss:8:#define OutputDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\EMAExtractor\installer"
+apps/revit-addin/installer/EMAExtractor.iss:3:#define StageDir "C:\Documents\Hyperghaps EMA\EMA-AI\dist\EMAExtractor_1.0.0"
+apps/revit-addin/installer/EMAExtractor.iss:4:#define OutputDir "C:\Documents\Hyperghaps EMA\EMA-AI\dist"
+apps/revit-addin/installer/EMA_AI_Professional.iss:8:#define StageDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\release\stage"
+apps/revit-addin/installer/EMA_AI_Professional.iss:11:#define OutputDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\release\installer"
+apps/web-console/README.md:8:cd "D:\Documents\Shokworks\Hyperghaps EMA\Framework\Pipeline\pipeline\frontend"
+apps/web-console/src/pages/ProjectSetupPage.tsx:61:  "C:\\Documents\\Hyperghaps EMA\\EMA-AI\\Pipeline\\pipeline\\landing";
+
+## docs/legacy/** (intentionally preserved historical context — informational only)
+docs/legacy/ema-ai/README.legacy.md:277:- **GitHub:** [echavero-shock/EMA-AI](https://github.com/echavero-shock/EMA-AI)
+docs/legacy/ema-ai/docs/00_OVERVIEW.md:171:EMA-AI/
+docs/legacy/ema-ai/docs/01_QUICKSTART_LOCAL.md:33:cd "C:\Documents\Hyperghaps EMA\EMA-AI"
+docs/legacy/ema-ai/docs/01_QUICKSTART_LOCAL.md:45:cd "C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline"
+docs/legacy/ema-ai/docs/01_QUICKSTART_LOCAL.md:74:cd "C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline\frontend"
+docs/legacy/ema-ai/docs/01_QUICKSTART_LOCAL.md:170:cd "C:\Documents\Hyperghaps EMA\EMA-AI"
+docs/legacy/ema-ai/docs/01_QUICKSTART_LOCAL.md:177:cd "C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline"
+docs/legacy/ema-ai/docs/02_QUICKSTART_DOCKER.md:25:cd "C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline"
+docs/legacy/ema-ai/docs/02_QUICKSTART_DOCKER.md:65:cd "C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline\frontend"
+docs/legacy/ema-ai/docs/05_AGENTIC_DEVELOPMENT_GUIDE.md:496:cd "C:\Documents\Hyperghaps EMA\EMA-AI"
+docs/legacy/ema-ai/docs/05_AGENTIC_DEVELOPMENT_GUIDE.md:556:cd "C:\Documents\Hyperghaps EMA\EMA-AI"
+docs/legacy/ema-ai/docs/05_AGENTIC_DEVELOPMENT_GUIDE.md:587:EMA-AI/
+docs/legacy/ema-ai/docs/DOCUMENTATION_INDEX.md:7:This index is the navigation hub for EMA-AI documentation, validation notes, and publication sources. It is written for stakeholders, operators, reviewers, and future agents who need a fast read on what the repository currently supports.
+docs/legacy/ema-ai/docs/DOCUMENTATION_INDEX.md:11:- EMA-AI is a local MVP for engineering deliverable readiness.
+docs/legacy/ema-ai/docs/DOCUMENTATION_INDEX.md:17:- EMA-AI is not production-ready and not official compliance software.
+docs/legacy/ema-ai/docs/DOCUMENTATION_INDEX.md:38:| EMA-AI Architecture | [docs/architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) | Primary system overview |
+docs/legacy/ema-ai/docs/DOCUMENTATION_INDEX.md:121:| EMA-AI Technical Whitepaper | [docs/papers/ema_ai_technical_whitepaper](./papers/ema_ai_technical_whitepaper) | technical/product architecture | `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` | pending build validation |
+docs/legacy/ema-ai/docs/DOCUMENTATION_INDEX.md:122:| EMA-AI Product Overview | [docs/papers/ema_ai_product_overview](./papers/ema_ai_product_overview) | executive/product stakeholders | `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` | pending build validation |
+docs/legacy/ema-ai/docs/DOCUMENTATION_INDEX.md:123:| EMA-AI Architecture Report | [docs/papers/ema_ai_architecture_report](./papers/ema_ai_architecture_report) | IT/cloud/engineering reviewers | `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` | pending build validation |
+docs/legacy/ema-ai/docs/architecture/AZURE_DEPLOYMENT_RECOMMENDATION.md:5:This document summarizes a conservative Azure pilot path for EMA-AI. It is not a claim that the system is already deployed to Azure.
+docs/legacy/ema-ai/docs/architecture/DATA_FLOW.md:5:This document describes how EMA-AI moves data through the local MVP pipeline.
+docs/legacy/ema-ai/docs/architecture/SECURITY_AND_DATA_BOUNDARIES.md:5:This document states the local MVP data-handling rules that keep EMA-AI honest and reviewable.
+docs/legacy/ema-ai/docs/audits/GIT_CONSOLIDATION_AUDIT.md:16:| `origin` | `echavero-shock/EMA-AI` | `echavero-shock/EMA-AI` | **CANONICAL** |
+docs/legacy/ema-ai/docs/audits/GIT_CONSOLIDATION_AUDIT.md:17:| `shock` | `echavero-shock/EMA-AI` | `echavero-shock/EMA-AI` | redundant alias of origin |
+docs/legacy/ema-ai/docs/audits/GIT_CONSOLIDATION_AUDIT.md:18:| `both` | `echavero-shock/EMA-AI` | **`shokworks/ema-ai`** | **UNSAFE** — split fetch/push |
+docs/legacy/ema-ai/docs/audits/GIT_CONSOLIDATION_AUDIT.md:57:1. **Canonical branch:** `main` on `echavero-shock/EMA-AI`.
+docs/legacy/ema-ai/docs/audits/MASTER_EXECUTION_BASELINE.md:23:| Canonical repo | `echavero-shock/EMA-AI` | `git remote -v`, manifest |
+docs/legacy/ema-ai/docs/audits/MASTER_EXECUTION_BASELINE.md:24:| Local path | `C:\Documents\Hyperghaps EMA\EMA-AI` | environment |
+docs/legacy/ema-ai/docs/audits/MASTER_EXECUTION_BASELINE.md:33:origin     https://github.com/echavero-shock/EMA-AI.git   (canonical)
+docs/legacy/ema-ai/docs/audits/MASTER_EXECUTION_BASELINE.md:34:shock      https://github.com/echavero-shock/EMA-AI.git   (alias of origin)
+docs/legacy/ema-ai/docs/audits/MASTER_EXECUTION_BASELINE.md:35:both       fetch echavero-shock/EMA-AI ; push shokworks/ema-ai   (MIXED — unsafe)
+docs/legacy/ema-ai/docs/audits/MASTER_EXECUTION_BASELINE.md:175:1. **Branch consolidation (GIT-01..05):** confirm `main` (on `echavero-shock/EMA-AI`) as the single canonical branch; reconcile `main`'s tracking from `shokworks/main` to `origin/main`; decide the fate of the legacy `shokworks` / `both` remotes. *No remote changes will be made without this.*
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_BASELINE.md:28:| Remote (origin) | `https://github.com/echavero-shock/EMA-AI.git` |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_BASELINE.md:30:| Repository name | `EMA-AI` |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_BASELINE.md:31:| Full name | `echavero-shock/EMA-AI` |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_BASELINE.md:66:| F001 | `README.md` | L288 | Repository identity | `https://github.com/eliuthchaverojasso/EMA-AI` | Canonical URL is `https://github.com/echavero-shock/EMA-AI` | **STALE** | Replace with canonical URL |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_BASELINE.md:83:| F018 | `.ai/CHANGELOG_MEMORY.md` | L374 | Repository URL | `origin https://github.com/eliuthchaverojasso/EMA-AI.git` | Old owner | **HISTORICAL_VALID** | Retain with label "former remote at time of log entry" |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_BASELINE.md:121:| F056 | `scripts/` (various) | All | Path references | Scripts may contain hardcoded local paths | Found `C:\Documents\Hyperghaps EMA\EMA-AI` in `.ai/CONTEXT_RECOVERY.md` | **REQUIRES_HUMAN_DECISION** | Scripts with absolute paths should not be distributed as-is |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_FINAL_AUDIT.md:33:| Repository | `echavero-shock/EMA-AI` |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_FINAL_AUDIT.md:34:| Canonical URL | `https://github.com/echavero-shock/EMA-AI` |
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_FINAL_AUDIT.md:68:- `README.md` L288 — `eliuthchaverojasso/EMA-AI` → `echavero-shock/EMA-AI`
+docs/legacy/ema-ai/docs/audits/PROJECT_REFERENCE_FINAL_AUDIT.md:123:| `.ai/CHANGELOG_MEMORY.md` L374 | Old remote URL `eliuthchaverojasso/EMA-AI` | Retained; labeled in allowlist as historical audit evidence |
+docs/legacy/ema-ai/docs/debug/TROUBLESHOOTING_MATRIX.md:163:| Path not normalized (e.g. `C:\Documents\...` with spaces) | Use `docker run -v "C:/Documents/Hyperghaps EMA/landing:/app/landing"` | Quote the volume arg |
+docs/legacy/ema-ai/docs/demo/EMA_AI_JSON_AND_REPORT_EVIDENCE_AUDIT.md:13:- Workbook: `C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline\landing\NISD-MIDDLE SCHOOL\Owner Requirements\NORTHWEST ISD 06.02.2025.xlsx`
+docs/legacy/ema-ai/docs/demo/EMA_AI_JSON_AND_REPORT_EVIDENCE_AUDIT.md:14:- Revit export: `C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline\landing\derived_local_project__revit_export__all__all__20260608_011533.json`
+docs/legacy/ema-ai/docs/dev/LOCAL_DEVELOPMENT.md:25:EMA-AI/
+docs/legacy/ema-ai/docs/developer/LOCAL_DEVELOPMENT.md:5:cd "C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline"
+docs/legacy/ema-ai/docs/developer/LOCAL_DEVELOPMENT.md:20:cd "C:\Documents\Hyperghaps EMA\EMA-AI"
+docs/legacy/ema-ai/docs/developer/TESTING_GUIDE.md:5:cd "C:\Documents\Hyperghaps EMA\EMA-AI"
+docs/legacy/ema-ai/docs/developer/TESTING_GUIDE.md:13:cd "C:\Documents\Hyperghaps EMA\EMA-AI\Pipeline\pipeline\frontend"
+docs/legacy/ema-ai/docs/papers/ema_ai_architecture_report/README.md:1:# EMA-AI Architecture Report
+docs/legacy/ema-ai/docs/papers/ema_ai_architecture_report/main.tex:17:\title{EMA-AI Architecture Report: Local MVP Architecture and Azure Pilot Path for Engineering Readiness Intelligence}
+docs/legacy/ema-ai/docs/papers/ema_ai_architecture_report/main.tex:18:\author{EMA-AI Project Team}
+docs/legacy/ema-ai/docs/papers/ema_ai_architecture_report/main.tex:27:EMA-AI is a local MVP that combines a Revit add-in, landing-root file processing, a FastAPI backend, PostgreSQL persistence, and a React/Vite dashboard to support engineering deliverable readiness. The architecture emphasizes deterministic readiness, explicit operator control, and evidence-candidate labeling rather than official compliance claims.
+docs/legacy/ema-ai/docs/papers/ema_ai_architecture_report/main.tex:98:EMA-AI keeps the distinction between raw source files, indexed metadata, evidence candidates, and official records. That distinction matters for reviewers and for future Azure migration planning.
+docs/legacy/ema-ai/docs/papers/ema_ai_architecture_report/main.tex:142:EMA-AI has a coherent local architecture for deliverable readiness. The most valuable property of the architecture is not its visual polish, but its honesty about evidence, readiness, and operational limits.
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/README.md:1:# EMA-AI Product Overview
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:14:\title{EMA-AI Product Overview: A Local MVP for Engineering Deliverable Readiness and Evidence-Based Project Tracking}
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:15:\author{EMA-AI Project Team}
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:24:EMA-AI is a local MVP for engineering deliverable readiness. It helps teams answer a concrete operational question: is a project, trade, or milestone ready for the next DD/CD deliverable? The product is designed for local demo use, operator review, and stakeholder visibility. It is not production-ready and not official compliance software.
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:26:\section{Why EMA-AI Exists}
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:27:Project teams often need to reconcile Revit exports, drawings, specifications, owner requirements, issue backlogs, and milestone expectations without relying on fragmented spreadsheets and manual memory. EMA-AI provides a structured local workflow that makes those artifacts visible and reviewable in one place.
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:30:Deliverable readiness is usually a coordination problem, not a single-score problem. Teams need to know what is missing, what is a candidate for evidence, what is still under review, and what is actually covered. EMA-AI keeps those distinctions explicit so that the dashboard remains honest.
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:32:\section{What EMA-AI Does}
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:42:\section{What EMA-AI Does Not Do}
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:91:EMA-AI helps teams reduce uncertainty before a deliverable handoff. It makes the landing root legible, links files to project context, and gives operators a repeatable way to inspect readiness, issues, and evidence candidates.
+docs/legacy/ema-ai/docs/papers/ema_ai_product_overview/main.tex:120:EMA-AI is most valuable as an honest local MVP: useful enough to support real operator workflows, clear enough to avoid overclaiming, and structured enough to become a better Azure pilot later.
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/README.md:1:# EMA-AI Technical Whitepaper
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/main.tex:18:\title{EMA-AI Technical Whitepaper: Engineering Deliverable Readiness from Revit Exports, Landing Documents, and Deterministic Evidence Workflows}
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/main.tex:19:\author{EMA-AI Project Team}
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/main.tex:28:EMA-AI is a local-first Engineering Deliverable Readiness MVP for MEP and BIM delivery teams. It links Revit export workflows, landing-root document discovery, deterministic ingest, and dashboard-based review so operators can answer a practical question: is a project, trade, or milestone ready for the next DD/CD deliverable? The system is intentionally bounded. PostgreSQL remains the source of truth, the readiness engine is deterministic, and AI-assisted features remain advisory rather than authoritative.
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/main.tex:34:Design and construction teams often have fragmented information: model exports, drawings, specifications, owner requirements, QA/QC issues, and milestone expectations live in different folders or systems. EMA-AI addresses the coordination problem by consolidating those artifacts into a predictable local pipeline and exposing their state to operators and reviewers. The tool does not claim compliance; it helps teams see what is missing, what is evidence, and what is still at risk.
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/main.tex:76:EMA-AI persists project, client, model, export, issue, readiness snapshot, landing document, and requirement-related records in PostgreSQL. That database is the official source of truth. Readiness snapshots preserve point-in-time states, and operation logs preserve the audit trail needed for a local MVP review workflow.
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/main.tex:118:EMA-AI does not currently claim automatic continuous sync, APS production viewer support, or official compliance. Some PDF previews remain metadata-only depending on parser availability. Revit runtime validation is pending unless explicitly executed in Revit.
+docs/legacy/ema-ai/docs/papers/ema_ai_technical_whitepaper/main.tex:124:EMA-AI demonstrates a coherent local architecture for deliverable readiness: local file organization, deterministic backend processing, and transparent dashboard review. The current system is useful for demos and stakeholder review precisely because it is honest about what it can and cannot prove.
+docs/legacy/ema-ai/docs/reference/ENVIRONMENT_VARIABLES.md:57:LANDING_ROOT=C:\EMA-AI\landing
+docs/legacy/ema-ai/docs/reports/EMA_AI_AZURE_DEPLOYMENT_RECOMMENDATION.md:1:# EMA-AI Azure Deployment Recommendation
+docs/legacy/ema-ai/docs/reports/EMA_AI_EXTERNAL_PROJECT_REPORT.md:1:# EMA-AI External Project Report
+docs/legacy/ema-ai/docs/reports/EMA_AI_EXTERNAL_PROJECT_REPORT.md:9:EMA-AI is a local-first engineering deliverable readiness platform that combines Revit exports, landing documents, deterministic readiness scoring, and a dashboard for review and operator workflows.
+docs/legacy/ema-ai/docs/revit/REVIT_RUNTIME_SMOKE_CHECKLIST.md:5:Checks the EMA-AI add-in in a live Revit host when that host is available.
+docs/legacy/ema-ai/docs/runbooks/GIT_CONSOLIDATION_RUNBOOK.md:29:git remote -v              # expect: origin (echavero-shock/EMA-AI) [+ shokworks if kept]
+docs/legacy/ema-ai/docs/setup/LOCAL_SETUP.md:223:cd /d "C:\Documents\Hyperghaps EMA\EMA-AI"
