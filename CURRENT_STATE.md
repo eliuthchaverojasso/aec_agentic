@@ -122,10 +122,10 @@ Reproduced the migrated EMA stack end-to-end on this machine:
 | Clean `git status` | ✅ |
 | Baseline commit exists | ✅ |
 | No sensitive/generated artifacts tracked | ✅ |
-| Repository can be cloned to another path | ❌ hardcoded legacy paths (§2) |
-| No source depends on original EMA directory | ❌ (§2) |
-| Migration inventory complete | ⚠️ not yet (`MIGRATION_INVENTORY.md` pending) |
-| Fresh clone → bootstrap → build → migrate → test → success | ❌ bootstrap is a stub; tests are DB-gated and the canonical command skips them |
+| Repository can be cloned to another path | ✅ live legacy machine paths removed (Phase 0 closeout, §8) |
+| No source depends on original EMA directory | ✅ only `docs/legacy/**` references remain (preserved history) |
+| Migration inventory complete | ✅ [`MIGRATION_INVENTORY.md`](MIGRATION_INVENTORY.md) produced |
+| Fresh clone → bootstrap → build → migrate → test → success | ✅ `bootstrap.ps1 -Clean` + `test.ps1 -All` → **196 passed**, verified 2026-06-20 (§8) |
 
 ---
 
@@ -138,3 +138,22 @@ Reproduced the migrated EMA stack end-to-end on this machine:
 5. **Produce remaining deliverables** — `MIGRATION_INVENTORY.md`, `LICENSE_INVENTORY.md`, `DATA_CLASSIFICATION.md`.
 
 > The decisive next step after Phase 0 remains unchanged from the register: prove the requirement→evidence chain end-to-end with real data. But the items above are the cheap, factual prerequisites that make the rest reproducible.
+
+---
+
+## 8. Phase 0 closeout — executed & verified (2026-06-20)
+
+All five §7 items are done. Verified on this machine (`pwsh`, Docker, Postgres 16):
+
+| §7 item | Change | Verification |
+| --- | --- | --- |
+| 1. Legacy paths | `ProjectSetupPage.tsx` → `import.meta.env.VITE_DEFAULT_LANDING_ROOT ?? ""`; `.organism/manifest.yaml` provenance relativized; 3 Inno Setup `.iss` installers → `SourcePath`-relative; `web-console/README.md` path generic | `grep` for legacy paths outside `docs/legacy/**` → **0 live hits** |
+| 2+3. Test config | `pyproject.toml` `testpaths` fixed (dropped 2 nonexistent dirs, added `tests`); root `conftest.py` auto-marks EMA suite `integration`; `addopts` default-deselects integration; `--strict-markers`; `test.ps1` gains `-Integration` / `-All` | `pytest` → **12 passed, 184 deselected**, exit 0; `-m integration` selects exactly 184 |
+| 4. bootstrap | `bootstrap.ps1` rewritten: prereq checks, idempotent `.env`, `docker compose up postgres` with auto-loaded schema + health wait + schema verification; `-Clean` / `-NoDocker` modes | `bootstrap.ps1 -Clean` → 25 tables; `test.ps1 -All` → **196 passed** in 6.15s, clean exit |
+| 5. deliverables | `MIGRATION_INVENTORY.md`, `LICENSE_INVENTORY.md`, `DATA_CLASSIFICATION.md` produced | this commit |
+
+**Defects closed:** P1-1 (added `landing_document` et al. to schema via `20260620_002_landing_documents.sql` → 184/184), P1-2 (engine disposed via session fixture → no post-run hang), P1-3 (fixed `infra/compose/ema-local.compose.yml` init-script mount path).
+
+**Also fixed:** `tests/architecture/test_no_generated_or_secret_files.py` now checks **git-tracked** files (was scanning the working tree, so it false-failed the moment a gitignored local `.env` existed after bootstrap).
+
+**Canonical local DB:** `docker-compose.yml` now provisions the `ema_ai`/`ema` database the migrated backend + tests actually use, with the EMA schema auto-loaded from `infra/database/ema-db`. The future canonical `aec_control_plane` schema (Phase 2, Alembic) will be introduced when it exists.

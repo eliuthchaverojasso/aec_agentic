@@ -1,25 +1,38 @@
+# Canonical local stack. Postgres is provisioned with the database the migrated
+# control-plane-api + its test suite actually use (ema_ai / ema), and the EMA
+# schema auto-loads from infra/database on a fresh volume. The future canonical
+# `aec_control_plane` schema (Phase 2, Alembic) will be introduced here when it exists.
 services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_DB: aec_control_plane
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ema_ai
+      POSTGRES_USER: ema
+      POSTGRES_PASSWORD: ema_dev_pw
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # Auto-load schema in order on first boot (empty volume only).
+      - ./infra/database/ema-db/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./infra/database/ema-db/migrations/20260615_001_requirement_audit_v1.sql:/docker-entrypoint-initdb.d/02_requirement_audit.sql:ro
+      - ./infra/database/ema-db/migrations/20260620_002_landing_documents.sql:/docker-entrypoint-initdb.d/03_landing_documents.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ema -d ema_ai"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
 
   api:
     build:
       context: ./apps/control-plane-api
     environment:
-      DATABASE_URL: postgresql+psycopg://postgres:postgres@postgres:5432/aec_control_plane
+      DATABASE_URL: postgresql+psycopg://ema:ema_dev_pw@postgres:5432/ema_ai
     ports:
       - "8010:8010"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-

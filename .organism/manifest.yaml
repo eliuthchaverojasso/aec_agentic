@@ -3,7 +3,9 @@ name: ORGANISM for AEC Agentic Control Plane
 created_at: "2026-06-20"
 source_system:
   name: EMA AI
-  path: "C:\\Documents\\Hyperghaps EMA\\EMA-AI"
+  # Migrated source system, preserved in-repo. The original absolute path on the
+  # authoring machine is historical and intentionally not referenced here.
+  path: "docs/legacy/ema-ai"
 purpose: "Local persistent cognitive operating layer for building and governing the AEC Agentic Control Plane."
 stack:
   orchestrator: langgraph

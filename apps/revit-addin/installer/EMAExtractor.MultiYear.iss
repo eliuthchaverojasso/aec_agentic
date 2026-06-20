@@ -2,10 +2,10 @@
 #define AppVersion "1.0.0"
 #endif
 #ifndef StageDir
-#define StageDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\EMAExtractor\RevitAddinPackage"
+#define StageDir SourcePath + "..\..\..\artifacts\EMAExtractor\RevitAddinPackage"
 #endif
 #ifndef OutputDir
-#define OutputDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\EMAExtractor\installer"
+#define OutputDir SourcePath + "..\..\..\artifacts\EMAExtractor\installer"
 #endif
 
 [Setup]

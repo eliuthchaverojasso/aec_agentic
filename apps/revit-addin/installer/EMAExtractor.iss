@@ -1,7 +1,8 @@
 ﻿#define AppVersion "1.0.0"
 #define RevitYear "2024"
-#define StageDir "C:\Documents\Hyperghaps EMA\EMA-AI\dist\EMAExtractor_1.0.0"
-#define OutputDir "C:\Documents\Hyperghaps EMA\EMA-AI\dist"
+; Paths resolve relative to this script's directory (repo root = ..\..\..).
+#define StageDir SourcePath + "..\..\..\dist\EMAExtractor_1.0.0"
+#define OutputDir SourcePath + "..\..\..\dist"
 
 [Setup]
 AppId={{8C2B58D2-7F2A-4D73-9C50-111111111111}

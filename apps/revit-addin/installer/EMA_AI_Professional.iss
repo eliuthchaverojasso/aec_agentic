@@ -5,10 +5,10 @@
 #define BuildFlavor "unsigned"
 #endif
 #ifndef StageDir
-#define StageDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\release\stage"
+#define StageDir SourcePath + "..\..\..\artifacts\release\stage"
 #endif
 #ifndef OutputDir
-#define OutputDir "C:\Documents\Hyperghaps EMA\EMA-AI\artifacts\release\installer"
+#define OutputDir SourcePath + "..\..\..\artifacts\release\installer"
 #endif
 
 [Setup]
