@@ -1,0 +1,38 @@
+\section{Troubleshooting}
+If something fails, capture the screenshot or log requested in the last column and send it to support.
+
+\begin{longtable}{@{}p{0.21\textwidth}p{0.27\textwidth}p{0.27\textwidth}p{0.19\textwidth}@{}}
+\toprule
+\textbf{Problem} & \textbf{Likely cause} & \textbf{Immediate action} & \textbf{Send this} \\
+\midrule
+EMA AI ribbon does not appear & Add-in did not load, wrong Revit year, or install path mismatch & Close Revit, confirm the install year, and re-open Revit & Revit version and ribbon screenshot \\
+Revit was open during installation & Installer blocked or skipped files & Close Revit fully and rerun the installer & Installer filename and any prompt screenshot \\
+Unsupported Revit version & Year not covered by the validated payload & Use a validated Revit year from 2022--2027 & Revit version and installer screen \\
+Owner Requirements file does not load & Wrong workbook, workbook open in Excel, or unsupported format & Close Excel and select the approved \code{.xlsx} workbook & Workbook filename and error screenshot \\
+Model synchronization fails & Model access issue or process error & Capture the failure and do not close Revit immediately & Screenshot and Diagnostics output \\
+Report does not open & Browser or output-path issue & Use the other report-opening method if available & Error screenshot and report folder \\
+Element ID cannot be found & Linked model, deleted element, or wrong model & Re-check the Requirement ID and model context & Requirement ID and Element ID \\
+Docker warning appears & Full Local Platform was selected or detected & Return to the Revit-only pilot profile & Installer screenshot \\
+Ask EMA AI is unavailable & Local AI is optional & Continue with the deterministic report & Report screenshot only \\
+Installer blocked by Windows Application Control & Enterprise policy blocked the unsigned file & Stop and contact support; do not disable security policy & Block message screenshot \\
+\bottomrule
+\end{longtable}
+
+\begin{warnbox}{Security boundary}
+Do not suggest disabling enterprise security policies. If the installer or command is blocked, send a screenshot and wait for support guidance.
+\end{warnbox}
+
+\section{Support and Next Steps}
+\begin{itemize}
+  \item Primary EMA feedback lead: \textbf{CONFIRM NAME}
+  \item Shokworks technical contact: \textbf{Eliuth Chavero}
+  \item First project: \textbf{MEP-NISD-MIDDLE SCHOOL}
+  \item Feedback form: \link{https://forms.gle/6JCgsHnbua8pn7mu9}
+  \item Shared pilot folder: \link{https://drive.google.com/drive/folders/1_ZLLuRJ18CsKkBbRlx29RDvad6R8efwo?usp=drive_link}
+  \item First review checkpoint: \textbf{INSERT DATE}
+\end{itemize}
+
+\begin{center}
+\vspace{0.2in}
+{\Large\bfseries\color{EMA Navy} One project, one feedback lead, one structured feedback loop.}
+\end{center}

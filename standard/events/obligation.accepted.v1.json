@@ -1,0 +1,7 @@
+{
+  "type": "com.aec-control-plane.obligation.accepted.v1",
+  "source": "control-plane-core",
+  "schema": "../schemas/obligation.schema.json",
+  "description": "Emitted when an extracted obligation has been accepted as a governed obligation."
+}
+

@@ -1,0 +1,846 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "evaluationRunId": "3677fbf9ba5e0be2d1dc077203671d5c",
+    "projectName": "Northwest ISD (sample)",
+    "modelName": "NWISD-MIDDLE-SCHOOL",
+    "requirementsFile": "NORTHWEST ISD 06.02.2025.xlsx",
+    "engineVersion": "ema-audit-engine-1.0.0",
+    "rulesetVersion": "ema-rules-2026.06",
+    "taxonomyVersion": "owner-requirements-1.0",
+    "scorePolicyVersion": "confidence-1.0",
+    "asOfUtc": "2026-06-15T12:00:00.0000000Z",
+    "generatedAtUtc": "2026-06-15T08:48:03.7580584Z",
+    "inputHash": "692c6818dc078384843c8a0e178d4870725c31f5093f78e2a709e729086695f2",
+    "outputHash": "f072b961f0fe173940e652a45bbe78f36b917c9ceabdaf64afbdc3e5b25ab84e",
+    "requirementsTotal": 9,
+    "statusCounts": {
+      "met": 1,
+      "not_met": 2,
+      "needs_human_review": 6,
+      "insufficient_model_data": 0,
+      "not_applicable": 0
+    },
+    "coherenceFindingsTotal": 4
+  },
+  "auditRecords": [
+    {
+      "requirementId": "ROW-101",
+      "decisionStatus": "Compliant",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Electrical",
+        "sourceRow": 101,
+        "requirementId": "ROW-101",
+        "requirementContentHash": "a9c9f48e875c462d8ffc1bcb8f0eda2244dda0e8b21a5e0839c07bf597897745",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "provide panel and circuit assignment for all lighting fixtures",
+        "contentHash": "a9c9f48e875c462d8ffc1bcb8f0eda2244dda0e8b21a5e0839c07bf597897745",
+        "modality": "none",
+        "quantifier": "all",
+        "minimumQuantity": null,
+        "maximumQuantity": null,
+        "quantities": [],
+        "manufacturerBrands": [],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [
+          "circuit",
+          "fixture",
+          "panel"
+        ],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": []
+      },
+      "requirementType": "equipment_presence",
+      "requirementTypeReason": null,
+      "validationType": "Model",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "All",
+        "requiredEvidenceTypes": [
+          "MODEL_ELEMENT",
+          "PARAMETER"
+        ],
+        "minimumCount": null,
+        "closureRequiresHumanReview": false,
+        "rationale": "Model-checkable: closable by model elements with the required parameters populated."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [],
+      "nextBestAction": null,
+      "recordHash": "f6c6026f04a9c5f795663a4e1e99c6e649cb2776ff9d4279098a34245a3d9c24",
+      "decisionStatusLabel": "Compliant"
+    },
+    {
+      "requirementId": "ROW-102",
+      "decisionStatus": "NonCompliant",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Electrical",
+        "sourceRow": 102,
+        "requirementId": "ROW-102",
+        "requirementContentHash": "e8d4ccab112ed9834c50c788011874b914b8864b93dad2cb61508e148b075869",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "provide panel rated for 208v service",
+        "contentHash": "e8d4ccab112ed9834c50c788011874b914b8864b93dad2cb61508e148b075869",
+        "modality": "none",
+        "quantifier": "none",
+        "minimumQuantity": null,
+        "maximumQuantity": null,
+        "quantities": [
+          {
+            "property": "voltage",
+            "operator": "=",
+            "value": 208,
+            "unit": "V",
+            "rawText": "208v"
+          }
+        ],
+        "manufacturerBrands": [],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [
+          "panel"
+        ],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": []
+      },
+      "requirementType": "parameter_performance",
+      "requirementTypeReason": null,
+      "validationType": "Model",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "All",
+        "requiredEvidenceTypes": [
+          "MODEL_ELEMENT",
+          "PARAMETER"
+        ],
+        "minimumCount": null,
+        "closureRequiresHumanReview": false,
+        "rationale": "Model-checkable: closable by model elements with the required parameters populated."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "numericconflict:electrical#102#row-102|electrical#103#row-103"
+      ],
+      "nextBestAction": null,
+      "recordHash": "db73172d948367fe1e2f2f39f71c43bc152a7dcaf02fae8d6171b58627c25b94",
+      "decisionStatusLabel": "Non-Compliant"
+    },
+    {
+      "requirementId": "ROW-103",
+      "decisionStatus": "NonCompliant",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Electrical",
+        "sourceRow": 103,
+        "requirementId": "ROW-103",
+        "requirementContentHash": "64578f42146df80207adb033f8be7919b5bec5c82602d5e72167ee1adaf338ab",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "panel shall be rated 240v",
+        "contentHash": "64578f42146df80207adb033f8be7919b5bec5c82602d5e72167ee1adaf338ab",
+        "modality": "shall",
+        "quantifier": "none",
+        "minimumQuantity": null,
+        "maximumQuantity": null,
+        "quantities": [
+          {
+            "property": "voltage",
+            "operator": "=",
+            "value": 240,
+            "unit": "V",
+            "rawText": "240v"
+          }
+        ],
+        "manufacturerBrands": [],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [
+          "panel"
+        ],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": []
+      },
+      "requirementType": "parameter_performance",
+      "requirementTypeReason": null,
+      "validationType": "Model",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "All",
+        "requiredEvidenceTypes": [
+          "MODEL_ELEMENT",
+          "PARAMETER"
+        ],
+        "minimumCount": null,
+        "closureRequiresHumanReview": false,
+        "rationale": "Model-checkable: closable by model elements with the required parameters populated."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "numericconflict:electrical#102#row-102|electrical#103#row-103"
+      ],
+      "nextBestAction": null,
+      "recordHash": "27ae347e65e662996bcdd30df02fd901a902135a00c1b15bdf96c87fe6799572",
+      "decisionStatusLabel": "Non-Compliant"
+    },
+    {
+      "requirementId": "ROW-104",
+      "decisionStatus": "NeedsReview",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Electrical",
+        "sourceRow": 104,
+        "requirementId": "ROW-104",
+        "requirementContentHash": "66557c86fb212170b03643b2112a9f1d37a7f14492d7a40857dc30dffbff80eb",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "all devices shall have a level assignment",
+        "contentHash": "66557c86fb212170b03643b2112a9f1d37a7f14492d7a40857dc30dffbff80eb",
+        "modality": "shall",
+        "quantifier": "all",
+        "minimumQuantity": null,
+        "maximumQuantity": null,
+        "quantities": [],
+        "manufacturerBrands": [],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": [
+          "No recognized subject noun; coherence comparison limited to text similarity."
+        ]
+      },
+      "requirementType": "level_assignment",
+      "requirementTypeReason": null,
+      "validationType": "Model",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "All",
+        "requiredEvidenceTypes": [
+          "MODEL_ELEMENT",
+          "PARAMETER"
+        ],
+        "minimumCount": null,
+        "closureRequiresHumanReview": false,
+        "rationale": "Model-checkable: closable by model elements with the required parameters populated."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "exactduplicate:electrical#104#row-104|electrical#105#row-105"
+      ],
+      "nextBestAction": null,
+      "recordHash": "b27ee942aa0f55d9d3acbfa3c11554572c72356993984ac6c64210b106c5fff8",
+      "decisionStatusLabel": "Needs Human Review"
+    },
+    {
+      "requirementId": "ROW-105",
+      "decisionStatus": "NeedsReview",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Electrical",
+        "sourceRow": 105,
+        "requirementId": "ROW-105",
+        "requirementContentHash": "66557c86fb212170b03643b2112a9f1d37a7f14492d7a40857dc30dffbff80eb",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "all devices shall have a level assignment",
+        "contentHash": "66557c86fb212170b03643b2112a9f1d37a7f14492d7a40857dc30dffbff80eb",
+        "modality": "shall",
+        "quantifier": "all",
+        "minimumQuantity": null,
+        "maximumQuantity": null,
+        "quantities": [],
+        "manufacturerBrands": [],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": [
+          "No recognized subject noun; coherence comparison limited to text similarity."
+        ]
+      },
+      "requirementType": "level_assignment",
+      "requirementTypeReason": null,
+      "validationType": "Model",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "All",
+        "requiredEvidenceTypes": [
+          "MODEL_ELEMENT",
+          "PARAMETER"
+        ],
+        "minimumCount": null,
+        "closureRequiresHumanReview": false,
+        "rationale": "Model-checkable: closable by model elements with the required parameters populated."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "exactduplicate:electrical#104#row-104|electrical#105#row-105"
+      ],
+      "nextBestAction": null,
+      "recordHash": "dc1b191d82763c17efa1e9b8029ca6da724692de2cccabde41aedd600e2e5969",
+      "decisionStatusLabel": "Needs Human Review"
+    },
+    {
+      "requirementId": "ROW-478",
+      "decisionStatus": "NeedsReview",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Mechanical",
+        "sourceRow": 478,
+        "requirementId": "ROW-478",
+        "requirementContentHash": "dc6b6754f858192af786335eac015cacbd0e0ae3d08012fd809d832eabf74fe2",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "rtu shall be trane only no york units",
+        "contentHash": "dc6b6754f858192af786335eac015cacbd0e0ae3d08012fd809d832eabf74fe2",
+        "modality": "shall",
+        "quantifier": "none",
+        "minimumQuantity": null,
+        "maximumQuantity": null,
+        "quantities": [],
+        "manufacturerBrands": [
+          "trane",
+          "york"
+        ],
+        "excludedManufacturerBrands": [
+          "york"
+        ],
+        "manufacturerExclusive": true,
+        "subjectTokens": [
+          "rtu"
+        ],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": []
+      },
+      "requirementType": "manufacturer_brand_restriction",
+      "requirementTypeReason": null,
+      "validationType": "Specification",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "All",
+        "requiredEvidenceTypes": [
+          "SPECIFICATION_OR_MANUFACTURER_DATA"
+        ],
+        "minimumCount": null,
+        "closureRequiresHumanReview": true,
+        "rationale": "Specification/manufacturer constraint: requires product data or spec review."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "manufacturerconflict:mechanical#478#row-478|mechanical#479#row-479"
+      ],
+      "nextBestAction": null,
+      "recordHash": "1335e5cd4e5a83e9121b5ad14afff83c937fef0db36d345bdd69edd279796d8f",
+      "decisionStatusLabel": "Needs Human Review"
+    },
+    {
+      "requirementId": "ROW-479",
+      "decisionStatus": "NeedsReview",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Mechanical",
+        "sourceRow": 479,
+        "requirementId": "ROW-479",
+        "requirementContentHash": "5bc7659b6a7567d1b9ef5acb11eb6afbe6369c8e4852a32edda250f7df6c302c",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "rtu may be a york rooftop unit",
+        "contentHash": "5bc7659b6a7567d1b9ef5acb11eb6afbe6369c8e4852a32edda250f7df6c302c",
+        "modality": "may",
+        "quantifier": "none",
+        "minimumQuantity": null,
+        "maximumQuantity": null,
+        "quantities": [],
+        "manufacturerBrands": [
+          "york"
+        ],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [
+          "rtu"
+        ],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": []
+      },
+      "requirementType": "manufacturer_brand_restriction",
+      "requirementTypeReason": null,
+      "validationType": "Specification",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "All",
+        "requiredEvidenceTypes": [
+          "SPECIFICATION_OR_MANUFACTURER_DATA"
+        ],
+        "minimumCount": null,
+        "closureRequiresHumanReview": true,
+        "rationale": "Specification/manufacturer constraint: requires product data or spec review."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "manufacturerconflict:mechanical#478#row-478|mechanical#479#row-479"
+      ],
+      "nextBestAction": null,
+      "recordHash": "6d3be7439bca2af1e4c98ad4aa81bd645bb83f45169f2601078e28c733ecc715",
+      "decisionStatusLabel": "Needs Human Review"
+    },
+    {
+      "requirementId": "ROW-606",
+      "decisionStatus": "NeedsReview",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Technology",
+        "sourceRow": 606,
+        "requirementId": "ROW-606",
+        "requirementContentHash": "60f61d05369e25d42b76dfdebb2283affac4f274ab0de865354165d5e594a741",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "each mdf rack shall have at least two l6 30 receptacles",
+        "contentHash": "60f61d05369e25d42b76dfdebb2283affac4f274ab0de865354165d5e594a741",
+        "modality": "shall",
+        "quantifier": "each",
+        "minimumQuantity": 2,
+        "maximumQuantity": null,
+        "quantities": [
+          {
+            "property": "count",
+            "operator": "min",
+            "value": 2,
+            "unit": "ea",
+            "rawText": "min 2"
+          }
+        ],
+        "manufacturerBrands": [],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [
+          "rack",
+          "receptacle"
+        ],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": []
+      },
+      "requirementType": "equipment_presence",
+      "requirementTypeReason": null,
+      "validationType": "Model",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "AtLeastN",
+        "requiredEvidenceTypes": [
+          "MODEL_ELEMENT",
+          "PARAMETER"
+        ],
+        "minimumCount": 2,
+        "closureRequiresHumanReview": false,
+        "rationale": "Model-checkable: closable by model elements with the required parameters populated. Requires at least 2 qualifying element(s)."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "quantityconflict:technology#606#row-606|technology#607#row-607"
+      ],
+      "nextBestAction": null,
+      "recordHash": "1a5274c3308608c8a3a1a5c39966b54f712bfa1941d9beea04c5a168bbdc452b",
+      "decisionStatusLabel": "Needs Human Review"
+    },
+    {
+      "requirementId": "ROW-607",
+      "decisionStatus": "NeedsReview",
+      "lifecycleStatus": "CoherenceChecked",
+      "source": {
+        "sourceFile": "NORTHWEST ISD 06.02.2025.xlsx",
+        "sourceWorksheet": "Technology",
+        "sourceRow": 607,
+        "requirementId": "ROW-607",
+        "requirementContentHash": "c1bd350af76d48292a0013ea400141cd70a72a973f7134bf1f2120039f48c8c5",
+        "traceabilityComplete": true,
+        "traceabilityGaps": []
+      },
+      "semanticIr": {
+        "normalizedText": "each mdf rack shall have at least four l6 30 receptacles",
+        "contentHash": "c1bd350af76d48292a0013ea400141cd70a72a973f7134bf1f2120039f48c8c5",
+        "modality": "shall",
+        "quantifier": "each",
+        "minimumQuantity": 4,
+        "maximumQuantity": null,
+        "quantities": [
+          {
+            "property": "count",
+            "operator": "min",
+            "value": 4,
+            "unit": "ea",
+            "rawText": "min 4"
+          }
+        ],
+        "manufacturerBrands": [],
+        "excludedManufacturerBrands": [],
+        "manufacturerExclusive": false,
+        "subjectTokens": [
+          "rack",
+          "receptacle"
+        ],
+        "conditions": [],
+        "exceptions": [],
+        "ambiguities": []
+      },
+      "requirementType": "equipment_presence",
+      "requirementTypeReason": null,
+      "validationType": "Model",
+      "taxonomyLabels": [],
+      "applies": true,
+      "applicabilityReason": "In scope for this evaluation.",
+      "evidencePolicy": {
+        "operator": "AtLeastN",
+        "requiredEvidenceTypes": [
+          "MODEL_ELEMENT",
+          "PARAMETER"
+        ],
+        "minimumCount": 4,
+        "closureRequiresHumanReview": false,
+        "rationale": "Model-checkable: closable by model elements with the required parameters populated. Requires at least 4 qualifying element(s)."
+      },
+      "candidateFunnel": {
+        "stages": [],
+        "universeCount": 0,
+        "qualifiedCount": 0,
+        "broadMatch": false,
+        "broadMatchReason": null
+      },
+      "ruleApplied": null,
+      "decisionReason": null,
+      "confidence": 0.6,
+      "confidenceReason": null,
+      "directEvidenceCount": 0,
+      "supportingEvidenceCount": 0,
+      "coherenceFindingIds": [
+        "quantityconflict:technology#606#row-606|technology#607#row-607"
+      ],
+      "nextBestAction": null,
+      "recordHash": "8a42be80a25ab6018760bfc2748ebd76dc9f52569c7b76c8cec1a1961c34a535",
+      "decisionStatusLabel": "Needs Human Review"
+    }
+  ],
+  "coherence": {
+    "findings": [
+      {
+        "id": "manufacturerconflict:mechanical#478#row-478|mechanical#479#row-479",
+        "findingType": "ManufacturerConflict",
+        "severity": "High",
+        "requirementType": "manufacturer_brand_restriction",
+        "primary": {
+          "requirementId": "ROW-478",
+          "sourceWorksheet": "Mechanical",
+          "sourceRow": 478,
+          "discipline": "Mechanical",
+          "requirementType": "manufacturer_brand_restriction",
+          "shortText": "RTU shall be Trane only. No York units."
+        },
+        "related": {
+          "requirementId": "ROW-479",
+          "sourceWorksheet": "Mechanical",
+          "sourceRow": 479,
+          "discipline": "Mechanical",
+          "requirementType": "manufacturer_brand_restriction",
+          "shortText": "RTU may be a York rooftop unit."
+        },
+        "rationale": "Conflicting manufacturer restriction for rtu. Requirements specify incompatible approved brands.",
+        "normalizedValues": {
+          "subject": "rtu",
+          "allowed_a": "trane",
+          "excluded_a": "york",
+          "allowed_b": "york",
+          "excluded_b": ""
+        },
+        "status": "open",
+        "findingTypeLabel": "Manufacturer Conflict",
+        "severityLabel": "High"
+      },
+      {
+        "id": "numericconflict:electrical#102#row-102|electrical#103#row-103",
+        "findingType": "NumericConflict",
+        "severity": "High",
+        "requirementType": "parameter_performance",
+        "primary": {
+          "requirementId": "ROW-102",
+          "sourceWorksheet": "Electrical",
+          "sourceRow": 102,
+          "discipline": "Electrical",
+          "requirementType": "parameter_performance",
+          "shortText": "Provide panel rated for 208V service."
+        },
+        "related": {
+          "requirementId": "ROW-103",
+          "sourceWorksheet": "Electrical",
+          "sourceRow": 103,
+          "discipline": "Electrical",
+          "requirementType": "parameter_performance",
+          "shortText": "Panel shall be rated 240V."
+        },
+        "rationale": "Conflicting voltage for panel: 208V vs 240V.",
+        "normalizedValues": {
+          "subject": "panel",
+          "property": "voltage",
+          "unit": "V",
+          "value_a": "208",
+          "value_b": "240"
+        },
+        "status": "open",
+        "findingTypeLabel": "Numeric Conflict",
+        "severityLabel": "High"
+      },
+      {
+        "id": "exactduplicate:electrical#104#row-104|electrical#105#row-105",
+        "findingType": "ExactDuplicate",
+        "severity": "Medium",
+        "requirementType": "level_assignment",
+        "primary": {
+          "requirementId": "ROW-104",
+          "sourceWorksheet": "Electrical",
+          "sourceRow": 104,
+          "discipline": "Electrical",
+          "requirementType": "level_assignment",
+          "shortText": "All devices shall have a level assignment."
+        },
+        "related": {
+          "requirementId": "ROW-105",
+          "sourceWorksheet": "Electrical",
+          "sourceRow": 105,
+          "discipline": "Electrical",
+          "requirementType": "level_assignment",
+          "shortText": "All devices shall have a level assignment."
+        },
+        "rationale": "Identical requirement text appears more than once. Consolidate to a single source of truth.",
+        "normalizedValues": {},
+        "status": "open",
+        "findingTypeLabel": "Exact Duplicate",
+        "severityLabel": "Medium"
+      },
+      {
+        "id": "quantityconflict:technology#606#row-606|technology#607#row-607",
+        "findingType": "QuantityConflict",
+        "severity": "Medium",
+        "requirementType": "equipment_presence",
+        "primary": {
+          "requirementId": "ROW-606",
+          "sourceWorksheet": "Technology",
+          "sourceRow": 606,
+          "discipline": "Technology",
+          "requirementType": "equipment_presence",
+          "shortText": "Each MDF rack shall have at least two L6-30 receptacles."
+        },
+        "related": {
+          "requirementId": "ROW-607",
+          "sourceWorksheet": "Technology",
+          "sourceRow": 607,
+          "discipline": "Technology",
+          "requirementType": "equipment_presence",
+          "shortText": "Each MDF rack shall have at least four L6-30 receptacles."
+        },
+        "rationale": "Conflicting required count for rack/receptacle: min 2 vs min 4.",
+        "normalizedValues": {
+          "subject": "rack,receptacle",
+          "operator": "min",
+          "count_a": "2",
+          "count_b": "4"
+        },
+        "status": "open",
+        "findingTypeLabel": "Quantity Conflict",
+        "severityLabel": "Medium"
+      }
+    ],
+    "typeSummaries": [
+      {
+        "requirementType": "equipment_presence",
+        "requirementCount": 3,
+        "findingCount": 1,
+        "duplicateCount": 0,
+        "conflictCount": 1,
+        "highestSeverity": "Medium",
+        "isCoherent": false
+      },
+      {
+        "requirementType": "level_assignment",
+        "requirementCount": 2,
+        "findingCount": 1,
+        "duplicateCount": 1,
+        "conflictCount": 0,
+        "highestSeverity": "Medium",
+        "isCoherent": false
+      },
+      {
+        "requirementType": "manufacturer_brand_restriction",
+        "requirementCount": 2,
+        "findingCount": 1,
+        "duplicateCount": 0,
+        "conflictCount": 1,
+        "highestSeverity": "High",
+        "isCoherent": false
+      },
+      {
+        "requirementType": "parameter_performance",
+        "requirementCount": 2,
+        "findingCount": 1,
+        "duplicateCount": 0,
+        "conflictCount": 1,
+        "highestSeverity": "High",
+        "isCoherent": false
+      }
+    ],
+    "requirementsAnalyzed": 9,
+    "requirementTypesAnalyzed": 4,
+    "exactDuplicateCount": 1,
+    "semanticDuplicateCount": 0,
+    "numericConflictCount": 1,
+    "quantityConflictCount": 1,
+    "manufacturerConflictCount": 1,
+    "highSeverityCount": 2,
+    "coherenceGrade": "Conflicts Found"
+  }
+}

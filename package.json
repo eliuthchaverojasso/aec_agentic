@@ -1,0 +1,13 @@
+{
+  "name": "aec-agentic-control-plane",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AEC Agentic Control Plane monorepo.",
+  "scripts": {
+    "web:dev": "pnpm --dir apps/web-console dev",
+    "web:build": "pnpm --dir apps/web-console build",
+    "web:preview": "pnpm --dir apps/web-console preview"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
+

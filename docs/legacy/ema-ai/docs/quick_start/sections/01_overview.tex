@@ -1,0 +1,94 @@
+\clearpage
+\pagenumbering{arabic}
+\thispagestyle{empty}
+\begin{center}
+\vspace*{0.45in}
+{\Huge\bfseries\color{EMA Navy} EMA AI Pilot Quick Start Guide\par}
+\vspace{0.15in}
+{\Large\bfseries\color{EMA Teal} Revit-First Owner Requirements Intelligence\par}
+\vspace{0.24in}
+{\large Controlled Pilot\par}
+\vspace{0.35in}
+\begin{tikzpicture}
+  \path[fill=EMA Navy] (0,0) rectangle (15.2,0.35);
+  \path[fill=EMA Blue] (0,0.35) rectangle (15.2,0.5);
+\end{tikzpicture}
+\vspace{0.25in}
+
+\begin{tabular}{@{}rl@{}}
+\textbf{Prepared for} & EMA Engineering \& Consulting \\
+\textbf{Delivery partner} & Shokworks \\
+\textbf{Guide version} & 1.0 \\
+\textbf{Release version} & \code{1.0.0-dev.2} \\
+\textbf{Build / SHA} & \code{8bb103f} (repo HEAD at draft time) \\
+\textbf{Issue date} & 2026-06-15 \\
+\textbf{Approved Revit versions} & 2022, 2023, 2024, 2025, 2026, 2027 \\
+\textbf{Primary support contact} & Eliuth Chavero \\
+\end{tabular}
+
+\vfill
+\end{center}
+\clearpage
+\section{What EMA AI Does}
+EMA AI is a Revit-first engineering intelligence pilot that checks Owner Requirements against available project evidence. It begins in Revit, uses the synced model as the deterministic source of truth, and produces an HTML report for review. The report explains what the model appears to satisfy, what still needs human judgment, and what information is missing. EMA AI assists engineering review; it does not certify compliance or approve final design decisions.
+
+\begin{infobox}{Authority Model}
+\centering
+\begin{tikzpicture}[node distance=10mm and 12mm, every node/.style={font=\small}]
+  \node[draw,rounded corners,fill=EMA SoftBlue,minimum width=3.2cm,minimum height=1cm,align=center] (det) {Deterministic engine\\status assignment};
+  \node[draw,rounded corners,fill=white,minimum width=3.0cm,minimum height=1cm,align=center,right=of det] (db) {PostgreSQL\\operational records};
+  \node[draw,rounded corners,fill=EMA SoftTeal,minimum width=2.8cm,minimum height=1cm,align=center,right=of db] (rep) {Reports and\\dashboards};
+  \node[draw,rounded corners,fill=EMA SoftAmber,minimum width=2.6cm,minimum height=1cm,align=center,below=of rep] (ai) {Ask EMA AI\\advisory only};
+  \node[draw,rounded corners,fill=EMA SoftAmber,minimum width=3.2cm,minimum height=1cm,align=center,below=of db] (hum) {Human reviewer\\confirms and corrects};
+  \draw[-{Latex[length=2.4mm]}] (det) -- (db);
+  \draw[-{Latex[length=2.4mm]}] (db) -- (rep);
+  \draw[-{Latex[length=2.4mm]}] (rep) -- (ai);
+  \draw[-{Latex[length=2.4mm]}] (hum) -- (rep);
+\end{tikzpicture}
+\end{infobox}
+
+\subsection*{Product flow}
+\begin{center}
+\begin{tikzpicture}[node distance=8mm and 10mm, every node/.style={font=\small}]
+  \node[draw,rounded corners,fill=white,minimum width=2.8cm,minimum height=0.9cm,align=center] (a) {Owner Requirements};
+  \node[draw,rounded corners,fill=white,minimum width=2.1cm,minimum height=0.9cm,align=center,right=of a] (b) {Revit Model};
+  \node[draw,rounded corners,fill=EMA SoftBlue,minimum width=2.9cm,minimum height=0.9cm,align=center,right=of b] (c) {EMA AI Evaluation};
+  \node[draw,rounded corners,fill=EMA SoftTeal,minimum width=2.4cm,minimum height=0.9cm,align=center,right=of c] (d) {Evidence Report};
+  \node[draw,rounded corners,fill=EMA SoftAmber,minimum width=2.5cm,minimum height=0.9cm,align=center,right=of d] (e) {Human Review};
+  \draw[-{Latex[length=2.4mm]},thick,color=EMA Blue] (a) -- (b);
+  \draw[-{Latex[length=2.4mm]},thick,color=EMA Blue] (b) -- (c);
+  \draw[-{Latex[length=2.4mm]},thick,color=EMA Blue] (c) -- (d);
+  \draw[-{Latex[length=2.4mm]},thick,color=EMA Blue] (d) -- (e);
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Pilot scope}
+The first testing cycle should use the shared baseline project \textbf{MEP-NISD-MIDDLE SCHOOL}. The corresponding workbook in the repository evidence set is \code{NORTHWEST ISD 06.02.2025.xlsx}. Initial tuning focus is requirement classification, evidence selection, status assignment, confidence, urgency, and recommended next action. Ask EMA AI is secondary during the first cycle.
+
+\subsection*{What is in scope}
+\begin{itemize}
+  \item Revit add-in
+  \item Owner Requirements loading
+  \item Model synchronization
+  \item Deterministic requirement check
+  \item HTML report
+  \item Requirement-level traceability
+  \item Deterministic fallback
+\end{itemize}
+
+\subsection*{What is optional}
+\begin{itemize}
+  \item Full local platform with backend API, PostgreSQL, and dashboard
+  \item Local AI via Ollama
+\end{itemize}
+
+\subsection*{Support and external links}
+\begin{itemize}
+  \item Installer and installation materials: \link{https://drive.google.com/drive/folders/1Inuf3Th93qSvFDSG_aL9Sn8NuTsGygnf?usp=drive_link}
+  \item Quick-start shared folder: \link{https://drive.google.com/drive/folders/1R_0dG8uOZP0aJb4kR4jaHD7xQNq53Pr7?usp=drive_link}
+  \item Example EMA AI report: \link{https://drive.google.com/drive/folders/1_b_eXT1muhlJ2Ytza267ZEXhCdizI3fq?usp=drive_link}
+  \item Classification and scoring logic: \link{https://drive.google.com/drive/folders/1d3OYn4c2Jktnx5neHoZO60YMKBzpKCpt?usp=drive_link}
+  \item Feedback form: \link{https://forms.gle/6JCgsHnbua8pn7mu9}
+  \item Shared pilot folder: \link{https://drive.google.com/drive/folders/1_ZLLuRJ18CsKkBbRlx29RDvad6R8efwo?usp=drive_link}
+\end{itemize}
+\clearpage

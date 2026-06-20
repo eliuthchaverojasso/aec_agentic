@@ -1,0 +1,12 @@
+{
+  "rule_id": "element-without-level",
+  "version": "0.1.0",
+  "applicability": {
+    "asset_category": "*"
+  },
+  "required_fields": ["level"],
+  "severity": "medium",
+  "message": "Model element must be associated with a level.",
+  "evidence_output": "rule_evaluation"
+}
+

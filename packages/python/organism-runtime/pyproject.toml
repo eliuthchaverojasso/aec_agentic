@@ -1,0 +1,11 @@
+[project]
+name = "organism-runtime"
+version = "0.1.0"
+description = "Persistent local cognitive runtime contracts for ORGANISM."
+requires-python = ">=3.11"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+

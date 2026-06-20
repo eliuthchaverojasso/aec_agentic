@@ -1,0 +1,12 @@
+{
+  "rule_id": "fixture-missing-circuit",
+  "version": "0.1.0",
+  "applicability": {
+    "asset_category": "electrical_fixture"
+  },
+  "required_fields": ["circuit"],
+  "severity": "high",
+  "message": "Electrical fixture must have a circuit assignment.",
+  "evidence_output": "rule_evaluation"
+}
+

@@ -1,0 +1,22 @@
+id: revit-local
+version: 0.1.0
+runtime: dotnet
+direction:
+  - inbound
+  - outbound
+capabilities:
+  - model.extract
+  - rule.evaluate.local
+  - evidence.create
+  - sync.queue
+objects:
+  - model_element
+  - artifact
+  - evidence_claim
+authentication:
+  - local_user_session
+execution:
+  supports_webhooks: false
+  supports_polling: false
+  supports_incremental_sync: true
+

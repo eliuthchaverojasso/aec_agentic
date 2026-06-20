@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-06-08",
+  "description": "Maps each requirement type to the Revit evidence that exists, what it can prove, what it cannot prove, and what status is safe to assign.",
+  "revit_export_summary": {
+    "total_elements": 21868,
+    "categories": 12,
+    "levels": 4,
+    "parameters": 769,
+    "key_parameters_for_compliance": [
+      "Panel", "Circuit Number", "Voltage", "Manufacturer", "Model", "Description",
+      "Mark", "Type Mark", "Size", "Overall Size", "Level", "Elevation from Level",
+      "System Classification", "System Name", "System Type", "Length"
+    ]
+  },
+  "revit_category_inventory": {
+    "Pipes": {"count": 7370, "evidence_value": "Material type encoded in Type name (Copper L, PVC SCH40, Steel SCH40). Size parameter available. Length available."},
+    "Pipe Fittings": {"count": 6131, "evidence_value": "Fitting type and material in family/type names. Connection sizes."},
+    "Electrical Fixtures": {"count": 3073, "evidence_value": "Outlet type in family name (GP, GFI, IG). Mounting height in type name. Panel and Circuit Number parameters."},
+    "Lighting Fixtures": {"count": 2612, "evidence_value": "Fixture type (LED, EXIT), size, mounting type in family name. Emergency designation in type name."},
+    "Pipe Accessories": {"count": 572, "evidence_value": "Valve type and size in family/type. Limited to ball valves and PRVs."},
+    "Communication Devices": {"count": 484, "evidence_value": "Device type (AV, clock, display, speaker) in family name."},
+    "Fire Alarm Devices": {"count": 443, "evidence_value": "Device type (strobe/speaker, smoke detector, CO detector) in family name."},
+    "Data Devices": {"count": 391, "evidence_value": "Outlet type (ceiling vs wall, port count) in family/type name."},
+    "Mechanical Equipment": {"count": 286, "evidence_value": "Equipment type (RTU, exhaust fan) and tonnage in family/type name. Manufacturer implied by family (Aaon)."},
+    "Security Devices": {"count": 181, "evidence_value": "Device type (camera, card reader) and mounting (ceiling, wall) in family/type name."},
+    "Plumbing Fixtures": {"count": 167, "evidence_value": "Fixture type (floor drain, hose bibb, water heater) and model in family/type name."},
+    "Electrical Equipment": {"count": 158, "evidence_value": "Panel type, voltage, amperage in family/type name. Circuit parameters."}
+  },
+  "missing_categories_in_export": [
+    "Conduit/Raceway - No conduit elements exported. Critical gap for conduit size requirements.",
+    "Cable Tray - No cable tray elements. Gap for cable tray separation requirements.",
+    "Sprinkler Heads - No dedicated sprinkler category. Fire protection gaps.",
+    "Controls/BMS Points - No BMS/BAS/DDC points. Critical gap for controls requirements.",
+    "Ductwork - No duct elements exported. Gap for duct-related requirements.",
+    "Wire/Cable - No wire/cable elements. Gap for conductor requirements."
+  ],
+  "evidence_matrix": [
+    {
+      "requirement_type": "panel_circuit_power",
+      "revit_evidence_exists": true,
+      "primary_categories": ["Electrical Equipment", "Electrical Fixtures"],
+      "key_parameters": ["Panel", "Circuit Number", "Max Number of Circuits", "Branch Circuit Apparent Load"],
+      "what_can_be_proven": {
+        "panel_exists": "Strong - 158 panels with voltage/amperage in type names",
+        "circuit_assigned": "Strong - 7628 elements have Circuit Number parameter",
+        "voltage_rating": "Partial - encoded in panel family names (208v, 480v) but not on individual circuits",
+        "dedicated_circuit": "Partial - can check if circuit is shared but not if it should be dedicated"
+      },
+      "what_cannot_be_proven": ["Load calculations", "AIC ratings", "Phase balancing", "Breaker trip coordination"],
+      "safe_met_conditions": "Panel exists AND circuit number is assigned AND voltage matches requirement",
+      "max_safe_status": "Met with parameter evidence, NeedsHumanReview without"
+    },
+    {
+      "requirement_type": "outlets_receptacles_devices",
+      "revit_evidence_exists": true,
+      "primary_categories": ["Electrical Fixtures"],
+      "key_parameters": ["Panel", "Circuit Number"],
+      "what_can_be_proven": {
+        "outlet_exists": "Strong - 3073 electrical fixtures",
+        "type_correct": "Partial - GP, GFI, IG encoded in family names",
+        "mounting_height": "Partial - some family names include height (18 AFF, 40 AFF)",
+        "weatherproof": "Partial - GFCI Weatherproof/Roof type exists"
+      },
+      "what_cannot_be_proven": ["Exact room placement", "Perimeter distribution", "Count per room", "ADA compliance"],
+      "safe_met_conditions": "Outlet type family exists AND circuit assigned",
+      "max_safe_status": "Met for presence, NeedsHumanReview for count/placement"
+    },
+    {
+      "requirement_type": "lighting_fixtures",
+      "revit_evidence_exists": true,
+      "primary_categories": ["Lighting Fixtures"],
+      "key_parameters": ["Panel", "Circuit Number"],
+      "what_can_be_proven": {
+        "fixture_exists": "Strong - 2612 lighting fixtures",
+        "type_correct": "Strong - LED type, size, emergency designation in names",
+        "level_placement": "Strong - Level parameter populated"
+      },
+      "what_cannot_be_proven": ["Control scheme", "Switching zones", "Dimming capability", "Color temperature", "Manufacturer brand", "Lumen output"],
+      "safe_met_conditions": "Fixture type matches AND level correct",
+      "max_safe_status": "Met for presence/type, NeedsHumanReview for controls/specification"
+    },
+    {
+      "requirement_type": "technology_low_voltage_security_fire_alarm",
+      "revit_evidence_exists": true,
+      "primary_categories": ["Communication Devices", "Data Devices", "Fire Alarm Devices", "Security Devices"],
+      "key_parameters": [],
+      "what_can_be_proven": {
+        "device_exists": "Strong - 1499 total technology devices",
+        "device_type": "Partial - family names encode type (camera, card reader, speaker)",
+        "count": "Strong - can count devices per category"
+      },
+      "what_cannot_be_proven": ["Cable type/color", "Conduit sizes for tech", "System programming", "Network configuration", "Device models", "Cable routing"],
+      "safe_met_conditions": "Device category exists AND count is reasonable",
+      "max_safe_status": "Met for device presence, NeedsHumanReview for cable/specification requirements"
+    },
+    {
+      "requirement_type": "mechanical_equipment_coverage",
+      "revit_evidence_exists": true,
+      "primary_categories": ["Mechanical Equipment"],
+      "key_parameters": [],
+      "what_can_be_proven": {
+        "equipment_exists": "Strong - 286 mechanical elements",
+        "type_and_tonnage": "Partial - family/type names encode RTU tonnage (Aaon RTU 3 Ton, etc.)",
+        "level_placement": "Strong - Level parameter"
+      },
+      "what_cannot_be_proven": ["Manufacturer brand compliance", "Compressor type (two-speed)", "Control sequences", "DDC/EMCS connections", "Ionization type", "Fan type (in-line vs direct)"],
+      "safe_met_conditions": "Equipment type family exists AND tonnage matches",
+      "max_safe_status": "Met for presence only, NeedsHumanReview for manufacturer/controls/specification"
+    },
+    {
+      "requirement_type": "plumbing_hose_bibb_rpz_valves",
+      "revit_evidence_exists": true,
+      "primary_categories": ["Plumbing Fixtures", "Pipe Accessories"],
+      "key_parameters": [],
+      "what_can_be_proven": {
+        "bibb_exists": "Strong - 50 hose bibbs (40 roof, 10 wall)",
+        "rpz_exists": "Partial - 7 RPZ backflow preventers",
+        "level_placement": "Strong"
+      },
+      "what_cannot_be_proven": ["200-ft radius coverage", "Per-zone RPZ assignment", "Shut-off valve at each bibb", "In-ground vs wall mounting"],
+      "safe_met_conditions": "Bibb count >= expected AND RPZ present per zone",
+      "max_safe_status": "NeedsHumanReview (radius/zone verification requires drawing review)"
+    },
+    {
+      "requirement_type": "conduit_raceway",
+      "revit_evidence_exists": false,
+      "primary_categories": [],
+      "key_parameters": [],
+      "what_can_be_proven": {},
+      "what_cannot_be_proven": ["Everything - no conduit elements in export"],
+      "safe_met_conditions": "NEVER - no evidence available",
+      "max_safe_status": "NeedsHumanReview or NotApplicable"
+    },
+    {
+      "requirement_type": "controls_bms_bas_contactors_relays",
+      "revit_evidence_exists": false,
+      "primary_categories": [],
+      "key_parameters": [],
+      "what_can_be_proven": {},
+      "what_cannot_be_proven": ["Everything - no controls elements in export"],
+      "safe_met_conditions": "NEVER - no evidence available",
+      "max_safe_status": "NeedsHumanReview"
+    },
+    {
+      "requirement_type": "grounding_bonding_conductors",
+      "revit_evidence_exists": "partial",
+      "primary_categories": ["Electrical Equipment", "Electrical Fixtures"],
+      "key_parameters": ["DMET_Feeder_GroundWireSize", "DMEN_Feeder_GroundWireArea"],
+      "what_can_be_proven": {
+        "ground_parameter_exists": "Partial - grounding parameters may exist on some panels",
+        "equipment_present": "Strong - electrical categories exist"
+      },
+      "what_cannot_be_proven": ["Conductor in ALL conduit systems", "Ground bar physical installation", "Field continuity testing"],
+      "safe_met_conditions": "Grounding parameter populated with correct value",
+      "max_safe_status": "NeedsHumanReview (even with parameters, field verification needed)"
+    },
+    {
+      "requirement_type": "manufacturer_product_spec_submittal",
+      "revit_evidence_exists": "partial",
+      "primary_categories": ["all"],
+      "key_parameters": ["Manufacturer", "Model", "Description"],
+      "what_can_be_proven": {
+        "manufacturer_parameter": "Weak - parameter exists on all 21868 elements but values are typically empty or default"
+      },
+      "what_cannot_be_proven": ["Submittal compliance", "Specification section adherence", "Approved equal status"],
+      "safe_met_conditions": "Manufacturer parameter populated AND matches requirement text",
+      "max_safe_status": "NeedsHumanReview"
+    },
+    {
+      "requirement_type": "identification_labeling_nameplate",
+      "revit_evidence_exists": false,
+      "primary_categories": [],
+      "what_can_be_proven": {},
+      "what_cannot_be_proven": ["Physical label/nameplate installation", "Engraving content", "Label location"],
+      "safe_met_conditions": "NEVER",
+      "max_safe_status": "Manual"
+    },
+    {
+      "requirement_type": "commissioning_testing_om_training",
+      "revit_evidence_exists": false,
+      "primary_categories": [],
+      "what_can_be_proven": {},
+      "what_cannot_be_proven": ["Everything - closeout deliverables are not modeled"],
+      "safe_met_conditions": "NEVER",
+      "max_safe_status": "Manual"
+    },
+    {
+      "requirement_type": "field_execution_demolition_protection",
+      "revit_evidence_exists": false,
+      "primary_categories": [],
+      "what_can_be_proven": {},
+      "what_cannot_be_proven": ["Everything - field work is not modeled"],
+      "safe_met_conditions": "NEVER",
+      "max_safe_status": "Manual"
+    }
+  ]
+}

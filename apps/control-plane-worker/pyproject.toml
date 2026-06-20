@@ -1,0 +1,13 @@
+[project]
+name = "control-plane-worker"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+control-plane-worker = "control_plane_worker.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+

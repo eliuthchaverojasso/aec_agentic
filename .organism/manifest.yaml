@@ -1,0 +1,19 @@
+id: organism-aec-control-plane
+name: ORGANISM for AEC Agentic Control Plane
+created_at: "2026-06-20"
+source_system:
+  name: EMA AI
+  path: "C:\\Documents\\Hyperghaps EMA\\EMA-AI"
+purpose: "Local persistent cognitive operating layer for building and governing the AEC Agentic Control Plane."
+stack:
+  orchestrator: langgraph
+  operational_store: postgresql
+  associative_memory: pgvector
+  world_model: apache_age
+  model_runtime: ollama
+  versioned_identity: git
+local_models:
+  code_production: qwen3.6:27b
+  critical_review: gemma4:26b
+  document_extraction: granite4.1:30b
+  embeddings: bge-m3:latest

@@ -1,0 +1,16 @@
+table_number,title,source
+1,Semantic Rule Priority,RequirementSemanticClassifier.cs
+2,Rule Triggers,RequirementSemanticClassifier.cs
+3,Candidate Scope by Rule,RequirementSemanticClassifier.cs and RequirementComparisonEngine.cs
+4,Expected Evidence and Parameters,RequirementSemanticClassifier.cs and audit inventories
+5,Status Decision Logic,RequirementComparisonEngine.cs and RequirementCheckModels.cs
+6,Evidence Alignment Logic,RequirementComparisonEngine.cs
+7,Validation Type Logic,ValidationTypeClassifier.cs
+8,Guardrails,RequirementComparisonEngine.cs and KeyIssueRanker.cs
+9,Key Issue Score Formula,KeyIssueRanker.cs
+10,Key Issue Factor Scoring,KeyIssueRanker.cs
+11,Urgency Labels,KeyIssueRanker.cs and OwnerRequirementHtmlReportGenerator.cs
+12,Requirement Card Display Rules,OwnerRequirementHtmlReportGenerator.cs
+13,Hidden JSON Fields,OwnerRequirementHtmlReportGenerator.cs
+14,Canary Row Results,Latest real-data hidden JSON
+15,Real Report Summary,Latest real-data hidden JSON

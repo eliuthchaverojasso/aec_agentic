@@ -1,0 +1,29 @@
+id: requirement-classifier
+version: 0.1.0
+capability:
+  type: obligation.requirement.classify
+inputs:
+  - source_requirement
+  - source_reference
+  - project_context
+outputs:
+  - proposed_classification
+  - confidence
+  - source_rationale
+permissions:
+  read:
+    - requirements
+    - source_documents
+  propose:
+    - requirement_classification
+  write: []
+required_approval:
+  type: human
+  role:
+    - project_manager
+    - discipline_lead
+limits:
+  maximum_cost_usd: 1.00
+  maximum_actions: 20
+  maximum_runtime_seconds: 120
+

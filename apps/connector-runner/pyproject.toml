@@ -1,0 +1,13 @@
+[project]
+name = "connector-runner"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+connector-runner = "connector_runner.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+

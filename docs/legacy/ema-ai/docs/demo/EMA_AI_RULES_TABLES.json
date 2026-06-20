@@ -1,0 +1,48 @@
+{
+  "source_report": "C:\\Users\\Eliuth Chavero\\AppData\\Local\\Temp\\EMA_AI_Report_Tests\\EMA_AI_Requirement_Check_MEP-NISD-MIDDLE SCHOOL 8_All Disciplines_20260608_055511.html",
+  "table_count": 15,
+  "summary": {
+    "requirements_parsed": 804,
+    "model_elements_parsed": 21868,
+    "status_counts": {
+      "met": 142,
+      "not_met": 0,
+      "needs_human_review": 662,
+      "insufficient_model_data": 0,
+      "not_applicable": 0
+    },
+    "validation_type_counts": {
+      "Drawing": 10,
+      "Hybrid": 124,
+      "Manual": 113,
+      "Model": 399,
+      "Specification": 158
+    },
+    "evidence_alignment_counts": {
+      "Manual Only": 189,
+      "Mismatch Risk": 151,
+      "Strong": 142,
+      "Weak": 322
+    },
+    "key_issue_count": 25,
+    "urgency_counts": {
+      "Critical": 25
+    },
+    "candidate_leakage_count": 0,
+    "contradiction_count": 0
+  },
+  "canary_rows": [
+    { "row": 22, "actual_rule": "outlet_circuit_assignment", "requirement_type": "panel_circuit_power", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 100, "actual_rule": "manufacturer_product_spec_submittal", "requirement_type": "manufacturer_product_spec_submittal", "status": "Needs Human Review", "evidence_alignment": "Mismatch Risk", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 103, "actual_rule": "field_execution_demolition_protection", "requirement_type": "field_execution_demolition_protection", "status": "Needs Human Review", "evidence_alignment": "Mismatch Risk", "candidate_scope_valid": false, "full_model_fallback_used": false },
+    { "row": 112, "actual_rule": "field_execution_demolition_protection", "requirement_type": "field_execution_demolition_protection", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": false, "full_model_fallback_used": false },
+    { "row": 113, "actual_rule": "field_execution_demolition_protection", "requirement_type": "field_execution_demolition_protection", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": false, "full_model_fallback_used": false },
+    { "row": 133, "actual_rule": "grounding_bonding_conductors", "requirement_type": "grounding_bonding_conductors", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 142, "actual_rule": "grounding_bonding_conductors", "requirement_type": "grounding_bonding_conductors", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 149, "actual_rule": "grounding_bonding_conductors", "requirement_type": "grounding_bonding_conductors", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 150, "actual_rule": "grounding_bonding_conductors", "requirement_type": "grounding_bonding_conductors", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 600, "actual_rule": "plumbing_hose_bibb_rpz_valves", "requirement_type": "plumbing_hose_bibb_rpz_valves", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 601, "actual_rule": "plumbing_hose_bibb_rpz_valves", "requirement_type": "plumbing_hose_bibb_rpz_valves", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false },
+    { "row": 602, "actual_rule": "plumbing_hose_bibb_rpz_valves", "requirement_type": "plumbing_hose_bibb_rpz_valves", "status": "Needs Human Review", "evidence_alignment": "Weak", "candidate_scope_valid": true, "full_model_fallback_used": false }
+  ]
+}

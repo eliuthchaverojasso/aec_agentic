@@ -1,0 +1,7 @@
+{
+  "type": "com.aec-control-plane.evidence-claim.accepted.v1",
+  "source": "evidence-engine",
+  "schema": "../schemas/evidence-claim.schema.json",
+  "description": "Emitted when an evidence claim has been accepted by the configured review authority."
+}
+

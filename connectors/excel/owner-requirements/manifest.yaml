@@ -1,0 +1,18 @@
+id: excel-owner-requirements
+version: 0.1.0
+runtime: python
+direction:
+  - inbound
+capabilities:
+  - files.read
+  - owner_requirements.extract
+objects:
+  - requirement
+  - source_document
+authentication:
+  - local_file
+execution:
+  supports_webhooks: false
+  supports_polling: false
+  supports_incremental_sync: false
+

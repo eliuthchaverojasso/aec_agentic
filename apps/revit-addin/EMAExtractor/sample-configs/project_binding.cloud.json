@@ -1,0 +1,14 @@
+{
+  "project_id": 1,
+  "model_id": 1,
+  "client_id": 1,
+  "client_code": "EXAMPLE_OWNER",
+  "project_code": "EXAMPLE_PROJ",
+  "project_display_name": "Example School Project",
+  "project_folder_name": "Example School Project",
+  "api_base_url": "https://ema-ai.example.com",
+  "dashboard_url": "https://ema-ai.example.com",
+  "environment_name": "Production",
+  "sync_mode": "cloud_upload",
+  "landing_root": ""
+}

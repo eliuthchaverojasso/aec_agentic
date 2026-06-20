@@ -1,0 +1,113 @@
+\section{Download and Install}
+\subsection*{Step 1 - Open the installer folder}
+\begin{enumerate}
+  \item Open the installer folder link: \link{https://drive.google.com/drive/folders/1Inuf3Th93qSvFDSG_aL9Sn8NuTsGygnf?usp=drive_link}
+  \item Find \code{EMA_AI_Professional_Setup_1.0.0-dev.2-unsigned.exe}.
+  \item Download only that file.
+  \item Open the Windows \textbf{Downloads} folder and confirm the file is present.
+\end{enumerate}
+
+\begin{warnbox}{If the download is blocked}
+If Windows or company security blocks the file, stop and send a screenshot to the EMA AI support team. Do not disable Application Control, antivirus, or company security policies.
+\end{warnbox}
+
+\subsection*{Step 2 - Close Revit}
+\begin{enumerate}
+  \item Save all open Revit projects.
+  \item Close every Revit window.
+  \item If needed, open Task Manager and confirm \code{Revit.exe} is not running.
+\end{enumerate}
+
+\subsection*{Step 3 - Run the installer}
+\begin{enumerate}
+  \item Open the Windows \textbf{Downloads} folder.
+  \item Double-click \code{EMA_AI_Professional_Setup_1.0.0-dev.2-unsigned.exe}.
+  \item Wait for the \textbf{EMA AI Professional Setup} window.
+  \item Click \textbf{Next}.
+\end{enumerate}
+
+\subsection*{Step 4 - Select the installation profile}
+Choose \textbf{Revit Add-in Only}. This is the supported path for the initial pilot.
+
+\begin{itemize}
+  \item \textbf{Do not select} \textbf{Pilot Core} unless you were instructed to install the full local platform.
+  \item \textbf{Do not select} \textbf{Pilot Core + Local AI} unless local AI was explicitly requested.
+  \item Docker is not required for the Revit pilot profile.
+\end{itemize}
+
+\subsection*{Step 5 - Select the Revit year}
+The installer should show the supported Revit years. Select only the year you actually have installed and plan to use. The package supports 2022 through 2027.
+
+\subsection*{Step 6 - Finish installation}
+\begin{enumerate}
+  \item Confirm the installer completes without errors.
+  \item Leave any optional local-AI launch option unchecked unless validated by your support team.
+  \item Click \textbf{Finish}.
+\end{enumerate}
+
+\subsection*{What success looks like}
+You should be able to open Revit and see the \textbf{EMA AI} ribbon tab without an error dialog.
+
+\begin{tipbox}{Verified installer behavior}
+The release scripts stage per-year Revit payloads under the user profile. For the Revit pilot, the installed manifest and payload should land under \code{\%APPDATA\%\textbackslash Autodesk\textbackslash Revit\textbackslash Addins\textbackslash <year>\textbackslash EMA AI}.
+\end{tipbox}
+
+\clearpage
+\subsection*{Open Revit and confirm EMA AI}
+\begin{enumerate}
+  \item Start the validated Revit version.
+  \item Wait for the application to finish loading.
+  \item Find the \textbf{EMA AI} tab in the ribbon.
+  \item Open the \textbf{Owner Requirements Workflow} panel.
+\end{enumerate}
+
+\begin{center}
+\begin{tikzpicture}[font=\small]
+  \node[draw,rounded corners,fill=EMA Navy,text=white,minimum width=12.8cm,minimum height=1cm,align=left] (ribbon) {\hspace{0.2cm}\textbf{EMA AI} ribbon: \textbf{Open Workflow}, \textbf{Load Requirements}, \textbf{Sync Model Data}, \textbf{Run Check}, \textbf{Report Navigator}, \textbf{Open Browser}, \textbf{Ask Report}, \textbf{Explain Issue}, \textbf{Diagnostics}, \textbf{Settings}, \textbf{Dashboard}};
+\end{tikzpicture}
+\end{center}
+
+\begin{warnbox}{If the EMA AI tab does not appear}
+Send the Revit version, a screenshot of the ribbon, a screenshot of any error, the installer filename, your Windows username, and any available installation log. Do not manually copy DLL files.
+\end{warnbox}
+\clearpage
+
+\section{Run the EMA AI Workflow}
+Use this exact sequence in Revit.
+\begin{enumerate}
+  \item Open the project in Revit.
+  \item Open the \textbf{EMA AI} tab.
+  \item Click \textbf{Load Requirements}.
+  \item Select the workbook \code{NORTHWEST ISD 06.02.2025.xlsx}.
+  \item Click \textbf{Sync Model Data}.
+  \item Click \textbf{Run Check}.
+  \item Wait for the evaluation to finish.
+  \item Open the generated HTML report with \textbf{Report Navigator} or \textbf{Open Browser}, depending on the build you received.
+\end{enumerate}
+
+\subsection*{Workflow diagram}
+\begin{center}
+\begin{tikzpicture}[node distance=7mm and 8mm, every node/.style={font=\small}]
+  \node[draw,rounded corners,fill=white,minimum width=2.0cm,minimum height=0.85cm,align=center] (a) {Open project};
+  \node[draw,rounded corners,fill=EMA SoftBlue,minimum width=2.0cm,minimum height=0.85cm,align=center,right=of a] (b) {Open EMA AI};
+  \node[draw,rounded corners,fill=white,minimum width=2.2cm,minimum height=0.85cm,align=center,right=of b] (c) {Load Requirements};
+  \node[draw,rounded corners,fill=white,minimum width=2.0cm,minimum height=0.85cm,align=center,right=of c] (d) {Select workbook};
+  \node[draw,rounded corners,fill=EMA SoftTeal,minimum width=2.1cm,minimum height=0.85cm,align=center,right=of d] (e) {Sync Model Data};
+  \node[draw,rounded corners,fill=EMA SoftAmber,minimum width=1.8cm,minimum height=0.85cm,align=center,right=of e] (f) {Run Check};
+  \node[draw,rounded corners,fill=white,minimum width=1.9cm,minimum height=0.85cm,align=center,right=of f] (g) {Open report};
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (a) -- (b);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (b) -- (c);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (c) -- (d);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (d) -- (e);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (e) -- (f);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (f) -- (g);
+\end{tikzpicture}
+\end{center}
+
+\begin{warnbox}{Important}
+The exact button labels verified in source are \textbf{Open Workflow}, \textbf{Load Requirements}, \textbf{Sync Model Data}, \textbf{Run Check}, \textbf{Report Navigator}, \textbf{Open Browser}, \textbf{Ask Report}, \textbf{Explain Issue}, \textbf{Diagnostics}, \textbf{Settings}, and \textbf{Dashboard}.
+\end{warnbox}
+
+\subsection*{Project note}
+The repository evidence set points to the baseline project as \textbf{MEP-NISD-MIDDLE SCHOOL}. Some repository artifacts include the model label \textbf{MEP-NISD-MIDDLE SCHOOL 8}; users should follow the project name presented in their own Revit session and the shared pilot folder.
+\clearpage

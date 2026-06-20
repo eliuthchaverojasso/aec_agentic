@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "product": "EMA AI",
+  "profiles": [
+    {
+      "id": "revit-only",
+      "display_name": "Revit Add-in Only",
+      "components": ["revit-addin"]
+    },
+    {
+      "id": "pilot-core",
+      "display_name": "Pilot Core",
+      "components": ["revit-addin", "backend-api", "database", "frontend-dashboard", "lifecycle-tools", "updater"]
+    },
+    {
+      "id": "pilot-plus-local-ai",
+      "display_name": "Pilot Core + Local AI",
+      "components": ["revit-addin", "backend-api", "database", "frontend-dashboard", "lifecycle-tools", "updater", "optional-local-ai"]
+    }
+  ],
+  "components": [
+    {
+      "id": "revit-addin",
+      "display_name": "Revit Add-in",
+      "kind": "addin",
+      "source_roots": ["EMAExtractor"],
+      "install_root": "%APPDATA%\\Autodesk\\Revit\\Addins\\<year>",
+      "payload_root": "revit",
+      "dependencies": [],
+      "prerequisites": ["revit-installed", "webview2-runtime-recommended"],
+      "data_retention": "preserve-user-settings",
+      "supported_revit_years": [2022, 2023, 2024, 2025, 2026, 2027],
+      "rollback": "restore-last-known-good-addin"
+    },
+    {
+      "id": "backend-api",
+      "display_name": "Backend API",
+      "kind": "service",
+      "source_roots": ["Pipeline/pipeline/app", "Pipeline/pipeline/requirements.txt", "Pipeline/pipeline/Dockerfile"],
+      "install_root": "%LOCALAPPDATA%\\EMA AI\\backend",
+      "payload_root": "backend",
+      "dependencies": ["database"],
+      "prerequisites": ["docker-desktop"],
+      "ports": [8010],
+      "data_retention": "preserve-docker-volume",
+      "rollback": "docker-compose-down-and-restore-last-known-good"
+    },
+    {
+      "id": "database",
+      "display_name": "Local PostgreSQL",
+      "kind": "database",
+      "source_roots": ["Pipeline/pipeline/db"],
+      "install_root": "docker-volume:ema_postgres_data",
+      "payload_root": "database",
+      "dependencies": [],
+      "prerequisites": ["docker-desktop"],
+      "ports": [5432],
+      "data_retention": "keep-volume-on-uninstall",
+      "rollback": "volume-preserved-by-default"
+    },
+    {
+      "id": "frontend-dashboard",
+      "display_name": "Frontend Dashboard",
+      "kind": "static-web",
+      "source_roots": ["Pipeline/pipeline/frontend/dist"],
+      "install_root": "%LOCALAPPDATA%\\EMA AI\\frontend",
+      "payload_root": "frontend",
+      "dependencies": ["backend-api"],
+      "prerequisites": ["browser"],
+      "ports": [5173],
+      "data_retention": "none-required",
+      "rollback": "replace-static-assets"
+    },
+    {
+      "id": "lifecycle-tools",
+      "display_name": "Lifecycle Tools",
+      "kind": "scripts",
+      "source_roots": ["installer/release"],
+      "install_root": "%LOCALAPPDATA%\\EMA AI\\scripts",
+      "payload_root": "scripts",
+      "dependencies": ["backend-api", "frontend-dashboard"],
+      "prerequisites": ["powershell-5.1+"],
+      "data_retention": "none-required",
+      "rollback": "replace-scripts"
+    },
+    {
+      "id": "updater",
+      "display_name": "Update Foundation",
+      "kind": "scripts",
+      "source_roots": ["installer/release"],
+      "install_root": "%LOCALAPPDATA%\\EMA AI\\scripts",
+      "payload_root": "scripts",
+      "dependencies": ["backend-api", "frontend-dashboard"],
+      "prerequisites": ["powershell-5.1+"],
+      "data_retention": "none-required",
+      "rollback": "restore-last-known-good"
+    },
+    {
+      "id": "optional-local-ai",
+      "display_name": "Optional Ask EMA AI / Ollama",
+      "kind": "optional-ai",
+      "source_roots": [],
+      "install_root": "host-managed",
+      "payload_root": "optional-local-ai",
+      "dependencies": ["backend-api"],
+      "prerequisites": ["ollama-runtime-if-enabled"],
+      "ports": [11434],
+      "data_retention": "user-managed",
+      "rollback": "disable-ai-provider-selection"
+    }
+  ],
+  "dependency_rules": [
+    { "component": "backend-api", "requires": ["database"] },
+    { "component": "frontend-dashboard", "requires": ["backend-api"] },
+    { "component": "lifecycle-tools", "requires": ["backend-api", "frontend-dashboard"] },
+    { "component": "updater", "requires": ["backend-api", "frontend-dashboard"] },
+    { "component": "optional-local-ai", "requires": ["backend-api"] }
+  ]
+}

@@ -1,0 +1,31 @@
+id: billing-readiness
+version: 0.1.0
+capability:
+  type: billing.readiness.assess
+inputs:
+  - accepted_progress
+  - pay_items
+  - approvals
+  - change_orders
+outputs:
+  - billing_readiness_recommendation
+  - exceptions
+  - required_support
+permissions:
+  read:
+    - value
+    - billing
+    - approvals
+  propose:
+    - billing_readiness
+  write: []
+required_approval:
+  type: human
+  role:
+    - project_accountant
+    - project_manager
+limits:
+  maximum_cost_usd: 2.00
+  maximum_actions: 25
+  maximum_runtime_seconds: 180
+

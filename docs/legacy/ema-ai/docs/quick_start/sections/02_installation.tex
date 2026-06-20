@@ -1,0 +1,50 @@
+\section{Before You Begin}
+Verify the following before installing the pilot package.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+\textbf{Required item} & \textbf{What the user needs} \\
+\midrule
+Installer & \code{EMA_AI_Professional_Setup_1.0.0-dev.2-unsigned.exe} \\
+Revit project & \textbf{MEP-NISD-MIDDLE SCHOOL} project access in Revit \\
+Owner Requirements workbook & \code{NORTHWEST ISD 06.02.2025.xlsx} \\
+Revit version & One of the validated Revit years: 2022--2027 \\
+Feedback form access & Permission to open and submit the Google Form \\
+Internet access & Required only to download the installer and submit feedback \\
+Docker & Not required for the \textbf{EMA AI Revit Pilot} profile \\
+GPU & Not required for deterministic requirement checking \\
+Disk space & Enough space for the installed add-in and local working files \\
+Install permission & Permission to install add-ins in the user profile \\
+\bottomrule
+\end{longtable}
+
+\begin{warnbox}{Compatibility note}
+The repository validates support for Revit 2022 through 2027 in the shipped add-in payloads. Any newer or older year should be treated as unverified unless the release notes explicitly say otherwise.
+\end{warnbox}
+
+\subsection*{Installed files and profiles}
+The current release packaging defines three client-facing profiles:
+\begin{itemize}
+  \item \textbf{Revit Add-in Only} - recommended for the controlled pilot
+  \item \textbf{Pilot Core} - full local platform
+  \item \textbf{Pilot Core + Local AI} - optional local AI on top of the full platform
+\end{itemize}
+
+\begin{tipbox}{Recommended pilot path}
+For first-time users, choose \textbf{Revit Add-in Only}. The pilot guide does not require Docker, PostgreSQL, or local AI unless you were specifically instructed to install the full platform.
+\end{tipbox}
+
+\subsection*{Exact installer file}
+Download only this approved file from the installer folder:
+\begin{center}
+\fcolorbox{EMA Blue}{EMA SoftBlue}{\parbox{0.92\textwidth}{\centering\code{EMA_AI_Professional_Setup_1.0.0-dev.2-unsigned.exe}}}
+\end{center}
+
+\subsection*{What not to do}
+\begin{itemize}
+  \item Do not choose the full local platform unless instructed.
+  \item Do not select local AI unless explicitly requested.
+  \item Do not install while Revit is open.
+  \item Do not disable Application Control or antivirus if the file is blocked. Send a screenshot instead.
+\end{itemize}
+\clearpage

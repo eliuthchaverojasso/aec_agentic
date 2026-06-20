@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-06-08",
+  "baseline_report": "Pipeline/pipeline/landing/EMA_AI_Requirement_Check_MEP-NISD-MIDDLE SCHOOL 8_All Disciplines_20260608_082009.html",
+  "pattern_library": [
+    {
+      "pattern_id": "hard_constraint_min_max_only_no",
+      "priority": 100,
+      "primary_type": "conduit_raceway_size_requirement",
+      "secondary_types": ["flexible_conduit_length_requirement", "manufacturer_brand_restriction", "owner_standard_product_constraint", "mechanical_controls_ddc_emcs", "installation_method_constraint", "dimension_clearance_distance_separation"],
+      "trigger_terms": ["no ", "only ", "minimum", "maximum", "without", "shall not", "not less than", "not more than"],
+      "direct_closing_evidence": ["Explicit constraint text in drawings/specs", "direct parameter or detail note"],
+      "supporting_context": ["Category", "level", "family/type"],
+      "forbidden_closures": ["Generic category presence", "level assignment", "element count"],
+      "example_rows": [155, 478, 479, 480, 485, 491],
+      "notes": "This is the broadest safety gate. Hard constraints must outrank presence-based types."
+    },
+    {
+      "pattern_id": "manufacturer_brand_and_bid_language",
+      "priority": 99,
+      "primary_type": "manufacturer_brand_restriction",
+      "secondary_types": ["owner_standard_product_constraint", "manufacturer_product_spec_submittal"],
+      "trigger_terms": ["manufacturer", "approved equal", "basis of design", "base bid", "alt bid", "no york", "no jci", "no substitution"],
+      "direct_closing_evidence": ["Manufacturer parameter", "model number", "approved list", "submittal"],
+      "supporting_context": ["Family/type name", "equipment category", "spec section"],
+      "forbidden_closures": ["Mechanical equipment presence", "plumbing fixture presence", "lighting fixture presence"],
+      "example_rows": [478],
+      "notes": "Prevents brand restrictions from being closed by category presence."
+    },
+    {
+      "pattern_id": "controls_ddc_emcs_sequences",
+      "priority": 98,
+      "primary_type": "mechanical_controls_ddc_emcs",
+      "secondary_types": ["lighting_control_scheme"],
+      "trigger_terms": ["ddc", "emcs", "bas", "bms", "demand control ventilation", "control with lights", "sequence of operations", "tied to ddc"],
+      "direct_closing_evidence": ["Controls drawings", "sequence of operations", "points list", "schedule"],
+      "supporting_context": ["Mechanical equipment", "lighting fixtures", "level"],
+      "forbidden_closures": ["Equipment presence", "category + level", "generic low-voltage counts"],
+      "example_rows": [479, 480, 485],
+      "notes": "This pattern exists because controls language is not model-only evidence."
+    },
+    {
+      "pattern_id": "conduit_size_and_length",
+      "priority": 97,
+      "primary_type": "conduit_raceway_size_requirement",
+      "secondary_types": ["flexible_conduit_length_requirement"],
+      "trigger_terms": ["conduit size", "trade size", "flexible conduit", "6-foot maximum", "inch"],
+      "direct_closing_evidence": ["Conduit size parameter", "flexible conduit length", "detail note"],
+      "supporting_context": ["Technology wording", "electrical wording", "level"],
+      "forbidden_closures": ["Lighting fixture count", "device count", "category + level"],
+      "example_rows": [155],
+      "notes": "Row 155 must never be evaluated as lighting or technology presence."
+    },
+    {
+      "pattern_id": "field_execution_backfill_demolition",
+      "priority": 96,
+      "primary_type": "field_execution_demolition_protection",
+      "secondary_types": ["installation_method_constraint"],
+      "trigger_terms": ["demol", "remove", "salvage", "protect", "backfill", "sand bed", "trench", "abandoned", "existing"],
+      "direct_closing_evidence": ["Phase data", "field notes", "inspection", "plan/spec review"],
+      "supporting_context": ["Model presence", "location", "discipline"],
+      "forbidden_closures": ["Category + level", "generic plumbing routing", "generic mechanical presence"],
+      "example_rows": [491],
+      "notes": "Backfill and demolition language should never fall through to plumbing routing."
+    },
+    {
+      "pattern_id": "drawings_specs_owner_approval",
+      "priority": 95,
+      "primary_type": "drawing_spec_manual_owner_approval",
+      "secondary_types": ["code_jurisdiction_requirement"],
+      "trigger_terms": ["per drawings", "per specifications", "as shown", "owner approval", "coordinate with owner", "verify in field"],
+      "direct_closing_evidence": ["Drawing review", "spec review", "owner sign-off"],
+      "supporting_context": ["Requirement text", "sheet reference", "discipline"],
+      "forbidden_closures": ["Category + level", "equipment presence"],
+      "example_rows": [],
+      "notes": "Signals a document-review path, not a model closure path."
+    },
+    {
+      "pattern_id": "commissioning_om_training",
+      "priority": 94,
+      "primary_type": "commissioning_testing_om_training",
+      "secondary_types": [],
+      "trigger_terms": ["commissioning", "testing", "test report", "balancing", "o&m", "operation and maintenance", "training", "warranty"],
+      "direct_closing_evidence": ["Commissioning record", "test report", "O&M manual", "training log"],
+      "supporting_context": ["Equipment presence", "system name"],
+      "forbidden_closures": ["Category + level", "model presence"],
+      "example_rows": [72],
+      "notes": "Any report action should stay manual or review-only."
+    },
+    {
+      "pattern_id": "identification_and_labeling",
+      "priority": 93,
+      "primary_type": "identification_labeling_nameplate",
+      "secondary_types": [],
+      "trigger_terms": ["identification", "identify", "label", "labeling", "tag", "nameplate", "marking"],
+      "direct_closing_evidence": ["Tag", "label", "nameplate", "field inspection"],
+      "supporting_context": ["Equipment presence", "manufacturer", "model"],
+      "forbidden_closures": ["Category + level", "device count"],
+      "example_rows": [100],
+      "notes": "Physical or document-based identification is not generic equipment presence."
+    },
+    {
+      "pattern_id": "grounding_and_bonding",
+      "priority": 92,
+      "primary_type": "grounding_bonding_conductors",
+      "secondary_types": [],
+      "trigger_terms": ["grounding", "bonding", "ground bar", "ground conductor", "ground wire", "bonding jumper", "cadweld"],
+      "direct_closing_evidence": ["Ground wire size", "ground bar", "bonding jumper", "field test"],
+      "supporting_context": ["Electrical equipment", "electrical fixtures", "level"],
+      "forbidden_closures": ["Category + level", "general technology presence"],
+      "example_rows": [133, 142, 149, 150],
+      "notes": "Current canary rows remain Needs Human Review and should stay that way."
+    },
+    {
+      "pattern_id": "installation_method_and_placement",
+      "priority": 91,
+      "primary_type": "installation_method_constraint",
+      "secondary_types": ["level_location_mounting_placement"],
+      "trigger_terms": ["in-line", "inline", "roof penetration", "roof curb", "above attic", "mounted", "mounting", "located", "location"],
+      "direct_closing_evidence": ["Installation detail", "field verification", "level/elevation plus detail"],
+      "supporting_context": ["Mechanical equipment", "level", "host", "room"],
+      "forbidden_closures": ["Mechanical equipment presence alone", "category + level alone"],
+      "example_rows": [491],
+      "notes": "Placement can support context, but installation method remains the primary issue."
+    },
+    {
+      "pattern_id": "mechanical_performance_specs",
+      "priority": 90,
+      "primary_type": "mechanical_performance_feature",
+      "secondary_types": ["manufacturer_brand_restriction", "mechanical_controls_ddc_emcs"],
+      "trigger_terms": ["compressor", "ionization", "demand control ventilation", "dcv", "two-speed", "efficiency", "vfd"],
+      "direct_closing_evidence": ["Product data", "manufacturer metadata", "spec section", "sequence note"],
+      "supporting_context": ["Mechanical equipment", "family/type"],
+      "forbidden_closures": ["Mechanical equipment presence alone"],
+      "example_rows": [479],
+      "notes": "Mechanical performance language is not equivalent to mechanical presence."
+    },
+    {
+      "pattern_id": "low_voltage_and_av_presence",
+      "priority": 89,
+      "primary_type": "technology_low_voltage_security_fire_alarm",
+      "secondary_types": ["av_multimedia_display_audio", "security_access_cctv", "fire_alarm_devices"],
+      "trigger_terms": ["data", "voice", "low voltage", "fire alarm", "security", "access control", "intercom", "av", "speaker", "display"],
+      "direct_closing_evidence": ["Device family/type", "device id", "panel", "circuit", "address"],
+      "supporting_context": ["Communication/data/security/fire-alarm categories", "level"],
+      "forbidden_closures": ["Cable type", "cable color", "programming", "generic conduit size"],
+      "example_rows": [155],
+      "notes": "Low-voltage wording is often only context when the actual question is about conduit size or spec constraints."
+    }
+  ]
+}

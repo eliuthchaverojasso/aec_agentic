@@ -1,0 +1,174 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
+    <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.9.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!--
+    Source-link the Revit-free service and model files from the main project.
+    This avoids a project reference (which would pull in RevitAPI.dll).
+  -->
+  <ItemGroup>
+    <!-- Models (no Revit dependency) -->
+    <Compile Include="..\EMAExtractor\Models\EmaSettings.cs">
+      <Link>Models\EmaSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\ProjectBinding.cs">
+      <Link>Models\ProjectBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\ProjectBindingFile.cs">
+      <Link>Models\ProjectBindingFile.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\ConnectionResult.cs">
+      <Link>Models\ConnectionResult.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\UploadResult.cs">
+      <Link>Models\UploadResult.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\ExportElementRecord.cs">
+      <Link>Models\ExportElementRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\ParameterRecord.cs">
+      <Link>Models\ParameterRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\ReportNavigatorState.cs">
+      <Link>Models\ReportNavigatorState.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\ReportNavigatorResult.cs">
+      <Link>Models\ReportNavigatorResult.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\AskChatMessage.cs">
+      <Link>Models\AskChatMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\AskChatSession.cs">
+      <Link>Models\AskChatSession.cs</Link>
+    </Compile>
+
+    <!-- Enums (no Revit dependency) -->
+    <Compile Include="..\EMAExtractor\Enums\ExportDiscipline.cs">
+      <Link>Enums\ExportDiscipline.cs</Link>
+    </Compile>
+
+    <!-- Requirements (no Revit dependency) -->
+    <Compile Include="..\EMAExtractor\Requirements\RequirementCheckModels.cs">
+      <Link>Requirements\RequirementCheckModels.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\RequirementDiscipline.cs">
+      <Link>Requirements\RequirementDiscipline.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\RequirementDisciplineNormalizer.cs">
+      <Link>Requirements\RequirementDisciplineNormalizer.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\RequirementSemanticClassifier.cs">
+      <Link>Requirements\RequirementSemanticClassifier.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\RequirementComparisonEngine.cs">
+      <Link>Requirements\RequirementComparisonEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\ValidationTypeClassifier.cs">
+      <Link>Requirements\ValidationTypeClassifier.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\KeyIssueRanker.cs">
+      <Link>Requirements\KeyIssueRanker.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\ScoreCalculator.cs">
+      <Link>Requirements\ScoreCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\ConfidenceScorer.cs">
+      <Link>Requirements\ConfidenceScorer.cs</Link>
+    </Compile>
+
+    <!-- Requirement audit + coherence + evaluation bundle (no Revit dependency) -->
+    <Compile Include="..\EMAExtractor\Requirements\Audit\RequirementAuditContracts.cs">
+      <Link>Requirements\Audit\RequirementAuditContracts.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\Audit\RequirementSemanticParser.cs">
+      <Link>Requirements\Audit\RequirementSemanticParser.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\Audit\RequirementCoherenceEngine.cs">
+      <Link>Requirements\Audit\RequirementCoherenceEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\Audit\RequirementAuditRecordBuilder.cs">
+      <Link>Requirements\Audit\RequirementAuditRecordBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Requirements\Audit\EvaluationBundleWriter.cs">
+      <Link>Requirements\Audit\EvaluationBundleWriter.cs</Link>
+    </Compile>
+
+    <!-- Progress model (no Revit dependency) -->
+    <Compile Include="..\EMAExtractor\Models\RequirementCheckProgress.cs">
+      <Link>Models\RequirementCheckProgress.cs</Link>
+    </Compile>
+
+    <!-- Services (no Revit dependency) -->
+    <Compile Include="..\EMAExtractor\Services\LoggingService.cs">
+      <Link>Services\LoggingService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\LocalConfigService.cs">
+      <Link>Services\LocalConfigService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\LandingStandardService.cs">
+      <Link>Services\LandingStandardService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\ConnectProjectService.cs">
+      <Link>Services\ConnectProjectService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\BackendUploadService.cs">
+      <Link>Services\BackendUploadService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\ReportNavigatorService.cs">
+      <Link>Services\ReportNavigatorService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\AskChatHistoryService.cs">
+      <Link>Services\AskChatHistoryService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Models\AiModelOption.cs">
+      <Link>Models\AiModelOption.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\OpenCodeModelConfigService.cs">
+      <Link>Services\OpenCodeModelConfigService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\IAiModelProvider.cs">
+      <Link>Services\IAiModelProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\OpenAiCompatibleProvider.cs">
+      <Link>Services\OpenAiCompatibleProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\DeterministicFallbackProvider.cs">
+      <Link>Services\DeterministicFallbackProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\RequirementAiClassifierService.cs">
+      <Link>Services\RequirementAiClassifierService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\RequirementMatrixAuditService.cs">
+      <Link>Services\RequirementMatrixAuditService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\ReportRagService.cs">
+      <Link>Services\ReportRagService.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Services\RequirementFeedbackService.cs">
+      <Link>Services\RequirementFeedbackService.cs</Link>
+    </Compile>
+
+    <Compile Include="..\EMAExtractor\Reporting\OwnerRequirementHtmlReportGenerator.cs">
+      <Link>Reporting\OwnerRequirementHtmlReportGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\EMAExtractor\Reporting\EvidenceEmbedLimits.cs">
+      <Link>Reporting\EvidenceEmbedLimits.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>

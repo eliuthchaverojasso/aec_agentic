@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-06-08",
+  "baseline_report": "Pipeline/pipeline/landing/EMA_AI_Requirement_Check_MEP-NISD-MIDDLE SCHOOL 8_All Disciplines_20260608_082009.html",
+  "core_principle": "A constraint or prohibition must outrank any presence-based type. Category + Level are only supporting context.",
+  "groups": [
+    {
+      "rank": 1,
+      "group_name": "Grounding, Bonding, Conductors",
+      "types": ["grounding_bonding_conductors"],
+      "rationale": "Grounding text is high-risk because presence evidence can look strong while still being incomplete or misleading.",
+      "beats": ["panel_circuit_power", "technology_low_voltage_security_fire_alarm", "level_location_mounting_placement", "unknown_ambiguous"]
+    },
+    {
+      "rank": 2,
+      "group_name": "Conduit, Raceway, and Dimensional Constraints",
+      "types": ["conduit_raceway_size_requirement", "flexible_conduit_length_requirement", "conduit_raceway_presence", "dimension_clearance_distance_separation"],
+      "rationale": "Minimum, maximum, length, and separation language cannot be satisfied by generic element counts or level assignment.",
+      "beats": ["technology_low_voltage_security_fire_alarm", "lighting_fixture_coverage", "mechanical_equipment_coverage", "level_location_mounting_placement", "unknown_ambiguous"]
+    },
+    {
+      "rank": 3,
+      "group_name": "Manufacturer, Owner Standard, and Product Spec Restrictions",
+      "types": ["manufacturer_brand_restriction", "owner_standard_product_constraint", "manufacturer_product_spec_submittal"],
+      "rationale": "Brand lists, approved-equal language, base-bid / alt-bid restrictions, and product-data requirements are specification problems, not presence problems.",
+      "beats": ["mechanical_equipment_coverage", "plumbing_piping_valves_routing", "technology_low_voltage_security_fire_alarm", "lighting_fixture_coverage", "panel_circuit_power", "unknown_ambiguous"]
+    },
+    {
+      "rank": 4,
+      "group_name": "Controls, DDC, EMCS, BAS, and BMS",
+      "types": ["mechanical_controls_ddc_emcs", "lighting_control_scheme"],
+      "rationale": "Controls language changes the evidence requirement. If the text asks for DDC/EMCS or a sequence, equipment presence does not close it.",
+      "beats": ["mechanical_equipment_coverage", "lighting_fixture_coverage", "plumbing_piping_valves_routing", "technology_low_voltage_security_fire_alarm", "unknown_ambiguous"]
+    },
+    {
+      "rank": 5,
+      "group_name": "Installation Method, Field Execution, Demolition, Protection",
+      "types": ["installation_method_constraint", "field_execution_demolition_protection"],
+      "rationale": "These requirements are about how work is executed in the field, not what the model contains.",
+      "beats": ["mechanical_equipment_coverage", "plumbing_piping_valves_routing", "level_location_mounting_placement", "unknown_ambiguous"]
+    },
+    {
+      "rank": 6,
+      "group_name": "Documents, Approval, Code, and Closeout",
+      "types": ["drawing_spec_manual_owner_approval", "code_jurisdiction_requirement", "commissioning_testing_om_training", "attic_stock_spare_parts"],
+      "rationale": "Drawings, approvals, code matrices, commissioning, O&M, and spare-parts deliverables are external evidence sets and must not be converted into model presence.",
+      "beats": ["mechanical_equipment_coverage", "technology_low_voltage_security_fire_alarm", "panel_circuit_power", "unknown_ambiguous"]
+    },
+    {
+      "rank": 7,
+      "group_name": "Identification and Labeling",
+      "types": ["identification_labeling_nameplate"],
+      "rationale": "Tags, labels, marks, and nameplates are physical or document-based requirements, not generic category evidence.",
+      "beats": ["mechanical_equipment_coverage", "technology_low_voltage_security_fire_alarm", "level_location_mounting_placement", "unknown_ambiguous"]
+    },
+    {
+      "rank": 8,
+      "group_name": "Placement and Direct Model Evidence",
+      "types": ["panel_circuit_power", "electrical_load_metadata", "receptacle_outlet_device_power", "lighting_fixture_coverage", "level_location_mounting_placement", "mechanical_equipment_coverage", "mechanical_performance_feature", "plumbing_fixture_coverage", "plumbing_piping_valves_routing", "plumbing_hose_bibb_rpz_valves", "technology_low_voltage_security_fire_alarm", "av_multimedia_display_audio", "security_access_cctv", "fire_alarm_devices"],
+      "rationale": "These types are the only ones that should be allowed to close from model evidence, and even then only when the required parameters are present.",
+      "beats": ["unknown_ambiguous"]
+    },
+    {
+      "rank": 9,
+      "group_name": "Fallback",
+      "types": ["unknown_ambiguous"],
+      "rationale": "Fallback only. This should be decomposed as the taxonomy matures.",
+      "beats": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aec-control-plane.local/schemas/work-package.schema.json",
+  "title": "Work Package",
+  "type": "object",
+  "required": ["id", "title", "obligation_refs", "status"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "title": { "type": "string", "minLength": 1 },
+    "obligation_refs": { "type": "array", "items": { "$ref": "./shared.schema.json#/$defs/entity_ref" } },
+    "location_refs": { "type": "array", "items": { "$ref": "./shared.schema.json#/$defs/entity_ref" } },
+    "system_refs": { "type": "array", "items": { "$ref": "./shared.schema.json#/$defs/entity_ref" } },
+    "assigned_actor": { "$ref": "./shared.schema.json#/$defs/entity_ref" },
+    "required_evidence": { "type": "array", "items": { "type": "string" } },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "status": {
+      "enum": [
+        "draft",
+        "planned",
+        "constraint_blocked",
+        "ready",
+        "released",
+        "in_execution",
+        "evidence_submitted",
+        "reviewed",
+        "accepted",
+        "closed"
+      ]
+    }
+  },
+  "additionalProperties": false
+}
+

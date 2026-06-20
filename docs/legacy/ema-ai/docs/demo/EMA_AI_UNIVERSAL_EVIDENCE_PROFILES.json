@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-06-08",
+  "baseline_report": "Pipeline/pipeline/landing/EMA_AI_Requirement_Check_MEP-NISD-MIDDLE SCHOOL 8_All Disciplines_20260608_082009.html",
+  "principle": "Direct closing evidence can close a requirement. Supporting context can only narrow or explain the requirement. Category + Level are supporting context only.",
+  "profiles": [
+    {
+      "family": "Electrical direct model evidence",
+      "applies_to_types": ["panel_circuit_power", "electrical_load_metadata", "receptacle_outlet_device_power"],
+      "direct_closing_evidence": ["Panel", "Circuit Number", "Supply From", "Voltage", "Load Name", "Connected Load", "Apparent Load"],
+      "supporting_context": ["Electrical equipment", "Electrical fixtures", "level", "room", "space"],
+      "not_sufficient": ["Category + level", "element count"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "These are the only electrical types that should close from model parameters."
+    },
+    {
+      "family": "Lighting direct model evidence",
+      "applies_to_types": ["lighting_fixture_coverage", "lighting_control_scheme"],
+      "direct_closing_evidence": ["Lighting fixture family/type", "level", "controls schedule", "occupancy sensor", "dimming", "switching zone"],
+      "supporting_context": ["Lighting category", "electrical equipment", "panel", "circuit"],
+      "not_sufficient": ["Lighting count alone", "category + level for conduit or product spec language"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "Fixture presence does not prove controls."
+    },
+    {
+      "family": "Mechanical direct model evidence",
+      "applies_to_types": ["mechanical_equipment_coverage", "mechanical_performance_feature"],
+      "direct_closing_evidence": ["Mechanical equipment family/type", "manufacturer metadata", "product data", "spec section", "level"],
+      "supporting_context": ["Mechanical category", "family name", "type name"],
+      "not_sufficient": ["Manufacturer restrictions", "controls", "installation method", "performance language"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "Presence and placement are different from performance or controls requirements."
+    },
+    {
+      "family": "Plumbing direct model evidence",
+      "applies_to_types": ["plumbing_fixture_coverage", "plumbing_piping_valves_routing", "plumbing_hose_bibb_rpz_valves"],
+      "direct_closing_evidence": ["Plumbing fixture family/type", "Pipe", "Pipe Fitting", "Pipe Accessory", "size", "material", "hose bibb", "RPZ", "backflow", "zone", "location"],
+      "supporting_context": ["Plumbing categories", "level", "room", "zone"],
+      "not_sufficient": ["Category + level", "generic plumbing counts"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "Presence alone cannot close routing, valve, or coverage language."
+    },
+    {
+      "family": "Technology / security / fire alarm / AV direct model evidence",
+      "applies_to_types": ["technology_low_voltage_security_fire_alarm", "av_multimedia_display_audio", "security_access_cctv", "fire_alarm_devices"],
+      "direct_closing_evidence": ["Communication device", "Data device", "Security device", "Fire Alarm device", "display", "speaker", "camera", "card reader", "address", "panel", "circuit"],
+      "supporting_context": ["Low-voltage categories", "level"],
+      "not_sufficient": ["Cable type", "cable color", "programming", "system design text"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "This family is broad. Use the subtype before allowing a Met result."
+    },
+    {
+      "family": "Grounding and conductors",
+      "applies_to_types": ["grounding_bonding_conductors"],
+      "direct_closing_evidence": ["Ground wire size", "ground bar", "bonding jumper", "conductor metadata", "field test"],
+      "supporting_context": ["Electrical categories", "level", "family/type"],
+      "not_sufficient": ["Category + level", "equipment presence"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "Field verification often remains part of the closure decision."
+    },
+    {
+      "family": "Conduit / raceway / dimensional constraints",
+      "applies_to_types": ["conduit_raceway_size_requirement", "flexible_conduit_length_requirement", "conduit_raceway_presence", "dimension_clearance_distance_separation"],
+      "direct_closing_evidence": ["Conduit/raceway family/type", "Conduit size", "flexible conduit length", "clearance", "distance", "separation", "offset", "detail note"],
+      "supporting_context": ["Conduit or raceway family/type", "technology wording", "level"],
+      "not_sufficient": ["Lighting fixture count", "generic device presence"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "This is the key false-positive zone for row 155."
+    },
+    {
+      "family": "Controls and sequences",
+      "applies_to_types": ["mechanical_controls_ddc_emcs", "lighting_control_scheme"],
+      "direct_closing_evidence": ["Controls drawings", "sequence of operations", "points list", "DDC/EMCS schedule", "control device schedule"],
+      "supporting_context": ["Equipment presence", "lighting fixtures", "mechanical equipment"],
+      "not_sufficient": ["Presence of equipment", "level", "device count"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "DDC / EMCS language changes the evidence requirement."
+    },
+    {
+      "family": "Installation and field execution",
+      "applies_to_types": ["installation_method_constraint", "field_execution_demolition_protection"],
+      "direct_closing_evidence": ["Installation detail", "phase data", "field inspection", "protection plan", "demolition note"],
+      "supporting_context": ["Equipment presence", "location", "level"],
+      "not_sufficient": ["Category + level", "model presence", "equipment count"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "The model shows what exists, not how it was installed."
+    },
+    {
+      "family": "Documents, approval, code, and closeout",
+      "applies_to_types": ["drawing_spec_manual_owner_approval", "code_jurisdiction_requirement", "manufacturer_product_spec_submittal", "identification_labeling_nameplate", "commissioning_testing_om_training", "attic_stock_spare_parts"],
+      "direct_closing_evidence": ["Drawing review", "spec review", "owner approval record", "code citation", "submittal package", "O&M manual", "commissioning record", "training log", "attic stock list"],
+      "supporting_context": ["Requirement text", "discipline", "project metadata"],
+      "not_sufficient": ["Category + level", "family/type name"],
+      "safe_status_if_only_context": "Manual or Needs Human Review",
+      "notes": "These requirements live outside the model-first closure path."
+    },
+    {
+      "family": "Fallback",
+      "applies_to_types": ["unknown_ambiguous"],
+      "direct_closing_evidence": [],
+      "supporting_context": ["Any text or metadata that helps human triage"],
+      "not_sufficient": ["Anything that would auto-close the requirement"],
+      "safe_status_if_only_context": "Needs Human Review",
+      "notes": "Fallback only. Decompose it over time."
+    }
+  ]
+}

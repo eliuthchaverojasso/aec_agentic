@@ -1,0 +1,7 @@
+{
+  "type": "com.aec-control-plane.work-package.released.v1",
+  "source": "control-plane-core",
+  "schema": "../schemas/work-package.schema.json",
+  "description": "Emitted when a work package is released for execution."
+}
+

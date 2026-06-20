@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aec-control-plane.local/schemas/shared.schema.json",
+  "$defs": {
+    "entity_ref": {
+      "type": "object",
+      "required": ["entity_type", "entity_id"],
+      "properties": {
+        "entity_type": { "type": "string", "minLength": 1 },
+        "entity_id": { "type": "string", "format": "uuid" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+

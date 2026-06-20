@@ -1,0 +1,29 @@
+id: evidence-verifier
+version: 0.1.0
+capability:
+  type: evidence.verify.propose
+inputs:
+  - evidence_claim
+  - evidence_policy
+  - artifact_metadata
+outputs:
+  - proposed_verification
+  - gaps
+  - source_rationale
+permissions:
+  read:
+    - evidence
+    - artifacts
+    - policies
+  propose:
+    - evidence_verification
+  write: []
+required_approval:
+  type: human
+  role:
+    - reviewer
+limits:
+  maximum_cost_usd: 1.50
+  maximum_actions: 20
+  maximum_runtime_seconds: 120
+

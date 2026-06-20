@@ -1,0 +1,6 @@
+{
+  "rule_id": "fixture-missing-circuit",
+  "passed": false,
+  "missing_fields": ["circuit"]
+}
+

@@ -1,0 +1,25 @@
+services:
+  organism-postgres:
+    image: apache/age:latest
+    environment:
+      POSTGRES_DB: organism
+      POSTGRES_USER: organism
+      POSTGRES_PASSWORD: organism
+    ports:
+      - "5433:5432"
+    volumes:
+      - organism_postgres_data:/var/lib/postgresql/data
+      - ../../database/organism:/docker-entrypoint-initdb.d:ro
+
+  organism-otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+
+volumes:
+  organism_postgres_data:
+

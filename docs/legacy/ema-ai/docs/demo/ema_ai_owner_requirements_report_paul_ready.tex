@@ -1,0 +1,459 @@
+% ============================================================
+% EMA AI Owner Requirements Check
+% Paul-ready Enterprise White PDF Mockup
+% Compile locally with: latexmk -pdf -interaction=nonstopmode -halt-on-error ema_ai_owner_requirements_report_paul_ready.tex
+% ============================================================
+\documentclass[10pt,letterpaper]{article}
+
+% ------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------
+\usepackage[margin=0.55in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{colortbl}
+\usepackage{tikz}
+
+% ------------------------------------------------------------
+% Page setup
+% ------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize EMA AI Owner Requirements Check}
+\fancyfoot[C]{\footnotesize AI-assisted first-pass review}
+\fancyfoot[R]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+
+\hypersetup{colorlinks=true,linkcolor=emaBlue,urlcolor=emaBlue,citecolor=emaBlue}
+
+% ------------------------------------------------------------
+% Colors - enterprise white
+% ------------------------------------------------------------
+\definecolor{emaBlue}{HTML}{2563EB}
+\definecolor{emaBlueDark}{HTML}{1D4ED8}
+\definecolor{emaNavy}{HTML}{0F172A}
+\definecolor{emaSlate}{HTML}{334155}
+\definecolor{emaText}{HTML}{1E293B}
+\definecolor{emaMuted}{HTML}{64748B}
+\definecolor{emaLine}{HTML}{E2E8F0}
+\definecolor{emaSoft}{HTML}{F8FAFC}
+\definecolor{emaSoft2}{HTML}{F1F5F9}
+\definecolor{emaGreen}{HTML}{15803D}
+\definecolor{emaGreenBg}{HTML}{DCFCE7}
+\definecolor{emaRed}{HTML}{B91C1C}
+\definecolor{emaRedBg}{HTML}{FEE2E2}
+\definecolor{emaAmber}{HTML}{B45309}
+\definecolor{emaAmberBg}{HTML}{FEF3C7}
+\definecolor{emaPurple}{HTML}{6D28D9}
+\definecolor{emaPurpleBg}{HTML}{EDE9FE}
+\definecolor{emaGrayBg}{HTML}{F1F5F9}
+
+% ------------------------------------------------------------
+% Global style
+% ------------------------------------------------------------
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist[itemize]{leftmargin=1.15em,itemsep=2pt,topsep=2pt}
+\setlist[enumerate]{leftmargin=1.35em,itemsep=2pt,topsep=2pt}
+
+\titleformat{\section}{\Large\bfseries\color{emaNavy}}{}{0em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{emaNavy}}{}{0em}{}
+
+\tcbset{enhanced,boxrule=0.6pt,arc=3mm,left=8pt,right=8pt,top=7pt,bottom=7pt,colback=white,colframe=emaLine,breakable}
+
+% ------------------------------------------------------------
+% Helpers
+% ------------------------------------------------------------
+\newcommand{\muted}[1]{\textcolor{emaMuted}{#1}}
+\newcommand{\strong}[1]{\textbf{\textcolor{emaNavy}{#1}}}
+\newcommand{\smalllabel}[1]{{\scriptsize\textcolor{emaMuted}{\MakeUppercase{#1}}}}
+
+\newcommand{\badge}[3]{\tcbox[on line,colback=#2,colframe=#2,boxrule=0pt,arc=2mm,left=5pt,right=5pt,top=2pt,bottom=2pt]{\scriptsize\textbf{\textcolor{#3}{#1}}}}
+\newcommand{\metbadge}{\badge{Met}{emaGreenBg}{emaGreen}}
+\newcommand{\notmetbadge}{\badge{Not Met}{emaRedBg}{emaRed}}
+\newcommand{\reviewbadge}{\badge{Needs Human Review}{emaAmberBg}{emaAmber}}
+\newcommand{\insufficientbadge}{\badge{Insufficient Model Data}{emaPurpleBg}{emaPurple}}
+\newcommand{\nabadge}{\badge{Not Applicable}{emaGrayBg}{emaSlate}}
+\newcommand{\readybadge}{\badge{At Risk}{emaAmberBg}{emaAmber}}
+
+\newcommand{\metriccard}[3]{%
+\begin{tcolorbox}[height=0.76in]
+  {\scriptsize\textcolor{emaMuted}{#1}}\\[-1pt]
+  {\Large\bfseries\textcolor{#3}{#2}}
+\end{tcolorbox}}
+
+\newcommand{\miniMetric}[3]{%
+\begin{tcolorbox}[height=0.60in,left=6pt,right=6pt,top=5pt,bottom=5pt,colback=#3,colframe=#3]
+{\scriptsize\textcolor{emaMuted}{#1}}\\[-2pt]
+{\large\bfseries\textcolor{emaNavy}{#2}}
+\end{tcolorbox}}
+
+% ============================================================
+% Document
+% ============================================================
+\begin{document}
+\color{emaText}
+
+% ============================================================
+% Header
+% ============================================================
+\begin{tcolorbox}[colback=white,colframe=emaLine,boxrule=0.7pt,arc=4mm,left=12pt,right=12pt,top=12pt,bottom=12pt]
+\begin{minipage}[t]{0.67\textwidth}
+  {\Huge\bfseries\textcolor{emaNavy}{EMA AI Owner Requirements Check}}\\[4pt]
+  {\large\textcolor{emaMuted}{Professional engineering intelligence output}}\\[8pt]
+  \textcolor{emaMuted}{Revit $\rightarrow$ Load Owner Requirements $\rightarrow$ Sync Model Data $\rightarrow$ Run Compliance Check $\rightarrow$ HTML/PDF Report}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.29\textwidth}
+  \raggedleft
+  {\small\textcolor{emaMuted}{Generated}}\\
+  {\bfseries June 2026}\\[4pt]
+  {\small\textcolor{emaMuted}{Demo Output}}\\
+  {\bfseries EMA AI v1.0}
+\end{minipage}
+\end{tcolorbox}
+
+% ============================================================
+% Management Overview - Paul's top visual row
+% ============================================================
+\section*{Management Overview}
+
+\begin{minipage}[t]{0.15\textwidth}\metriccard{Overall Score}{73.4\%}{emaBlue}\end{minipage}\hfill
+\begin{minipage}[t]{0.15\textwidth}\metriccard{Readiness}{At Risk}{emaAmber}\end{minipage}\hfill
+\begin{minipage}[t]{0.15\textwidth}\metriccard{Met}{38}{emaGreen}\end{minipage}\hfill
+\begin{minipage}[t]{0.15\textwidth}\metriccard{Not Met}{9}{emaRed}\end{minipage}\hfill
+\begin{minipage}[t]{0.15\textwidth}\metriccard{Needs Review}{21}{emaAmber}\end{minipage}\hfill
+\begin{minipage}[t]{0.15\textwidth}\metriccard{Insufficient}{7}{emaPurple}\end{minipage}
+
+\vspace{4pt}
+\begin{tcolorbox}[colback=emaSoft]
+\begin{tabularx}{\textwidth}{p{1.45in}X p{1.45in}X}
+\smalllabel{Project} & MEP-NISD-MIDDLE SCHOOL 8 & \smalllabel{Focused Discipline} & Electrical \\
+\smalllabel{Requirements File} & NORTHWEST ISD 06.02.2025.xlsx & \smalllabel{Scope} & Entire Model \\
+\smalllabel{Model Elements Reviewed} & 21,868 & \smalllabel{Critical Key Issues} & 3 \\
+\smalllabel{Workflow Status} & Built; internal testing in progress & \smalllabel{Output Type} & Manager report plus trade-specific PDFs \\
+\smalllabel{Feedback Window} & 2-3 weeks of rapid tuning with EMA & \smalllabel{Demo Status} & Working product flow; handoff after final smoke testing \\
+\end{tabularx}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,borderline west={3pt}{0pt}{emaBlue}]
+\strong{Manager readout:} The top row answers the immediate management question: where are the risks, who owns them, and what should be acted on first. The detailed sections below explain how the system selected key issues, how confidence is calculated, and how each requirement maps to evidence and next action.
+\end{tcolorbox}
+
+% ============================================================
+% Discipline Allocation - Paul's role/discipline table
+% ============================================================
+\section*{Discipline Allocation by Role}
+
+\begin{tcolorbox}
+\rowcolors{2}{emaSoft}{white}
+\begin{tabularx}{\textwidth}{p{1.35in}p{1.28in}rrrrrrp{1.0in}}
+\toprule
+\textbf{Discipline} & \textbf{Primary Owner} & \textbf{Total} & \textbf{Met} & \textbf{Not Met} & \textbf{Review} & \textbf{Insuff.} & \textbf{Score} & \textbf{Priority} \\
+\midrule
+Electrical & Electrical Designer & 42 & 21 & 6 & 10 & 5 & 69\% & High \\
+Lighting & Lighting Designer & 18 & 8 & 2 & 7 & 1 & 72\% & High \\
+Technology / LV & Technology Lead & 14 & 5 & 1 & 4 & 4 & 61\% & Medium \\
+Mechanical & Mechanical Designer & 10 & 3 & 0 & 4 & 0 & 58\% & Low \\
+Plumbing & Plumbing Designer & 5 & 1 & 0 & 2 & 0 & 54\% & Low \\
+\bottomrule
+\end{tabularx}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=emaSoft]
+\strong{How to use this table:} A manager can read this as the project action map. If most red or yellow items are concentrated in one discipline, that team gets the first filtered deliverable. The system can generate a full manager report and separate trade-specific PDFs so each party receives only the requirements, issues, and next actions relevant to them.
+\end{tcolorbox}
+
+% ============================================================
+% AI-assisted interpretation and method
+% ============================================================
+\section*{AI-Assisted Interpretation}
+
+\begin{tcolorbox}[colback=white]
+This report uses owner requirement text, discipline classification, validation type classification, and synced Revit model evidence to identify likely status, missing evidence, and recommended next actions. Items requiring drawings, specifications, manufacturer verification, owner standards, or professional judgment are clearly marked for human review.
+
+\vspace{3pt}
+\strong{Important boundary:} This is an AI-assisted first-pass model evidence review. It does not certify code compliance, contract compliance, or professional approval. Final validation remains subject to engineering review, drawings, specifications, and owner acceptance.
+\end{tcolorbox}
+
+% ============================================================
+% Intelligence logic - Key Issues
+% ============================================================
+\section*{How EMA AI Selects Key Issues}
+
+\begin{tcolorbox}[colback=emaSoft]
+\strong{Key Issues are not every failed item.} They are the findings most likely to become blockers or require immediate engineering attention. The current intelligence layer ranks issues using the criteria below. These criteria are configurable through EMA feedback during the tuning period.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{tabularx}{\textwidth}{p{1.45in}p{0.75in}X}
+\toprule
+\textbf{Criterion} & \textbf{Weight} & \textbf{Meaning} \\
+\midrule
+Severity & 30\% & Not Met items rank highest, followed by Insufficient Model Data and Needs Human Review. \\
+Discipline relevance & 20\% & Issues in the selected trade or cross-discipline dependencies are elevated. \\
+Deliverable impact & 20\% & Items that can block DD/CD readiness rank above minor documentation gaps. \\
+Evidence gap & 15\% & Missing equipment, missing parameters, or incomplete model evidence raise priority. \\
+Confidence & 10\% & Higher confidence means the system has stronger support for the classification. \\
+Actionability & 5\% & Issues with a clear next step are easier to route and resolve. \\
+\bottomrule
+\end{tabularx}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,borderline west={3pt}{0pt}{emaBlue}]
+\strong{KeyIssueScore} = 0.30 Severity + 0.20 Discipline Relevance + 0.20 Deliverable Impact + 0.15 Evidence Gap + 0.10 Confidence + 0.05 Actionability.
+
+\vspace{3pt}
+This explains why a missing piece of equipment or missing panel/circuit data may be elevated above a minor notation issue, even if both are technically unresolved.
+\end{tcolorbox}
+
+% ============================================================
+% Confidence explanation
+% ============================================================
+\section*{How Confidence Is Calculated}
+
+\begin{tcolorbox}[colback=white]
+\strong{Confidence does not mean final approval.} It means how strongly the system can support the assigned status using the available source row, requirement text, discipline data, model evidence, rule specificity, and parameter completeness.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{tabularx}{\textwidth}{p{1.55in}p{0.75in}X}
+\toprule
+\textbf{Factor} & \textbf{Weight} & \textbf{What it measures} \\
+\midrule
+Discipline confidence & 25\% & Whether discipline came from explicit workbook data, worksheet context, or inferred keywords. \\
+Requirement clarity & 20\% & Whether the requirement has a clear object, action, and condition. \\
+Evidence strength & 25\% & Whether matching model evidence is direct, partial, indirect, weak, or missing. \\
+Rule specificity & 15\% & Whether the check uses a specific rule such as panel/circuit/voltage/load or a broader keyword rule. \\
+Data completeness & 10\% & Whether required parameters are populated and usable. \\
+Source traceability & 5\% & Whether worksheet, row, and source file are preserved. \\
+\bottomrule
+\end{tabularx}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=emaSoft]
+\strong{Confidence} = 0.25 Discipline Confidence + 0.20 Requirement Clarity + 0.25 Evidence Strength + 0.15 Rule Specificity + 0.10 Data Completeness + 0.05 Source Traceability.
+\end{tcolorbox}
+
+% ============================================================
+% Key Issues
+% ============================================================
+\section*{Key Issues \& Recommended Actions}
+
+\begin{tcolorbox}[colback=white,colframe=emaRedBg,boxrule=0.9pt,borderline west={3pt}{0pt}{emaRed}]
+\begin{tabularx}{\textwidth}{X r}
+{\large\bfseries\textcolor{emaNavy}{1. Lighting fixtures missing panel/circuit assignment}} & \notmetbadge \\
+\end{tabularx}
+\smalllabel{Why this is key} Missing circuiting can affect deliverable readiness, coordination, and downstream electrical review. It has a clear owner and a clear model update action.\\[3pt]
+\smalllabel{Evidence found} Lighting fixture elements exist, but several reviewed instances do not include complete panel or circuit values.\\[3pt]
+\smalllabel{Reasoning} This is model-checkable because the requirement depends on Revit electrical connection data. Related elements exist, but required parameters are incomplete.\\[3pt]
+\smalllabel{Next Best Action} Assign or verify panel and circuit values for affected lighting fixtures, then rerun the compliance check.\\[3pt]
+\smalllabel{Owner / Confidence / Score} Electrical Designer / 0.86 / KeyIssueScore 0.94
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=emaAmberBg,boxrule=0.9pt,borderline west={3pt}{0pt}{emaAmber}]
+\begin{tabularx}{\textwidth}{X r}
+{\large\bfseries\textcolor{emaNavy}{2. Lighting control requirement needs specification confirmation}} & \reviewbadge \\
+\end{tabularx}
+\smalllabel{Why this is key} The item may affect system intent and deliverable completeness, but evidence likely lives in schedules, drawings, or specifications.\\[3pt]
+\smalllabel{Evidence found} Lighting-related model elements were found, but model parameters do not fully describe control sequence intent.\\[3pt]
+\smalllabel{Reasoning} Revit can confirm some device presence, but final validation requires control schedules or specification review.\\[3pt]
+\smalllabel{Next Best Action} Review lighting control schedule and electrical specifications. Attach or reference supporting evidence.\\[3pt]
+\smalllabel{Owner / Confidence / Score} Lighting Designer / QAQC Reviewer / 0.72 / KeyIssueScore 0.76
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=emaPurpleBg,boxrule=0.9pt,borderline west={3pt}{0pt}{emaPurple}]
+\begin{tabularx}{\textwidth}{X r}
+{\large\bfseries\textcolor{emaNavy}{3. Wireless scoreboard requirement lacks model evidence}} & \insufficientbadge \\
+\end{tabularx}
+\smalllabel{Why this is key} The requirement references specific equipment and location. If missing, it can become a scope or coordination blocker.\\[3pt]
+\smalllabel{Evidence found} Current model evidence does not provide enough family, category, parameter, or location information to confirm scoreboard scope.\\[3pt]
+\smalllabel{Reasoning} The system searched for scoreboard equipment, wireless attributes, and technology categories, but available model data was insufficient.\\[3pt]
+\smalllabel{Next Best Action} Confirm whether scoreboard devices are modeled, specified, or tracked outside Revit. If modeled, add clear family names or parameters.\\[3pt]
+\smalllabel{Owner / Confidence / Score} Technology / Low Voltage Designer / 0.64 / KeyIssueScore 0.71
+\end{tcolorbox}
+
+\newpage
+
+% ============================================================
+% Requirement-by-Requirement Review
+% ============================================================
+\section*{Requirement-by-Requirement Review}
+
+\begin{tcolorbox}[colback=emaSoft]
+This section is the audit trail. Each owner requirement keeps its worksheet, source row, discipline, validation type, status, evidence, confidence, reasoning, and next best action.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=emaRedBg,boxrule=0.9pt,borderline west={3pt}{0pt}{emaRed}]
+\begin{tabularx}{\textwidth}{X r}
+{\large\bfseries\textcolor{emaNavy}{REQ-E-042 - Lighting fixture circuiting}} & \notmetbadge \\
+\end{tabularx}
+\begin{tabularx}{\textwidth}{p{1.25in}X p{1.1in}X}
+\smalllabel{Source} & Electrical Requirements / Row 42 & \smalllabel{Confidence} & 0.86 \\
+\smalllabel{Discipline} & Electrical & \smalllabel{Validation Type} & Model \\
+\smalllabel{Responsible Role} & Electrical Designer & \smalllabel{Expected Evidence} & Lighting fixtures + panel + circuit \\
+\end{tabularx}
+\smalllabel{Owner Requirement} Lighting fixtures shall be connected to panel and circuit information before the DD 30\% deliverable.\\[3pt]
+\smalllabel{Model Evidence Found} Lighting fixture elements exist, but several reviewed instances are missing panel or circuit parameter values.\\[3pt]
+\smalllabel{Reasoning} The requirement is model-checkable and related evidence exists, but required connection data is incomplete.\\[3pt]
+\smalllabel{Next Best Action} Assign or verify panel and circuit values for affected lighting fixtures, then rerun the check.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=emaGreenBg,boxrule=0.9pt,borderline west={3pt}{0pt}{emaGreen}]
+\begin{tabularx}{\textwidth}{X r}
+{\large\bfseries\textcolor{emaNavy}{REQ-E-031 - Electrical equipment voltage/load evidence}} & \metbadge \\
+\end{tabularx}
+\begin{tabularx}{\textwidth}{p{1.25in}X p{1.1in}X}
+\smalllabel{Source} & Electrical Requirements / Row 31 & \smalllabel{Confidence} & 0.91 \\
+\smalllabel{Discipline} & Electrical & \smalllabel{Validation Type} & Model \\
+\smalllabel{Responsible Role} & Electrical Designer & \smalllabel{Expected Evidence} & Equipment + voltage/load parameters \\
+\end{tabularx}
+\smalllabel{Owner Requirement} Electrical equipment shall include required voltage and load information for design coordination.\\[3pt]
+\smalllabel{Model Evidence Found} Electrical equipment elements were found with populated voltage/load-related parameters.\\[3pt]
+\smalllabel{Reasoning} Required model evidence was found and relevant parameters appear complete for the selected discipline.\\[3pt]
+\smalllabel{Next Best Action} No immediate action is required. Keep this item under normal QA/QC review if equipment schedules or design loads change.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=emaAmberBg,boxrule=0.9pt,borderline west={3pt}{0pt}{emaAmber}]
+\begin{tabularx}{\textwidth}{X r}
+{\large\bfseries\textcolor{emaNavy}{REQ-L-058 - Lighting controls and occupancy sensors}} & \reviewbadge \\
+\end{tabularx}
+\begin{tabularx}{\textwidth}{p{1.25in}X p{1.1in}X}
+\smalllabel{Source} & Lighting Requirements / Row 58 & \smalllabel{Confidence} & 0.72 \\
+\smalllabel{Discipline} & Lighting & \smalllabel{Validation Type} & Hybrid \\
+\smalllabel{Responsible Role} & Lighting Designer / QAQC & \smalllabel{Expected Evidence} & Devices + schedule/spec intent \\
+\end{tabularx}
+\smalllabel{Owner Requirement} Provide occupancy sensors and lighting control devices in applicable instructional and support spaces.\\[3pt]
+\smalllabel{Model Evidence Found} Lighting-related model elements were found, but control-sequence evidence was not fully represented in model parameters.\\[3pt]
+\smalllabel{Reasoning} Device presence may be partially model-checkable, but final validation requires drawing/specification review.\\[3pt]
+\smalllabel{Next Best Action} Review the lighting control schedule and electrical specifications. Attach or reference supporting sheet/spec evidence.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=emaPurpleBg,boxrule=0.9pt,borderline west={3pt}{0pt}{emaPurple}]
+\begin{tabularx}{\textwidth}{X r}
+{\large\bfseries\textcolor{emaNavy}{REQ-T-077 - Wireless scoreboards in gymnasium areas}} & \insufficientbadge \\
+\end{tabularx}
+\begin{tabularx}{\textwidth}{p{1.25in}X p{1.1in}X}
+\smalllabel{Source} & Technology Requirements / Row 77 & \smalllabel{Confidence} & 0.64 \\
+\smalllabel{Discipline} & Technology / LV & \smalllabel{Validation Type} & Model / Hybrid \\
+\smalllabel{Responsible Role} & Technology Designer & \smalllabel{Expected Evidence} & Scoreboard device + location \\
+\end{tabularx}
+\smalllabel{Owner Requirement} Provide wireless scoreboards in gymnasium areas.\\[3pt]
+\smalllabel{Model Evidence Found} Current model evidence is insufficient to confirm scoreboard family, location, or wireless attributes.\\[3pt]
+\smalllabel{Reasoning} The requirement appears model-checkable, but the synced model data does not contain enough structured evidence to confirm whether it is met.\\[3pt]
+\smalllabel{Next Best Action} Confirm whether scoreboard devices are modeled, specified, or tracked outside Revit. If modeled, add clear family names or parameters.
+\end{tcolorbox}
+
+% ============================================================
+% Register summary
+% ============================================================
+\section*{Requirement Register Summary}
+
+\begin{tcolorbox}
+\rowcolors{2}{emaSoft}{white}
+\begin{tabularx}{\textwidth}{p{0.65in}p{1.05in}Xp{1.25in}p{1.2in}}
+\toprule
+\textbf{ID} & \textbf{Discipline} & \textbf{Requirement Summary} & \textbf{Status} & \textbf{Owner Action} \\
+\midrule
+E-042 & Electrical & Lighting fixture circuiting requires complete panel and circuit assignment. & \notmetbadge & Update Revit parameters. \\
+E-031 & Electrical & Equipment voltage/load information appears available in model evidence. & \metbadge & No immediate action. \\
+L-058 & Lighting & Lighting control sequence requires drawing/spec confirmation. & \reviewbadge & Review schedule/spec. \\
+T-077 & Technology & Wireless scoreboard evidence is not conclusive in model data. & \insufficientbadge & Confirm modeled/spec evidence. \\
+M-014 & Mechanical & Outside selected Electrical scope. & \nabadge & Run Mechanical check if needed. \\
+\bottomrule
+\end{tabularx}
+\end{tcolorbox}
+
+% ============================================================
+% Filtered outputs and chat extension
+% ============================================================
+\section*{Filtered Deliverables by Trade}
+
+\begin{tcolorbox}[colback=emaSoft]
+The same report structure can be generated as a manager-level project report or filtered into discipline-specific deliverables. Each party receives only their relevant requirements, key issues, reasoning, and next actions.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{tabularx}{\textwidth}{p{1.6in}p{1.35in}X}
+\toprule
+\textbf{Deliverable} & \textbf{Audience} & \textbf{Contents} \\
+\midrule
+Full Project Report & Engineering Manager / PM & All disciplines, global metrics, discipline allocation, all key issues, full requirement register. \\
+Electrical PDF & Electrical Designer & Electrical requirements, electrical key issues, panel/circuit/voltage/load next actions. \\
+Lighting PDF & Lighting Designer & Lighting controls, fixtures, occupancy sensor requirements, schedule/spec review items. \\
+Technology / LV PDF & Technology Lead & Telecom, data, AV, scoreboard, low-voltage evidence gaps and actions. \\
+\bottomrule
+\end{tabularx}
+\end{tcolorbox}
+
+\section*{Chat With This Report - Optional Extension}
+
+\begin{tcolorbox}[colback=white,borderline west={3pt}{0pt}{emaBlue}]
+\strong{Above-and-beyond capability:} Once the report exists, a user can ask questions against the project data and report context. This assistant explains findings and summarizes next actions, but it does not change official statuses or replace engineering review.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=emaSoft]
+\smalllabel{Suggested Questions}
+\begin{itemize}
+  \item What are the top Electrical issues before DD 30\%?
+  \item Why is REQ-E-042 marked Not Met?
+  \item Which requirements need human review?
+  \item Which missing model data should be fixed first?
+  \item If the top three Electrical issues are resolved, what improves?
+\end{itemize}
+\end{tcolorbox}
+
+% ============================================================
+% Evidence and review plan
+% ============================================================
+\section*{Evidence \& Traceability}
+
+\begin{tcolorbox}
+\begin{tabularx}{\textwidth}{p{1.7in}X}
+\smalllabel{Model Evidence Source} & Synced Revit elements, categories, family names, instance/type parameters, levels, and discipline-related metadata. \\
+\smalllabel{Requirement Source} & Owner Requirements workbook: NORTHWEST ISD 06.02.2025.xlsx. \\
+\smalllabel{Traceability} & Each item retains workbook sheet, source row, status, confidence, evidence summary, reasoning, and next action. \\
+\smalllabel{Human Review Boundary} & Items requiring drawings, specifications, manufacturer verification, owner acceptance, or professional judgment are explicitly marked for human review. \\
+\end{tabularx}
+\end{tcolorbox}
+
+\section*{Recommended Review Plan}
+
+\begin{tcolorbox}[colback=emaSoft]
+\begin{enumerate}
+  \item Review the Management Overview first to identify the concentration of risks by discipline.
+  \item Send filtered trade PDFs to the responsible designers.
+  \item Electrical designer resolves Not Met items related to missing panel, circuit, voltage, or load data.
+  \item QA/QC reviewer validates Needs Human Review items against drawings, schedules, specifications, and owner standards.
+  \item Technology / LV lead confirms scoreboard, AV, telecom, or data devices modeled/spec evidence.
+  \item Project team reruns EMA AI after model updates and uses the feedback loop to tune priority criteria.
+\end{enumerate}
+\end{tcolorbox}
+
+\section*{Report Notes}
+
+\begin{tcolorbox}[colback=white]
+\small
+\textbf{Report boundary:} This report is an AI-assisted first-pass model evidence review. It does not certify code compliance, contract compliance, or professional approval. Final validation remains subject to engineering review, drawings, specifications, and owner acceptance.
+
+\vspace{4pt}
+\textbf{Demo positioning:} The dashboard/backend intelligence layer remains available in the background. The designer-facing story is intentionally Revit-first and simplified.
+
+\vspace{4pt}
+\textbf{Feedback loop:} The current intelligence criteria provide a strong starting point. EMA feedback will tune priority rules, confidence thresholds, and escalation criteria over the next rapid testing cycle.
+\end{tcolorbox}
+
+\end{document}

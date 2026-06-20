@@ -1,0 +1,19 @@
+id: filesystem
+version: 0.1.0
+runtime: python
+direction:
+  - inbound
+capabilities:
+  - files.read
+  - files.hash
+  - artifacts.stage
+objects:
+  - file
+  - artifact
+authentication:
+  - local_path
+execution:
+  supports_webhooks: false
+  supports_polling: true
+  supports_incremental_sync: true
+

@@ -1,0 +1,10 @@
+{
+  "rule_id": "fixture-missing-circuit",
+  "payload": {
+    "element_id": "E-100",
+    "category": "electrical_fixture",
+    "level": "Level 02",
+    "circuit": ""
+  }
+}
+

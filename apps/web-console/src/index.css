@@ -1,0 +1,4969 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ema-bg: #eef2f2;
+  --ema-bg-subtle: #f5f8f7;
+  --ema-bg-elevated: #ffffff;
+  --ema-alpha-0: 0;
+  --ema-alpha-5: 0.05;
+  --ema-alpha-8: 0.08;
+  --ema-alpha-12: 0.12;
+  --ema-alpha-16: 0.16;
+  --ema-alpha-24: 0.24;
+  --ema-alpha-32: 0.32;
+  --ema-alpha-48: 0.48;
+  --ema-alpha-64: 0.64;
+  --ema-alpha-72: 0.72;
+  --ema-alpha-80: 0.8;
+  --ema-alpha-88: 0.88;
+  --ema-alpha-94: 0.94;
+  --ema-alpha-100: 1;
+  --ema-accent-rgb: 30 106 90;
+  --ema-glass-opacity-none: 1;
+  --ema-glass-opacity-subtle: 0.92;
+  --ema-glass-opacity-medium: 0.84;
+  --ema-glass-opacity-strong: 0.76;
+  --ema-glass-opacity-readable: 0.88;
+  --ema-glass-opacity-data: 0.96;
+  --ema-theme-ambient-primary: color-mix(in srgb, var(--ema-accent-soft) 72%, transparent);
+  --ema-theme-ambient-secondary: rgba(91, 184, 168, 0.12);
+  --ema-theme-ambient-tertiary: rgba(201, 168, 106, 0.12);
+  --ema-theme-ambient-warm: rgba(201, 168, 106, 0.12);
+  --ema-theme-ambient-cool: rgba(91, 184, 168, 0.12);
+  --ema-theme-mesh-color: rgba(30, 106, 90, 0.12);
+  --ema-theme-refraction-color: rgba(119, 179, 244, 0.12);
+  --ema-bg-radial-1: color-mix(in srgb, var(--ema-theme-ambient-primary) 72%, transparent);
+  --ema-bg-radial-2: color-mix(in srgb, var(--ema-theme-ambient-secondary) calc(100% * var(--ema-background-intensity, 0.85)), transparent);
+  --ema-bg-radial-3: color-mix(in srgb, var(--ema-theme-ambient-tertiary) calc(100% * var(--ema-background-intensity, 0.85)), transparent);
+  --ema-bg-radial-4: color-mix(in srgb, var(--ema-theme-ambient-cool) calc(100% * var(--ema-background-intensity, 0.85)), transparent);
+  --ema-bg-radial-5: color-mix(in srgb, var(--ema-theme-ambient-warm) calc(100% * var(--ema-background-intensity, 0.85)), transparent);
+  --ema-bg-mesh-opacity: 0.22;
+  --ema-bg-noise-opacity: 0;
+  --ema-bg-gradient-soft: linear-gradient(180deg, var(--ema-bg-subtle) 0%, var(--ema-bg) 55%, var(--ema-bg) 100%);
+  --ema-bg-gradient-liquid-light:
+    radial-gradient(ellipse 140% 60% at 8% -8%, var(--ema-bg-radial-1) 0, transparent 44rem),
+    radial-gradient(ellipse 120% 50% at 92% 6%, var(--ema-bg-radial-2) 0, transparent 38rem),
+    radial-gradient(ellipse 100% 40% at 50% 42%, var(--ema-bg-radial-3) 0, transparent 36rem),
+    radial-gradient(ellipse 80% 30% at 80% 64%, var(--ema-bg-radial-4) 0, transparent 28rem),
+    radial-gradient(ellipse 60% 25% at 24% 76%, var(--ema-bg-radial-5) 0, transparent 22rem),
+    linear-gradient(180deg, var(--ema-bg-subtle) 0%, var(--ema-bg) 56%, var(--ema-bg-elevated) 140%);
+  --ema-bg-gradient-liquid-dark:
+    radial-gradient(ellipse 140% 60% at 9% -8%, color-mix(in srgb, var(--ema-theme-ambient-primary) 85%, transparent) 0, transparent 42rem),
+    radial-gradient(ellipse 120% 50% at 94% 4%, color-mix(in srgb, var(--ema-theme-ambient-secondary) 85%, transparent) 0, transparent 36rem),
+    radial-gradient(ellipse 100% 40% at 14% 50%, color-mix(in srgb, var(--ema-theme-ambient-cool) 70%, transparent) 0, transparent 32rem),
+    radial-gradient(ellipse 80% 30% at 86% 60%, color-mix(in srgb, var(--ema-theme-ambient-warm) 70%, transparent) 0, transparent 26rem),
+    radial-gradient(ellipse 60% 25% at 36% 80%, color-mix(in srgb, var(--ema-theme-ambient-tertiary) 70%, transparent) 0, transparent 20rem),
+    linear-gradient(180deg, var(--ema-bg-subtle) 0%, var(--ema-bg) 50%, var(--ema-bg-elevated) 130%);
+  --ema-bg-gradient-liquid: var(--ema-bg-gradient-liquid-light);
+  --ema-bg-gradient: var(--ema-bg-gradient-soft);
+  --ema-app-bg-gradient: var(--ema-bg-gradient);
+  --ema-app-bg-radial-primary: var(--ema-bg-radial-1);
+  --ema-app-bg-radial-secondary: var(--ema-bg-radial-2);
+  --ema-app-bg-radial-tertiary: var(--ema-bg-radial-3);
+  --ema-route-bg-gradient: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--ema-accent-soft) 42%, transparent) 100%);
+  --ema-route-bg-overlay: color-mix(in srgb, var(--ema-bg) 78%, transparent);
+  --ema-sidebar-bg-gradient: var(--ema-glass-gradient-subtle);
+  --ema-topbar-bg-gradient: var(--ema-glass-gradient-subtle);
+  --ema-card-backdrop-gradient: var(--ema-glass-gradient-subtle);
+  --ema-liquid-depth-gradient: var(--ema-glass-gradient);
+  --ema-liquid-warm-glow: rgba(201, 168, 106, 0.08);
+  --ema-liquid-cool-glow: rgba(91, 184, 168, 0.1);
+  --ema-liquid-neutral-glow: rgba(79, 100, 116, 0.08);
+  --ema-ambient-base: var(--ema-bg);
+  --ema-ambient-a: var(--ema-theme-ambient-primary);
+  --ema-ambient-b: var(--ema-theme-ambient-secondary);
+  --ema-ambient-c: var(--ema-theme-ambient-tertiary);
+  --ema-ambient-highlight: color-mix(in srgb, var(--ema-theme-ambient-primary) 42%, white 58%);
+  --ema-ambient-noise-opacity: 0.03;
+  --ema-ambient-grid-opacity: 0.1;
+  --ema-grid-pattern:
+    linear-gradient(color-mix(in srgb, var(--ema-theme-mesh-color) 42%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ema-theme-mesh-color) 42%, transparent) 1px, transparent 1px);
+  --ema-noise-pattern:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--ema-theme-refraction-color) 18%, transparent) 0 1px, transparent 1px),
+    radial-gradient(circle at 72% 44%, color-mix(in srgb, var(--ema-theme-refraction-color) 12%, transparent) 0 1px, transparent 1px);
+  --ema-pointer-x: 50%;
+  --ema-pointer-y: 50%;
+  --ema-pointer-intensity: 0;
+  --ema-pointer-active: 0;
+  --ema-surface: rgba(255, 255, 255, 0.78);
+  --ema-surface-2: rgba(255, 255, 255, 0.86);
+  --ema-surface-3: rgba(255, 255, 255, 0.92);
+  --ema-surface-glass: rgba(255, 255, 255, 0.72);
+  --ema-surface-solid: #ffffff;
+  --ema-surface-solid-rgb: 255 255 255;
+  --ema-glass-highlight-rgb: 255 255 255;
+  --ema-glass-fill: var(--ema-glass-bg);
+  --ema-glass-fill-medium: var(--ema-glass-bg);
+  --ema-glass-fill-strong: var(--ema-glass-bg-strong);
+  --ema-glass-edge-opacity: 80%;
+  --ema-glass-specular-opacity: 42%;
+  --ema-readable-surface: var(--ema-surface-2);
+  --ema-readable-surface-strong: var(--ema-surface-3);
+  --ema-data-surface: var(--ema-surface-solid);
+  --ema-table-surface: var(--ema-surface-solid);
+  --ema-log-surface: color-mix(in srgb, var(--ema-surface-solid) 96%, var(--ema-surface-2) 4%);
+  --ema-code-surface: color-mix(in srgb, var(--ema-surface-solid) 94%, var(--ema-bg) 6%);
+  --ema-warning-surface: var(--ema-warning-soft);
+  --ema-warning-border: color-mix(in srgb, var(--ema-warning) 38%, transparent);
+  --ema-error-surface: var(--ema-danger-soft);
+  --ema-error-border: color-mix(in srgb, var(--ema-danger) 38%, transparent);
+  --ema-success-surface: var(--ema-success-soft);
+  --ema-success-border: color-mix(in srgb, var(--ema-success) 36%, transparent);
+  --ema-info-surface: var(--ema-info-soft);
+  --ema-info-border: color-mix(in srgb, var(--ema-info) 36%, transparent);
+  --ema-advisory-surface: var(--ema-advisory-soft);
+  --ema-prototype-surface: var(--ema-prototype-soft);
+  --ema-candidate: var(--ema-evidence);
+  --ema-candidate-surface: var(--ema-evidence-soft);
+  --ema-not-production: var(--ema-local-demo);
+  --ema-not-compliance: var(--ema-blocked);
+  --ema-table-bg: var(--ema-table-surface);
+  --ema-table-row-bg: var(--ema-table-surface);
+  --ema-table-row-hover-bg: color-mix(in srgb, var(--ema-accent) 8%, transparent);
+  --ema-table-border: var(--ema-border);
+  --ema-table-text: var(--ema-text);
+  --ema-code-bg: var(--ema-code-surface);
+  --ema-code-text: var(--ema-text);
+  --ema-log-bg: var(--ema-log-surface);
+  --ema-log-text: var(--ema-text);
+  --ema-badge-surface: color-mix(in srgb, var(--ema-surface-solid) 92%, var(--ema-surface-2) 8%);
+  --ema-card-opacity: 1;
+  --ema-glass-blur: 0px;
+  --ema-text: #162622;
+  --ema-text-muted: #657a75;
+  --ema-text-subtle: #7f938e;
+  --ema-text-inverse: #f4fbf8;
+  --ema-muted: var(--ema-text-muted);
+  --ema-subtle: var(--ema-text-subtle);
+  --ema-border: rgba(22, 38, 34, 0.14);
+  --ema-border-strong: rgba(22, 38, 34, 0.24);
+  --ema-ring: rgba(30, 106, 90, 0.28);
+  --ema-accent: #1e6a5a;
+  --ema-accent-2: #2a8a77;
+  --ema-accent-soft: rgba(30, 106, 90, 0.13);
+  --ema-accent-strong: #145446;
+  --ema-accent-text: #f8fafc;
+  --ema-accent-muted: color-mix(in srgb, var(--ema-accent) 68%, var(--ema-text-muted) 32%);
+  --ema-accent-contrast: var(--ema-accent-text);
+  --ema-gold: #c9a86a;
+  --ema-gold-soft: rgba(201, 168, 106, 0.2);
+  --ema-success: #18794e;
+  --ema-success-soft: rgba(24, 121, 78, 0.14);
+  --ema-warning: #a86812;
+  --ema-warning-soft: rgba(168, 104, 18, 0.18);
+  --ema-danger: #b02f34;
+  --ema-danger-soft: rgba(176, 47, 52, 0.16);
+  --ema-info: #1f63a8;
+  --ema-info-soft: rgba(31, 99, 168, 0.14);
+  --ema-advisory: #7650b6;
+  --ema-advisory-soft: rgba(118, 80, 182, 0.14);
+  --ema-evidence: #0f7f78;
+  --ema-evidence-soft: rgba(15, 127, 120, 0.14);
+  --ema-prototype: #7b7f88;
+  --ema-prototype-soft: rgba(123, 127, 136, 0.14);
+  --ema-official: #0b6f4a;
+  --ema-official-soft: rgba(11, 111, 74, 0.14);
+  --ema-blocked: #a0343a;
+  --ema-blocked-soft: rgba(160, 52, 58, 0.16);
+  --ema-partial: #b8841a;
+  --ema-partial-soft: rgba(184, 132, 26, 0.18);
+  --ema-local-demo: #636a80;
+  --ema-local-demo-soft: rgba(99, 106, 128, 0.14);
+  --ema-chart-1: #1e6a5a;
+  --ema-chart-2: #1f63a8;
+  --ema-chart-3: #c9a86a;
+  --ema-chart-4: #7650b6;
+  --ema-chart-5: #b02f34;
+  --ema-chart-grid: rgba(22, 38, 34, 0.12);
+  --ema-chart-axis: rgba(22, 38, 34, 0.68);
+  --ema-chart-tooltip-bg: #ffffff;
+  --ema-chart-tooltip-text: #162622;
+  --ema-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.08);
+  --ema-shadow-md: 0 8px 18px rgba(16, 24, 40, 0.1);
+  --ema-shadow-lg: 0 16px 34px rgba(16, 24, 40, 0.12);
+  --ema-shadow-glass: 0 8px 26px rgba(14, 37, 31, 0.14);
+  --ema-focus-ring: 0 0 0 3px rgba(30, 106, 90, 0.35);
+  --ema-selected: rgba(30, 106, 90, 0.2);
+  --ema-selected-surface: var(--ema-selected);
+  --ema-selected-border: var(--ema-border-strong);
+  --ema-selected-text: #162622;
+  --ema-control-bg: var(--ema-surface-3);
+  --ema-control-bg-hover: color-mix(in srgb, var(--ema-surface-3) 92%, var(--ema-accent) 8%);
+  --ema-control-bg-active: color-mix(in srgb, var(--ema-surface-3) 85%, var(--ema-accent) 15%);
+  --ema-control-text: var(--ema-text);
+  --ema-control-text-muted: var(--ema-text-muted);
+  --ema-control-border: var(--ema-border);
+  --ema-control-border-hover: var(--ema-border-strong);
+  --ema-control-placeholder: var(--ema-text-subtle);
+  --ema-control-focus: var(--ema-ring);
+  --ema-control-disabled-bg: color-mix(in srgb, var(--ema-surface-2) 92%, var(--ema-bg) 8%);
+  --ema-control-disabled-text: var(--ema-text-subtle);
+  --ema-control-hover-bg: var(--ema-control-bg-hover);
+  --ema-control-selected-bg: var(--ema-selected-surface);
+  --ema-control-selected-text: var(--ema-selected-text);
+  --ema-segment-bg: var(--ema-surface-2);
+  --ema-segment-border: var(--ema-border);
+  --ema-segment-text: var(--ema-text-muted);
+  --ema-segment-active-bg: var(--ema-selected);
+  --ema-segment-active-text: var(--ema-text);
+  --ema-segment-hover-bg: color-mix(in srgb, var(--ema-surface-2) 90%, var(--ema-accent) 10%);
+  --ema-tab-bg: var(--ema-segment-bg);
+  --ema-tab-selected-bg: var(--ema-segment-active-bg);
+  --ema-tab-selected-text: var(--ema-segment-active-text);
+  --ema-checkbox-bg: var(--ema-surface-3);
+  --ema-checkbox-border: var(--ema-border-strong);
+  --ema-checkbox-checked-bg: var(--ema-accent);
+  --ema-checkbox-checked-text: var(--ema-text-inverse);
+  --ema-slider-track: color-mix(in srgb, var(--ema-surface-2) 90%, var(--ema-border) 10%);
+  --ema-slider-fill: var(--ema-accent);
+  --ema-slider-thumb: var(--ema-text-inverse);
+  --ema-toggle-bg: color-mix(in srgb, var(--ema-surface-2) 85%, var(--ema-border) 15%);
+  --ema-toggle-active-bg: var(--ema-accent);
+  --ema-toggle-thumb: #fff;
+  --ema-surface-solid: #ffffff;
+  --ema-surface-solid-rgb: 255 255 255;
+  --ema-glass-highlight-rgb: 255 255 255;
+  --ema-glass-bg: rgba(255, 255, 255, 0.72);
+  --ema-glass-bg-strong: rgba(255, 255, 255, 0.9);
+  --ema-glass-border: rgba(255, 255, 255, 0.42);
+  --ema-glass-border-strong: rgba(255, 255, 255, 0.58);
+  --ema-glass-bg-subtle: color-mix(in srgb, var(--ema-glass-bg) 74%, transparent);
+  --ema-glass-bg-medium: var(--ema-glass-bg);
+  --ema-glass-rim: var(--ema-glass-border-strong);
+  --ema-glass-inner-highlight: var(--ema-glass-inner-shadow);
+  --ema-glass-specular: linear-gradient(100deg, transparent 0%, color-mix(in srgb, var(--ema-glass-highlight) 54%, transparent) 46%, transparent 76%);
+  --ema-selected-surface: var(--ema-glass-gradient-selected);
+  --ema-capsule-surface: var(--ema-glass-gradient-capsule);
+  --ema-control-surface: var(--ema-control-bg);
+  --ema-sidebar-bg: var(--ema-surface-solid);
+  --ema-sidebar-border: var(--ema-border);
+  --ema-sidebar-text: var(--ema-text);
+  --ema-sidebar-muted: var(--ema-text-muted);
+  --ema-sidebar-active-bg: var(--ema-selected-surface);
+  --ema-sidebar-active-text: var(--ema-selected-text);
+  --ema-sidebar-active-border: var(--ema-selected-border);
+  --ema-topbar-bg: var(--ema-surface-solid);
+  --ema-topbar-border: var(--ema-border);
+  --ema-topbar-text: var(--ema-text);
+  --ema-status-surface: var(--ema-badge-surface);
+  --ema-pointer-light: color-mix(in srgb, var(--ema-ambient-highlight) 42%, transparent);
+  --ema-specular-streak: var(--ema-glass-specular);
+  --ema-motion-fast: var(--ema-motion-duration-fast);
+  --ema-motion-normal: var(--ema-motion-duration-normal);
+  --ema-motion-slow: var(--ema-motion-duration-slow);
+  --ema-text-soft: var(--ema-text-subtle);
+  --ema-text-on-tint: var(--ema-text);
+  --ema-text-code: var(--ema-text);
+  --ema-glass-highlight: rgba(255, 255, 255, 0.6);
+  --ema-glass-highlight-2: rgba(30, 106, 90, 0.16);
+  --ema-glass-highlight-opacity: 0.42;
+  --ema-glass-shadow: 0 16px 34px rgba(16, 24, 40, 0.16);
+  --ema-glass-inner-shadow: inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(255,255,255,0.24);
+  --ema-glass-saturate: 1.2;
+  --ema-glass-saturation: var(--ema-glass-saturate);
+  --ema-glass-opacity: 0.82;
+  --ema-rim-highlight-strength: 0.55;
+  --ema-rim-highlight: var(--ema-rim-highlight-strength);
+  --ema-background-depth: 0.72;
+  --ema-background-intensity: 0.85;
+  --ema-pointer-light-strength: 0.45;
+  --ema-data-opacity: 0.98;
+  --ema-capsule-opacity: 0.74;
+  --ema-control-opacity: 0.74;
+  --ema-glass-radius: 12px;
+  --ema-glass-glow: rgba(30, 106, 90, 0.2);
+  --ema-glass-edge: rgba(255, 255, 255, 0.8);
+  --ema-glass-chromatic: rgba(30, 106, 90, 0.1);
+  --ema-glass-noise-opacity: 0;
+  --ema-glass-gradient-subtle:
+    linear-gradient(145deg, rgb(var(--ema-glass-highlight-rgb) / calc(var(--ema-rim-highlight-strength) * 0.18)), transparent 48%),
+    radial-gradient(circle at 72% 6%, color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-depth) * 14% * var(--ema-background-intensity, 0.85)), transparent), transparent 20rem),
+    radial-gradient(circle at 18% 10%, color-mix(in srgb, var(--ema-ambient-b) calc(var(--ema-background-depth) * 12% * var(--ema-background-intensity, 0.85)), transparent), transparent 18rem),
+    linear-gradient(180deg, var(--ema-glass-bg-subtle), var(--ema-glass-bg-medium));
+  --ema-glass-gradient:
+    linear-gradient(145deg, rgb(var(--ema-glass-highlight-rgb) / calc(var(--ema-rim-highlight-strength) * 0.26)), transparent 44%),
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--ema-glass-glow) calc(var(--ema-background-depth) * 58%), transparent), transparent 48%),
+    radial-gradient(circle at 72% 8%, color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-depth) * 18% * var(--ema-background-intensity, 0.85)), transparent), transparent 22rem),
+    radial-gradient(circle at 18% 14%, color-mix(in srgb, var(--ema-ambient-b) calc(var(--ema-background-depth) * 14% * var(--ema-background-intensity, 0.85)), transparent), transparent 20rem),
+    linear-gradient(180deg, var(--ema-glass-bg-medium), var(--ema-glass-bg-strong));
+  --ema-glass-gradient-strong:
+    linear-gradient(135deg, rgb(var(--ema-glass-highlight-rgb) / calc(var(--ema-rim-highlight-strength) * 0.34)), transparent 38%),
+    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--ema-glass-glow) calc(var(--ema-background-depth) * 64%), transparent), transparent 44%),
+    radial-gradient(circle at 100% 12%, color-mix(in srgb, var(--ema-glass-chromatic) calc(var(--ema-background-depth) * 56%), transparent), transparent 40%),
+    radial-gradient(circle at 72% 10%, color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-depth) * 22% * var(--ema-background-intensity, 0.85)), transparent), transparent 24rem),
+    radial-gradient(circle at 18% 16%, color-mix(in srgb, var(--ema-ambient-a) calc(var(--ema-background-depth) * 18% * var(--ema-background-intensity, 0.85)), transparent), transparent 22rem),
+    linear-gradient(180deg, var(--ema-glass-bg-medium), var(--ema-glass-bg-strong));
+  --ema-glass-gradient-capsule:
+    linear-gradient(180deg, rgb(var(--ema-glass-highlight-rgb) / calc(var(--ema-rim-highlight-strength) * 0.24)), transparent 58%),
+    linear-gradient(90deg, var(--ema-capsule-surface), rgb(var(--ema-surface-solid-rgb) / calc(var(--ema-capsule-opacity) * 0.88)));
+  --ema-glass-gradient-selected:
+    linear-gradient(135deg, color-mix(in srgb, var(--ema-accent) 22%, var(--ema-glass-bg)), color-mix(in srgb, var(--ema-accent) 10%, var(--ema-glass-bg-strong)));
+  --ema-glass-gradient-danger: linear-gradient(135deg, var(--ema-danger-soft), var(--ema-surface-solid));
+  --ema-glass-gradient-warning: linear-gradient(135deg, var(--ema-warning-soft), var(--ema-surface-solid));
+  --ema-glass-gradient-success: linear-gradient(135deg, var(--ema-success-soft), var(--ema-surface-solid));
+  --ema-glass-gradient-info: linear-gradient(135deg, var(--ema-info-soft), var(--ema-surface-solid));
+  --ema-glass-specular: linear-gradient(180deg, var(--ema-glass-highlight), transparent 44%);
+  --ema-glass-specular-soft: linear-gradient(180deg, color-mix(in srgb, var(--ema-glass-highlight) 48%, transparent), transparent 54%);
+  --ema-glass-refraction-band: linear-gradient(100deg, transparent 0%, var(--ema-glass-chromatic) 46%, transparent 72%);
+  --ema-glass-bottom-shadow: 0 14px 30px rgba(16, 24, 40, 0.16);
+  --ema-glass-top-edge: var(--ema-glass-edge);
+  --ema-glass-left-edge: color-mix(in srgb, var(--ema-glass-edge) 62%, transparent);
+  --ema-glass-bg: rgb(var(--ema-surface-solid-rgb) / var(--ema-glass-opacity-medium));
+  --ema-glass-bg-subtle: rgb(var(--ema-surface-solid-rgb) / var(--ema-glass-opacity-subtle));
+  --ema-glass-bg-medium: rgb(var(--ema-surface-solid-rgb) / var(--ema-glass-opacity-medium));
+  --ema-glass-bg-strong: rgb(var(--ema-surface-solid-rgb) / var(--ema-glass-opacity-strong));
+  --ema-readable-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-data-opacity));
+  --ema-data-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-data-opacity));
+  --ema-table-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-data-opacity));
+  --ema-code-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-data-opacity));
+  --ema-capsule-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-capsule-opacity));
+  --ema-control-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-control-opacity));
+  --ema-glass-border: color-mix(in srgb, var(--ema-glass-rim) calc(var(--ema-rim-highlight-strength) * 68%), var(--ema-border));
+  --ema-pointer-light: color-mix(in srgb, var(--ema-ambient-highlight) calc(var(--ema-pointer-light-strength) * 100%), transparent);
+  --ema-motion-duration-fast: 120ms;
+  --ema-motion-duration-normal: 220ms;
+  --ema-motion-duration-slow: 420ms;
+  --ema-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ema-motion-ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
+  --ema-motion-scale-hover: translateY(-2px);
+  --ema-motion-glow-duration: 1600ms;
+  --ema-motion-heartbeat-duration: 30000ms;
+  /* ── Dynamic ambient background defaults ── */
+  --ema-background-vividness: 0.7;
+  --ema-background-color-strength: 0.85;
+  --ema-background-mesh-opacity: 0.18;
+  --ema-background-refraction-opacity: 0.25;
+  --ema-ambient-motion-speed: 0.35;
+  --ema-ambient-hue-drift: 0deg;
+  /* ── Spacing system ── */
+  --ema-ui-scale: 1;
+  --ema-contrast-level: 0.5;
+  --ema-card-padding: 14px;
+  --ema-section-gap: 18px;
+  --ema-row-gap: 10px;
+  --ema-control-gap: 8px;
+  --ema-page-padding-x: 24px;
+  --ema-page-padding-y: 24px;
+  --ema-shell-gap: 0px;
+  --ema-card-radius: 12px;
+  --ema-control-radius: 8px;
+  --ema-pill-radius: 999px;
+  --ema-space-1: 4px;
+  --ema-space-2: 8px;
+  --ema-space-3: 12px;
+  --ema-space-4: 16px;
+  --ema-space-5: 24px;
+  --ema-space-6: 32px;
+  --ema-space-8: 40px;
+  --ema-topbar-height: 64px;
+  --ema-sidebar-padding: 8px;
+}
+
+:root[data-color-scheme="dark"] {
+  --ema-bg: #071310;
+  --ema-bg-subtle: #0b1714;
+  --ema-bg-elevated: #12231f;
+  --ema-surface: #101f1c;
+  --ema-surface-2: #142922;
+  --ema-surface-3: #19322c;
+  --ema-surface-glass: rgba(20, 41, 34, 0.82);
+  --ema-surface-solid: #101f1c;
+  --ema-surface-solid-rgb: 16 31 28;
+  --ema-glass-highlight-rgb: 165 215 200;
+  --ema-text: #eaf4f1;
+  --ema-text-muted: #9db8b1;
+  --ema-text-subtle: #84a49b;
+  --ema-text-inverse: #071310;
+  --ema-border: rgba(221, 237, 234, 0.12);
+  --ema-border-strong: rgba(221, 237, 234, 0.22);
+  --ema-ring: rgba(91, 184, 168, 0.35);
+  --ema-accent: #5bb8a8;
+  --ema-accent-2: #7ed2c4;
+  --ema-accent-soft: rgba(91, 184, 168, 0.16);
+  --ema-gold: #d6b77d;
+  --ema-gold-soft: rgba(214, 183, 125, 0.2);
+  --ema-success: #5dc38f;
+  --ema-warning: #e6b15f;
+  --ema-danger: #ef7a7f;
+  --ema-info: #77b3f4;
+  --ema-advisory: #b49cf6;
+  --ema-evidence: #57c3bc;
+  --ema-prototype: #9ba5b1;
+  --ema-official: #4fc48a;
+  --ema-official-soft: rgba(79, 196, 138, 0.16);
+  --ema-blocked: #ef7a7f;
+  --ema-blocked-soft: rgba(239, 122, 127, 0.16);
+  --ema-partial: #e6b15f;
+  --ema-partial-soft: rgba(230, 177, 95, 0.18);
+  --ema-local-demo: #a8b1c7;
+  --ema-local-demo-soft: rgba(168, 177, 199, 0.14);
+  --ema-chart-grid: rgba(221, 237, 234, 0.14);
+  --ema-chart-axis: rgba(234, 244, 241, 0.78);
+  --ema-chart-tooltip-bg: #12231f;
+  --ema-chart-tooltip-text: #eaf4f1;
+  --ema-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --ema-shadow-md: 0 10px 24px rgba(0, 0, 0, 0.34);
+  --ema-shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.4);
+  --ema-bg-gradient-liquid: var(--ema-bg-gradient-liquid-dark);
+}
+
+:root[data-visual-theme="liquid-glass"] {
+  --ema-surface: rgba(255, 255, 255, 0.64);
+  --ema-surface-2: rgba(255, 255, 255, 0.72);
+  --ema-surface-3: rgba(255, 255, 255, 0.82);
+  --ema-glass-bg: rgb(var(--ema-surface-solid-rgb) / var(--ema-glass-opacity-medium));
+  --ema-ambient-noise-opacity: 0.045;
+  --ema-ambient-grid-opacity: 0.15;
+  --ema-bg-gradient: var(--ema-bg-gradient-liquid-light);
+  --ema-bg-mesh-opacity: 0.35;
+  --ema-ambient-a: color-mix(in srgb, var(--ema-accent-soft) calc(72% * var(--ema-background-intensity, 0.85) * var(--ema-background-color-strength, 0.85)), transparent);
+  --ema-ambient-b: rgba(91, 184, 168, calc(0.12 * var(--ema-background-intensity, 0.85) * var(--ema-background-color-strength, 0.85)));
+  --ema-ambient-c: rgba(201, 168, 106, calc(0.12 * var(--ema-background-intensity, 0.85) * var(--ema-background-color-strength, 0.85)));
+}
+
+:root[data-color-scheme="dark"][data-visual-theme="liquid-glass"] {
+  --ema-surface: rgba(17, 34, 29, 0.72);
+  --ema-surface-2: rgba(22, 44, 37, 0.74);
+  --ema-surface-3: rgba(28, 54, 47, 0.78);
+  --ema-surface-glass: rgba(22, 44, 37, 0.82);
+  --ema-ambient-base: #071310;
+  --ema-ambient-a: rgba(91, 184, 168, calc(0.35 * var(--ema-background-intensity, 0.95) * var(--ema-background-color-strength, 0.85)));
+  --ema-ambient-b: rgba(119, 179, 244, calc(0.26 * var(--ema-background-intensity, 0.95) * var(--ema-background-color-strength, 0.85)));
+  --ema-ambient-c: rgba(178, 156, 94, calc(0.20 * var(--ema-background-intensity, 0.95) * var(--ema-background-color-strength, 0.85)));
+  --ema-ambient-highlight: rgba(165, 215, 200, 0.78);
+  --ema-ambient-noise-opacity: 0.04;
+  --ema-ambient-grid-opacity: 0.15;
+  --ema-text: #eaf4f1;
+  --ema-text-muted: #a8c8c0;
+  --ema-text-subtle: #8db0a7;
+  --ema-border: rgba(165, 215, 200, 0.14);
+  --ema-border-strong: rgba(165, 215, 200, 0.24);
+  --ema-bg-gradient: var(--ema-bg-gradient-liquid-dark);
+  --ema-bg-mesh-opacity: 0.40;
+  --ema-data-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-data-opacity));
+  --ema-table-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-data-opacity));
+  --ema-code-surface: rgb(var(--ema-surface-solid-rgb) / var(--ema-data-opacity));
+  --ema-badge-surface: color-mix(in srgb, var(--ema-surface-3) 84%, #ffffff 4%);
+}
+
+:root[data-visual-theme="material-engineering"] {
+  --ema-surface: var(--ema-surface-2);
+  --ema-surface-3: var(--ema-bg-elevated);
+  --ema-glass-blur: 0px;
+  --ema-bg-gradient: linear-gradient(180deg, var(--ema-bg-subtle) 0%, var(--ema-bg) 42%, var(--ema-bg-elevated) 140%);
+}
+
+:root[data-visual-theme="high-contrast"] {
+  --ema-surface: #ffffff;
+  --ema-surface-2: #ffffff;
+  --ema-surface-3: #ffffff;
+  --ema-surface-solid: #ffffff;
+  --ema-surface-solid-rgb: 255 255 255;
+  --ema-glass-highlight-rgb: 255 255 255;
+  --ema-text: #101519;
+  --ema-text-muted: #334048;
+  --ema-border: rgba(16, 21, 25, 0.55);
+  --ema-border-strong: rgba(16, 21, 25, 0.85);
+  --ema-bg-gradient: var(--ema-bg);
+  --ema-ambient-noise-opacity: 0;
+  --ema-ambient-grid-opacity: 0;
+  --ema-glass-opacity-readable: 1;
+  --ema-glass-opacity-data: 1;
+  --ema-bg-mesh-opacity: 0;
+}
+
+:root[data-color-scheme="dark"][data-visual-theme="high-contrast"] {
+  --ema-bg: #040a08;
+  --ema-bg-subtle: #07100d;
+  --ema-surface: #0d1b17;
+  --ema-surface-2: #11231d;
+  --ema-surface-3: #153128;
+  --ema-surface-solid: #0d1b17;
+  --ema-surface-solid-rgb: 13 27 23;
+  --ema-glass-highlight-rgb: 242 250 247;
+  --ema-text: #f2faf7;
+  --ema-text-muted: #d8e7e1;
+  --ema-border: rgba(242, 250, 247, 0.46);
+  --ema-border-strong: rgba(242, 250, 247, 0.76);
+}
+
+:root[data-accent="gold"] {
+  --ema-accent: #c9a86a;
+  --ema-accent-2: #d6b77d;
+  --ema-accent-soft: rgba(201, 168, 106, 0.18);
+}
+
+:root[data-accent="slate"] {
+  --ema-accent: #4f6474;
+  --ema-accent-2: #6a8091;
+  --ema-accent-soft: rgba(79, 100, 116, 0.16);
+}
+
+:root[data-accent="blue"] {
+  --ema-accent: #2b6cb0;
+  --ema-accent-2: #5a91ce;
+  --ema-accent-soft: rgba(43, 108, 176, 0.16);
+}
+
+:root[data-accent="graphite"] {
+  --ema-accent: #4b5563;
+  --ema-accent-2: #6b7280;
+  --ema-accent-soft: rgba(75, 85, 99, 0.16);
+}
+
+:root[data-accent="custom-local"] {
+  --ema-accent: #7f6ab8;
+  --ema-accent-2: #9987c7;
+  --ema-accent-soft: rgba(127, 106, 184, 0.17);
+}
+
+:root[data-glass="none"] {
+  --ema-glass-blur: 0px;
+  --ema-glass-saturate: 1;
+  --ema-glass-opacity: 1;
+  --ema-glass-highlight-opacity: 0.08;
+  --ema-glass-shadow: var(--ema-shadow-sm);
+  --ema-glass-opacity-readable: 1;
+  --ema-glass-opacity-data: 1;
+}
+
+:root[data-glass="subtle"] {
+  --ema-glass-blur: 8px;
+  --ema-glass-saturate: 1.15;
+  --ema-glass-opacity: 0.92;
+  --ema-glass-highlight-opacity: 0.18;
+  --ema-glass-opacity-readable: 0.92;
+}
+
+:root[data-glass="medium"] {
+  --ema-glass-blur: 14px;
+  --ema-glass-saturate: 1.24;
+  --ema-glass-opacity: 0.84;
+  --ema-glass-highlight-opacity: 0.26;
+  --ema-glass-opacity-readable: 0.88;
+}
+
+:root[data-glass="strong"] {
+  --ema-glass-blur: 20px;
+  --ema-glass-saturate: 1.34;
+  --ema-glass-opacity: 0.76;
+  --ema-glass-highlight-opacity: 0.32;
+  --ema-glass-opacity-readable: 0.84;
+}
+
+:root[data-density="dense"] {
+  --ema-glass-blur: 8px;
+  --ema-glass-opacity: 0.94;
+  --ema-glass-highlight-opacity: 0.16;
+  --ema-glass-opacity-readable: 0.94;
+  --ema-glass-opacity-data: 1;
+}
+
+:root[data-density="compact"] {
+  --ema-glass-blur: 10px;
+  --ema-glass-opacity: 0.9;
+  --ema-glass-highlight-opacity: 0.2;
+  --ema-glass-opacity-readable: 0.92;
+  --ema-glass-opacity-data: 0.98;
+}
+
+:root[data-density="comfortable"] {
+  --ema-glass-blur: 14px;
+  --ema-glass-opacity: 0.86;
+  --ema-glass-highlight-opacity: 0.26;
+  --ema-glass-opacity-readable: 0.9;
+  --ema-glass-opacity-data: 0.96;
+}
+
+/* ── Calibration mode — scales ambient field intensity ── */
+:root[data-calibration-mode="strong"] {
+  --ema-calibration-scale: 1.45;
+}
+
+:root[data-calibration-mode="extreme"] {
+  --ema-calibration-scale: 2.2;
+}
+
+:root[data-calibration-mode="operational"] {
+  --ema-calibration-scale: 1;
+}
+
+/* ── Ambient motion: animation-duration based on speed ── */
+:root[data-ambient-motion="subtle"] {
+  --ema-ambient-drift-duration: calc(60s - 30s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+  --ema-ambient-refraction-duration: calc(50s - 25s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+  --ema-ambient-hue-duration: calc(90s - 40s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+}
+
+:root[data-ambient-motion="normal"] {
+  --ema-ambient-drift-duration: calc(40s - 20s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+  --ema-ambient-refraction-duration: calc(35s - 18s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+  --ema-ambient-hue-duration: calc(60s - 30s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+}
+
+:root[data-ambient-motion="vivid"] {
+  --ema-ambient-drift-duration: calc(28s - 14s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+  --ema-ambient-refraction-duration: calc(22s - 12s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+  --ema-ambient-hue-duration: calc(40s - 20s * var(--ema-ambient-motion-speed-effective, var(--ema-ambient-motion-speed, 0.35)));
+}
+
+:root[data-ambient-motion="off"] {
+  --ema-ambient-drift-duration: 0s;
+  --ema-ambient-refraction-duration: 0s;
+  --ema-ambient-hue-duration: 0s;
+  --ema-ambient-motion-speed: 0;
+}
+
+/* ── Route-kind clamping — these live on the inner route DIV so they
+     cascade to content elements. Main CSS vars are already set to
+     effective values by JS. These are extra safety for operational
+     routes beyond the JS clamping. Inline styles on :root have higher
+     priority than stylesheet :root rules, so this element-level
+     override is the only way to beat inherited inline values. ── */
+[data-route-kind="operational"] {
+  /* Glass opacity — all levels to fully opaque */
+  --ema-glass-opacity: 1;
+  --ema-glass-opacity-subtle: 1;
+  --ema-glass-opacity-medium: 1;
+  --ema-glass-opacity-strong: 1;
+  --ema-glass-opacity-effective: 1;
+
+  /* Capsule / control opacity */
+  --ema-capsule-opacity: 1;
+  --ema-control-opacity: 1;
+
+  /* Background depth / mesh — zero to eliminate decorative fog */
+  --ema-background-depth: 0;
+  --ema-bg-mesh-opacity: 0;
+  --ema-background-mesh-opacity: 0;
+
+  /* Background color strength — zero so color-mix gradients produce no tint */
+  --ema-background-color-strength: 0;
+  --ema-background-intensity: 0.45;
+  --ema-background-intensity-effective: 0.45;
+  --ema-background-vividness: 0.60;
+  --ema-background-vividness-effective: 0.60;
+
+  /* Refraction and pointer — disabled */
+  --ema-background-refraction-opacity: 0;
+  --ema-background-refraction-opacity-effective: 0;
+  --ema-pointer-light-strength: 0;
+
+  /* Glass blur / saturate — zero so backdrop-filter rules produce no visual effect */
+  --ema-glass-blur: 0px;
+  --ema-glass-saturate: 1;
+  --ema-glass-saturation: 1;
+
+  /* Rim / edge / specular highlights — disabled */
+  --ema-rim-highlight-strength: 0;
+  --ema-glass-highlight-opacity: 0;
+  --ema-glass-edge-opacity: 0%;
+  --ema-glass-specular-opacity: 0;
+
+  /* Data surfaces — fully opaque */
+  --ema-data-opacity: 1;
+  --ema-data-opacity-effective: 1;
+
+  /* Calibration scale — no enhancement in operational routes */
+  --ema-calibration-scale: 1;
+
+  /* Ambient motion — disabled */
+  --ema-ambient-motion: off;
+}
+
+/* Operational route data surface hardening — bg-white gets solid in operational context.
+   :root prefix boosts specificity to (0,3,1) so this wins over the liquid-glass glass-gradient
+   override at (0,2,7) regardless of source order. */
+:root [data-route-kind="operational"] .bg-white:not([data-force-glass]) {
+  background: var(--ema-surface-solid) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* thead/th in operational routes always use solid surface */
+[data-route-kind="operational"] thead,
+[data-route-kind="operational"] th {
+  background-color: color-mix(in srgb, var(--ema-surface-solid) 96%, var(--ema-surface-2) 4%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Row hover in operational routes stays readable */
+[data-route-kind="operational"] tr:hover,
+[data-route-kind="operational"] .hover\:bg-slate-50:hover {
+  background-color: var(--ema-surface-2) !important;
+  backdrop-filter: none !important;
+}
+
+/* Section containers in operational routes: suppress heavy glass filters */
+[data-route-kind="operational"] section.rounded-lg,
+[data-route-kind="operational"] .ema-data-container {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:root[data-use-pointer-cursors="true"] button:not(:disabled),
+:root[data-use-pointer-cursors="true"] [role="button"]:not(:disabled),
+:root[data-use-pointer-cursors="true"] select:not(:disabled),
+:root[data-use-pointer-cursors="true"] label:not(:disabled),
+:root[data-use-pointer-cursors="true"] .ema-select:not(:disabled),
+:root[data-use-pointer-cursors="true"] .ema-btn-primary:not(:disabled),
+:root[data-use-pointer-cursors="true"] .ema-btn-secondary:not(:disabled),
+:root[data-use-pointer-cursors="true"] .ema-btn-ghost:not(:disabled),
+:root[data-use-pointer-cursors="true"] .ema-segmented-option:not(:disabled),
+:root[data-use-pointer-cursors="true"] .ema-toggle:not(:disabled),
+:root[data-use-pointer-cursors="true"] .ema-slider:not(:disabled) {
+  cursor: pointer;
+}
+
+:root[data-sidebar="compact"] .ema-sidebar-desktop {
+  width: 12rem;
+}
+
+:root[data-sidebar="iconOnly"] .ema-sidebar-desktop {
+  width: 4rem;
+}
+
+:root[data-sidebar="expanded"] .ema-sidebar-desktop,
+:root[data-sidebar="auto"] .ema-sidebar-desktop {
+  width: 16rem;
+}
+
+:root[data-sidebar="compact"] .ema-main {
+  padding-left: 12rem;
+}
+
+:root[data-sidebar="iconOnly"] .ema-main {
+  padding-left: 4rem;
+}
+
+:root[data-sidebar="expanded"] .ema-main,
+:root[data-sidebar="auto"] .ema-main {
+  padding-left: 16rem;
+}
+
+@media (width < 1024px) {
+  :root[data-sidebar] .ema-sidebar-desktop {
+    display: none;
+  }
+
+  :root[data-sidebar] .ema-main {
+    padding-left: 0;
+  }
+}
+
+:root[data-ui-scale] {
+  font-size: clamp(12px, 16px * var(--ema-ui-scale, 1), 22px);
+}
+
+:root[data-ui-scale] .ema-route-content {
+  font-size: clamp(0.75rem, 0.875rem * var(--ema-ui-scale, 1), 1.125rem);
+}
+
+/* ── Semantic label visibility ── */
+:root[data-show-prototype-labels="false"] .ema-prototype-label,
+:root[data-show-prototype-labels="false"] [class*="prototype"]:not([data-always-visible]) {
+  display: none;
+}
+
+:root[data-show-evidence-candidate-labels="false"] .ema-evidence-candidate-label,
+:root[data-show-evidence-candidate-labels="false"] [class*="evidence-candidate"]:not([data-always-visible]) {
+  display: none;
+}
+
+:root[data-show-advisory-labels="false"] .ema-advisory-label,
+:root[data-show-advisory-labels="false"] [class*="advisory"]:not([data-always-visible]) {
+  display: none;
+}
+
+:root[data-show-fallback-labels="false"] .ema-fallback-label,
+:root[data-show-fallback-labels="false"] [class*="fallback"]:not([data-always-visible]) {
+  display: none;
+}
+
+:root[data-show-local-demo-labels="false"] .ema-local-demo-label,
+:root[data-show-local-demo-labels="false"] [class*="local-demo"]:not([data-always-visible]),
+:root[data-show-local-demo-labels="false"] .ema-local-demo-badge {
+  display: none;
+}
+
+:root[data-local-demo-watermark="false"] .ema-local-demo-watermark {
+  display: none;
+}
+
+:root[data-diff-markers="symbols"] .ema-diff-color {
+  display: none;
+}
+
+:root[data-diff-markers="color"] .ema-diff-symbol {
+  display: none;
+}
+
+:root[data-diff-markers="both"] .ema-diff-color,
+:root[data-diff-markers="both"] .ema-diff-symbol {
+  display: inline-flex;
+}
+
+:root[data-chart="executive"] .ema-chart {
+  --ema-chart-bar-radius: 2px;
+  --ema-chart-bar-opacity: 0.9;
+  --ema-chart-grid-opacity: 0.08;
+  --ema-chart-label-size: 0.75rem;
+}
+
+:root[data-chart="dense"] .ema-chart {
+  --ema-chart-bar-radius: 0px;
+  --ema-chart-bar-opacity: 1;
+  --ema-chart-grid-opacity: 0.04;
+  --ema-chart-label-size: 0.65rem;
+}
+
+:root[data-chart="clean"] .ema-chart {
+  --ema-chart-bar-radius: 4px;
+  --ema-chart-bar-opacity: 0.82;
+  --ema-chart-grid-opacity: 0.12;
+  --ema-chart-label-size: 0.8rem;
+}
+
+:root[data-contrast] {
+  --ema-contrast-border-fg: calc(0.12 + 0.2 * var(--ema-contrast-level, 0.5));
+  --ema-contrast-text-fg: calc(1 + 0.2 * (var(--ema-contrast-level, 0.5) - 0.5));
+}
+
+:root[data-contrast] .ema-border,
+:root[data-contrast] [class*="border-line"],
+:root[data-contrast] [class*="border-emphasis"] {
+  border-color: color-mix(
+    in srgb,
+    var(--ema-border) calc(72% + 18% * var(--ema-contrast-level, 0.5)),
+    transparent
+  ) !important;
+}
+
+:root[data-contrast] .ema-text-muted,
+:root[data-contrast] [class*="text-muted"] {
+  opacity: calc(0.7 + 0.3 * var(--ema-contrast-level, 0.5));
+}
+
+:root[data-contrast][data-color-scheme="light"] {
+  --ema-contrast-border-fg: calc(0.14 + 0.22 * var(--ema-contrast-level, 0.5));
+  --ema-contrast-text-fg: calc(1 + 0.2 * (var(--ema-contrast-level, 0.5) - 0.5));
+}
+
+:root[data-contrast][data-color-scheme="dark"] {
+  --ema-contrast-border-fg: calc(0.12 + 0.18 * var(--ema-contrast-level, 0.5));
+  --ema-contrast-text-fg: calc(1 + 0.15 * (var(--ema-contrast-level, 0.5) - 0.5));
+}
+
+:root[data-contrast] .ema-text-muted,
+:root[data-contrast] [class*="text-muted"] {
+  opacity: calc(0.7 + 0.3 * var(--ema-contrast-level, 0.5));
+}
+
+:root[data-contrast][data-color-scheme="light"] {
+  --ema-border-opacity: calc(0.14 + 0.22 * var(--ema-contrast-level, 0.5));
+  --ema-border-strong-opacity: calc(0.24 + 0.34 * var(--ema-contrast-level, 0.5));
+}
+
+:root[data-contrast][data-color-scheme="dark"] {
+  --ema-border-opacity: calc(0.12 + 0.18 * var(--ema-contrast-level, 0.5));
+  --ema-border-strong-opacity: calc(0.22 + 0.28 * var(--ema-contrast-level, 0.5));
+}
+
+/* Sidebar/topbar navigation must never inherit faded contrast opacity. */
+:root[data-contrast] .ema-sidebar-desktop .ema-liquid-nav-item,
+:root[data-contrast] .ema-sidebar-desktop .ema-liquid-nav-item *,
+:root[data-contrast] .ema-sidebar-desktop .ema-liquid-selected,
+:root[data-contrast] .ema-sidebar-desktop .ema-liquid-selected *,
+:root[data-contrast] .ema-sidebar-desktop .sidebar-nav-text,
+:root[data-contrast] .ema-sidebar-desktop .ema-liquid-panel,
+:root[data-contrast] .ema-sidebar-desktop .ema-liquid-panel *,
+:root[data-contrast] .ema-sidebar-desktop [class*="text-muted"],
+:root[data-contrast] .ema-liquid-sidebar .ema-liquid-nav-item,
+:root[data-contrast] .ema-liquid-sidebar .ema-liquid-nav-item *,
+:root[data-contrast] .ema-liquid-sidebar .ema-liquid-selected,
+:root[data-contrast] .ema-liquid-sidebar .ema-liquid-selected *,
+:root[data-contrast] .ema-liquid-sidebar .sidebar-nav-text,
+:root[data-contrast] .ema-liquid-sidebar .ema-liquid-panel,
+:root[data-contrast] .ema-liquid-sidebar .ema-liquid-panel *,
+:root[data-contrast] .ema-liquid-topbar,
+:root[data-contrast] .ema-liquid-topbar *,
+:root[data-contrast] .ema-local-demo-watermark {
+  opacity: 1 !important;
+}
+
+/* Operational routes should stay readable even when Liquid Glass is enabled. */
+:root[data-route-kind="operational"] {
+  --ema-surface: var(--ema-surface-solid);
+  --ema-surface-2: color-mix(in srgb, var(--ema-surface-solid) 96%, var(--ema-bg) 4%);
+  --ema-surface-3: color-mix(in srgb, var(--ema-surface-solid) 92%, var(--ema-bg) 8%);
+  --ema-surface-glass: var(--ema-surface-solid);
+  --ema-readable-surface: var(--ema-surface-solid);
+  --ema-readable-surface-strong: color-mix(in srgb, var(--ema-surface-solid) 96%, var(--ema-bg) 4%);
+  --ema-data-surface: var(--ema-surface-solid);
+  --ema-table-surface: var(--ema-surface-solid);
+  --ema-log-surface: color-mix(in srgb, var(--ema-surface-solid) 98%, var(--ema-bg) 2%);
+  --ema-code-surface: color-mix(in srgb, var(--ema-surface-solid) 98%, var(--ema-bg) 2%);
+  --ema-badge-surface: color-mix(in srgb, var(--ema-surface-solid) 96%, var(--ema-bg) 4%);
+  --ema-text: #111827;
+  --ema-text-muted: #374151;
+  --ema-text-subtle: #4b5563;
+  --ema-text-soft: #4b5563;
+  --ema-text-on-tint: #111827;
+  --ema-text-code: #111827;
+  --ema-control-text: #111827;
+  --ema-control-text-muted: #374151;
+  --ema-control-placeholder: #4b5563;
+  --ema-data-text: #111827;
+  --ema-table-text: #111827;
+  --ema-sidebar-text: #111827;
+  --ema-selected-text: #111827;
+  --ema-glass-opacity: 1;
+  --ema-glass-opacity-subtle: 1;
+  --ema-glass-opacity-medium: 1;
+  --ema-glass-opacity-strong: 1;
+  --ema-glass-bg: var(--ema-surface-solid);
+  --ema-glass-bg-subtle: var(--ema-surface-solid);
+  --ema-glass-bg-medium: var(--ema-surface-solid);
+  --ema-glass-bg-strong: var(--ema-surface-solid);
+  --ema-glass-border: rgba(17, 24, 39, 0.12);
+  --ema-glass-border-strong: rgba(17, 24, 39, 0.18);
+  --ema-glass-rim: rgba(255, 255, 255, 0.72);
+  --ema-glass-shadow: 0 8px 18px rgba(16, 24, 40, 0.08);
+  --ema-glass-blur: 0px;
+  --ema-glass-saturate: 1;
+  --ema-glass-highlight-opacity: 0;
+  --ema-glass-edge-opacity: 0%;
+  --ema-glass-specular-opacity: 0;
+  --ema-rim-highlight-strength: 0;
+  --ema-background-depth: 0;
+  --ema-background-intensity: 0.35;
+  --ema-background-color-strength: 0;
+  --ema-background-mesh-opacity: 0;
+  --ema-background-refraction-opacity: 0;
+  --ema-pointer-light-strength: 0;
+  --ema-capsule-opacity: 1;
+  --ema-control-opacity: 1;
+  --ema-card-opacity: 1;
+  --ema-data-opacity: 1;
+}
+
+:root[data-route-kind="operational"][data-color-scheme="dark"] {
+  --ema-surface: var(--ema-surface-solid);
+  --ema-surface-2: color-mix(in srgb, var(--ema-surface-solid) 94%, var(--ema-bg) 6%);
+  --ema-surface-3: color-mix(in srgb, var(--ema-surface-solid) 88%, var(--ema-bg) 12%);
+  --ema-surface-glass: var(--ema-surface-solid);
+  --ema-readable-surface: var(--ema-surface-solid);
+  --ema-readable-surface-strong: color-mix(in srgb, var(--ema-surface-solid) 96%, var(--ema-bg) 4%);
+  --ema-data-surface: var(--ema-surface-solid);
+  --ema-table-surface: var(--ema-surface-solid);
+  --ema-log-surface: color-mix(in srgb, var(--ema-surface-solid) 98%, var(--ema-bg) 2%);
+  --ema-code-surface: color-mix(in srgb, var(--ema-surface-solid) 98%, var(--ema-bg) 2%);
+  --ema-badge-surface: color-mix(in srgb, var(--ema-surface-solid) 94%, var(--ema-bg) 6%);
+  --ema-text: #eaf4f1;
+  --ema-text-muted: #c0d7d0;
+  --ema-text-subtle: #a5c0b8;
+  --ema-text-soft: #a5c0b8;
+  --ema-text-on-tint: #eaf4f1;
+  --ema-text-code: #eaf4f1;
+  --ema-control-text: #eaf4f1;
+  --ema-control-text-muted: #c0d7d0;
+  --ema-control-placeholder: #a5c0b8;
+  --ema-data-text: #eaf4f1;
+  --ema-table-text: #eaf4f1;
+  --ema-sidebar-text: #eaf4f1;
+  --ema-selected-text: #eaf4f1;
+  --ema-glass-opacity: 1;
+  --ema-glass-opacity-subtle: 1;
+  --ema-glass-opacity-medium: 1;
+  --ema-glass-opacity-strong: 1;
+  --ema-glass-bg: var(--ema-surface-solid);
+  --ema-glass-bg-subtle: var(--ema-surface-solid);
+  --ema-glass-bg-medium: var(--ema-surface-solid);
+  --ema-glass-bg-strong: var(--ema-surface-solid);
+  --ema-glass-border: rgba(229, 245, 241, 0.12);
+  --ema-glass-border-strong: rgba(229, 245, 241, 0.18);
+  --ema-glass-rim: rgba(229, 245, 241, 0.74);
+  --ema-glass-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+  --ema-glass-blur: 0px;
+  --ema-glass-saturate: 1;
+  --ema-glass-highlight-opacity: 0;
+  --ema-glass-edge-opacity: 0%;
+  --ema-glass-specular-opacity: 0;
+  --ema-rim-highlight-strength: 0;
+  --ema-background-depth: 0;
+  --ema-background-intensity: 0.35;
+  --ema-background-color-strength: 0;
+  --ema-background-mesh-opacity: 0;
+  --ema-background-refraction-opacity: 0;
+  --ema-pointer-light-strength: 0;
+  --ema-capsule-opacity: 1;
+  --ema-control-opacity: 1;
+  --ema-card-opacity: 1;
+  --ema-data-opacity: 1;
+}
+
+/* Sidebar and topbar navigation labels must be fully opaque regardless of contrast level */
+:root[data-contrast] .ema-glass-nav [class*="text-muted"],
+:root[data-contrast] .ema-liquid-sidebar [class*="text-muted"],
+:root[data-contrast] .ema-liquid-topbar [class*="text-muted"],
+:root[data-contrast] .sidebar-nav-text,
+.sidebar-nav-text {
+  opacity: 1 !important;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  background: var(--ema-bg, #f8fafc);
+  color: var(--ema-text, #111827);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+#root {
+  isolation: isolate;
+  min-height: 100vh;
+}
+
+.ema-app-shell,
+.ema-material-page {
+  min-height: 100vh;
+  background: var(--ema-bg-gradient, var(--ema-bg, #f8fafc));
+  color: var(--ema-text, #111827);
+}
+
+.ema-app-shell {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.ema-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ema-route-content {
+  flex: 1 1 auto;
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  padding: var(--ema-page-padding-y, 24px) var(--ema-page-padding-x, 24px);
+  animation: ema-slide-in-up var(--ema-motion-duration-normal) var(--ema-motion-ease-standard);
+}
+
+@media (width >= 1024px) {
+  .ema-route-content {
+    padding: var(--ema-page-padding-y, 24px) calc(var(--ema-page-padding-x, 24px) + 8px);
+  }
+}
+
+/* Normalize section spacing inside route content using spacing variables */
+.ema-route-content > :is(.space-y-6) > * + * {
+  margin-top: calc(var(--ema-section-gap, 18px) * 1.2) !important;
+}
+
+.ema-route-content > :is(.space-y-5, .space-y-4) > * + * {
+  margin-top: var(--ema-section-gap, 18px) !important;
+}
+
+.ema-route-content .space-y-3 > * + * {
+  margin-top: var(--ema-row-gap, 10px) !important;
+}
+
+.ema-route-content :is(.gap-6, .gap-5, .gap-4) {
+  gap: var(--ema-section-gap, 18px) !important;
+}
+
+.ema-route-content :is(.gap-3, .gap-2) {
+  gap: var(--ema-row-gap, 10px) !important;
+}
+
+.ema-route-content > section.ema-card.p-5,
+.ema-route-content > section.ema-card.p-4 {
+  padding: var(--ema-card-padding, 14px);
+}
+
+.ema-route-content .ema-calibration-control {
+  padding: var(--ema-control-gap, 8px);
+}
+
+.ema-recovery-page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: var(--ema-bg, #f8fafc);
+  color: var(--ema-text, #111827);
+  padding: 1.5rem;
+}
+
+.ema-recovery-card {
+  width: min(100%, 44rem);
+  border: 1px solid var(--ema-border, rgba(15, 23, 42, 0.14));
+  border-radius: 1rem;
+  background: var(--ema-surface-solid, #ffffff);
+  box-shadow: var(--ema-shadow-lg, 0 16px 34px rgba(16, 24, 40, 0.12));
+  padding: 1.5rem;
+}
+
+.ema-recovery-card h1 {
+  margin-top: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.ema-recovery-card p {
+  margin-top: 0.75rem;
+  color: var(--ema-text-muted, #475569);
+}
+
+.ema-recovery-card pre {
+  margin: 1rem 0;
+  max-height: 12rem;
+  overflow: auto;
+  border-radius: 0.75rem;
+  background: #111827;
+  color: #f8fafc;
+  padding: 0.875rem;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+body {
+  margin: 0;
+  background: var(--ema-bg-gradient);
+  color: var(--ema-text);
+  font-family: var(--ema-ui-font, Inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+[data-motion="reduced"] * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-motion="reduced"] .motion-status-pulse,
+[data-motion="reduced"] .ema-anim-heartbeat,
+[data-motion="reduced"] .ema-anim-running,
+[data-motion="reduced"] .ema-anim-glass-shimmer-once::after,
+[data-motion="reduced"] .ema-anim-data-flow::after {
+  animation: none !important;
+}
+
+[data-density="compact"] {
+  --ema-control-h: 2.25rem;
+}
+
+[data-density="dense"] {
+  --ema-control-h: 2rem;
+}
+
+[data-density="comfortable"] {
+  --ema-control-h: 2.5rem;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--ema-control-text);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="password"],
+select,
+textarea {
+  background: var(--ema-control-bg);
+  border: 1px solid var(--ema-control-border);
+  color: var(--ema-control-text);
+}
+
+input[type="text"]:disabled,
+input[type="email"]:disabled,
+input[type="number"]:disabled,
+input[type="search"]:disabled,
+input[type="password"]:disabled,
+select:disabled,
+textarea:disabled {
+  background: var(--ema-control-disabled-bg);
+  color: var(--ema-control-disabled-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ema-control-placeholder);
+  opacity: 1;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--ema-focus-ring);
+}
+
+@layer components {
+  .ema-card {
+    background: color-mix(in srgb, var(--ema-surface) calc(var(--ema-card-opacity) * 100%), transparent);
+    border: 1px solid var(--ema-border);
+    border-radius: var(--ema-card-radius, 0.625rem);
+    box-shadow: var(--ema-shadow-sm);
+  }
+
+  [data-visual-theme="liquid-glass"] .ema-card:not([data-no-glass]),
+  [data-theme-variant="liquid_glass_light"] .ema-card:not([data-no-glass]),
+  [data-theme-variant="liquid_glass_dark"] .ema-card:not([data-no-glass]) {
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--ema-glass-highlight) 18%, transparent), transparent 42%),
+      var(--ema-glass-gradient-subtle);
+    border-color: var(--ema-glass-border);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    [data-visual-theme="liquid-glass"] .ema-card:not([data-no-glass]),
+    [data-theme-variant="liquid_glass_light"] .ema-card:not([data-no-glass]),
+    [data-theme-variant="liquid_glass_dark"] .ema-card:not([data-no-glass]) {
+      backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+      -webkit-backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+    }
+  }
+
+  .ema-card-muted {
+    background: var(--ema-surface-2);
+    border: 1px solid var(--ema-border);
+    border-radius: 0.5rem;
+  }
+
+  .ema-input {
+    border: 1px solid var(--ema-control-border);
+    background: var(--ema-control-bg);
+    color: var(--ema-control-text);
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    min-height: var(--ema-control-h, 2.5rem);
+  }
+
+  .ema-input:hover,
+  .ema-select:hover,
+  .ema-textarea:hover {
+    border-color: var(--ema-control-border-hover);
+    background: var(--ema-control-bg-hover);
+  }
+
+  .ema-input:focus-visible,
+  .ema-select:focus-visible,
+  .ema-textarea:focus-visible {
+    border-color: var(--ema-control-border-hover);
+    box-shadow: 0 0 0 3px var(--ema-control-focus);
+  }
+
+  .ema-select {
+    border: 1px solid var(--ema-control-border);
+    background:
+      linear-gradient(45deg, transparent 50%, var(--ema-control-text-muted) 50%) calc(100% - 18px) 50% / 5px 5px no-repeat,
+      linear-gradient(135deg, var(--ema-control-text-muted) 50%, transparent 50%) calc(100% - 13px) 50% / 5px 5px no-repeat,
+      var(--ema-control-bg);
+    color: var(--ema-control-text);
+    border-radius: 0.5rem;
+    min-height: var(--ema-control-h, 2.5rem);
+    appearance: none;
+    padding-right: 2.25rem;
+  }
+
+  .ema-select option {
+    background: var(--ema-surface-solid);
+    color: var(--ema-text);
+  }
+
+  .ema-textarea {
+    border: 1px solid var(--ema-control-border);
+    background: var(--ema-control-bg);
+    color: var(--ema-control-text);
+    border-radius: 0.5rem;
+  }
+
+  .ema-button,
+  .ema-btn-primary,
+  .ema-btn-secondary,
+  .ema-btn-ghost,
+  .ema-btn-glass {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: var(--ema-control-h, 2.5rem);
+    border-radius: 0.5rem;
+    transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+  }
+
+  .ema-segmented {
+    display: flex;
+    overflow: hidden;
+    border-radius: 999px;
+    border: 1px solid var(--ema-segment-border);
+    background: var(--ema-segment-bg);
+  }
+
+  .ema-segmented-option {
+    flex: 1 1 0%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ema-segment-text);
+    background: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    border-radius: 999px;
+  }
+
+  .ema-segmented-option:hover {
+    background: var(--ema-segment-hover-bg);
+  }
+
+  .ema-segmented-option.is-active {
+    background: var(--ema-glass-gradient-selected);
+    color: var(--ema-segment-active-text);
+    box-shadow: inset 0 1px 0 var(--ema-glass-top-edge), 0 6px 16px color-mix(in srgb, var(--ema-accent) 12%, transparent);
+  }
+
+  .ema-checkbox {
+    appearance: none;
+    border: 1px solid var(--ema-checkbox-border);
+    background: var(--ema-checkbox-bg);
+    border-radius: 0.25rem;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .ema-checkbox:checked {
+    background: var(--ema-checkbox-checked-bg);
+    border-color: var(--ema-checkbox-checked-bg);
+  }
+
+  .ema-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--ema-checkbox-checked-text);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .ema-slider {
+    accent-color: var(--ema-slider-fill);
+    min-height: 1.5rem;
+  }
+
+  .ema-field-label {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--ema-text) 82%, var(--ema-text-muted) 18%);
+  }
+
+  .ema-field-help {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--ema-text-subtle);
+  }
+
+  .ema-btn-primary {
+    background: linear-gradient(180deg, var(--ema-accent-2), var(--ema-accent));
+    color: var(--ema-accent-text, var(--ema-text-inverse));
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .ema-btn-secondary {
+    background: var(--ema-surface-3);
+    color: var(--ema-text);
+    border: 1px solid var(--ema-border);
+    border-radius: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .ema-btn-ghost {
+    background: transparent;
+    color: var(--ema-text);
+    border: 1px solid transparent;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .ema-btn-glass {
+    background: var(--ema-glass-gradient-capsule);
+    color: var(--ema-text);
+    border: 1px solid var(--ema-glass-border);
+    box-shadow: var(--ema-glass-inner-shadow);
+    padding: 0.55rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .ema-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--ema-border);
+    font-weight: 600;
+  }
+
+  .ema-pill-success {
+    color: var(--ema-success);
+    background: var(--ema-success-soft);
+    border-color: color-mix(in srgb, var(--ema-success) 34%, transparent);
+  }
+
+  .ema-pill-warning {
+    color: var(--ema-warning);
+    background: var(--ema-warning-soft);
+    border-color: color-mix(in srgb, var(--ema-warning) 34%, transparent);
+  }
+
+  .ema-pill-danger {
+    color: var(--ema-danger);
+    background: var(--ema-danger-soft);
+    border-color: color-mix(in srgb, var(--ema-danger) 34%, transparent);
+  }
+}
+
+/* Theme-safe overrides for existing utility-heavy pages */
+.bg-white {
+  background: var(--ema-surface) !important;
+}
+
+[data-visual-theme="liquid-glass"] .bg-white:not(pre):not(code):not(tbody):not(thead):not(tr):not(td):not(th):not([data-no-glass]),
+[data-theme-variant="liquid_glass_light"] .bg-white:not(pre):not(code):not(tbody):not(thead):not(tr):not(td):not(th):not([data-no-glass]),
+[data-theme-variant="liquid_glass_dark"] .bg-white:not(pre):not(code):not(tbody):not(thead):not(tr):not(td):not(th):not([data-no-glass]) {
+  background: var(--ema-glass-gradient-subtle) !important;
+  border-color: var(--ema-glass-border) !important;
+  box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow) !important;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-visual-theme="liquid-glass"] .bg-white:not(pre):not(code):not(tbody):not(thead):not(tr):not(td):not(th):not([data-no-glass]),
+  [data-theme-variant="liquid_glass_light"] .bg-white:not(pre):not(code):not(tbody):not(thead):not(tr):not(td):not(th):not([data-no-glass]),
+  [data-theme-variant="liquid_glass_dark"] .bg-white:not(pre):not(code):not(tbody):not(thead):not(tr):not(td):not(th):not([data-no-glass]) {
+    backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+    -webkit-backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+  }
+}
+
+pre,
+code,
+table,
+thead,
+tbody,
+tr,
+td,
+th,
+[data-no-glass],
+.ema-solid-data-surface,
+.ema-solid-json-surface,
+.ema-solid-log-surface,
+.ema-solid-table-surface,
+.ema-solid-warning-surface,
+.ema-solid-error-surface {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.bg-slate-50,
+.bg-slate-100 {
+  background-color: var(--ema-surface-2) !important;
+}
+
+.bg-slate-950 {
+  background-color: color-mix(in srgb, var(--ema-text) 90%, transparent) !important;
+}
+
+.text-slate-100 {
+  color: color-mix(in srgb, var(--ema-text-inverse) 90%, transparent) !important;
+}
+
+.text-ink {
+  color: var(--ema-text) !important;
+}
+
+.text-slate-500,
+.text-slate-600 {
+  color: var(--ema-text-muted) !important;
+}
+
+.text-slate-400 {
+  color: var(--ema-text-subtle) !important;
+}
+
+.text-slate-700 {
+  color: var(--ema-text) !important;
+}
+
+.border-line,
+.divide-line > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--ema-border) !important;
+}
+
+.shadow-panel {
+  box-shadow: var(--ema-shadow-sm) !important;
+}
+
+.bg-canvas {
+  background: var(--ema-bg) !important;
+}
+
+.bg-teal-50 {
+  background-color: var(--ema-accent-soft) !important;
+}
+
+.text-teal-700,
+.text-teal-600 {
+  color: var(--ema-accent) !important;
+}
+
+.border-teal-100,
+.border-teal-200,
+.border-teal-400,
+.border-teal-500 {
+  border-color: color-mix(in srgb, var(--ema-accent) 40%, transparent) !important;
+}
+
+.bg-teal-600,
+.bg-teal-500 {
+  background-color: var(--ema-accent) !important;
+}
+
+.text-teal-700 {
+  color: var(--ema-accent) !important;
+}
+
+.text-rose-600,
+.text-rose-700 {
+  color: var(--ema-danger) !important;
+}
+
+.bg-rose-50 {
+  background-color: var(--ema-danger-soft) !important;
+}
+
+.border-rose-300 {
+  border-color: color-mix(in srgb, var(--ema-danger) 40%, transparent) !important;
+}
+
+.text-amber-600,
+.text-amber-700,
+.text-amber-800,
+.text-amber-900 {
+  color: var(--ema-warning) !important;
+}
+
+.bg-amber-50 {
+  background-color: var(--ema-warning-soft) !important;
+}
+
+.border-amber-200 {
+  border-color: color-mix(in srgb, var(--ema-warning) 30%, transparent) !important;
+}
+
+.text-blue-500,
+.text-blue-600 {
+  color: var(--ema-info) !important;
+}
+
+.text-blue-800 {
+  color: var(--ema-info) !important;
+}
+
+.bg-blue-50 {
+  background-color: var(--ema-info-soft) !important;
+}
+
+.text-indigo-500 {
+  color: var(--ema-accent) !important;
+}
+
+.text-purple-500 {
+  color: var(--ema-advisory) !important;
+}
+
+.text-purple-700 {
+  color: var(--ema-advisory) !important;
+}
+
+.bg-purple-50 {
+  background-color: var(--ema-advisory-soft) !important;
+}
+
+.border-purple-200 {
+  border-color: color-mix(in srgb, var(--ema-advisory) 40%, transparent) !important;
+}
+
+.text-green-500 {
+  color: var(--ema-success) !important;
+}
+
+.text-emerald-700 {
+  color: var(--ema-success) !important;
+}
+
+.bg-emerald-50 {
+  background-color: var(--ema-success-soft) !important;
+}
+
+.border-emerald-200 {
+  border-color: color-mix(in srgb, var(--ema-success) 40%, transparent) !important;
+}
+
+.text-orange-700 {
+  color: var(--ema-warning) !important;
+}
+
+.bg-orange-50 {
+  background-color: var(--ema-warning-soft) !important;
+}
+
+.border-orange-200 {
+  border-color: color-mix(in srgb, var(--ema-warning) 40%, transparent) !important;
+}
+
+.text-teal-800,
+.text-teal-900 {
+  color: var(--ema-accent) !important;
+}
+
+.text-white {
+  color: var(--ema-text-inverse) !important;
+}
+
+/* ── Glass utility classes ── */
+@layer components {
+  .glass-surface,
+  .glass-panel,
+  .glass-surface-medium {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .glass-surface-subtle {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient-subtle);
+    box-shadow: var(--ema-glass-inner-shadow);
+  }
+
+  .glass-surface-strong,
+  .glass-hero {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--ema-glass-border-strong);
+    background: var(--ema-glass-gradient-strong);
+    box-shadow: var(--ema-glass-shadow), var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .glass-rim,
+  .glass-selected {
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--ema-glass-rim) 80%, transparent),
+      inset 1px 0 0 color-mix(in srgb, var(--ema-glass-rim) 48%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--ema-accent) 10%, transparent);
+  }
+
+  .glass-capsule,
+  .glass-control {
+    border-radius: 999px;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-capsule-surface);
+    box-shadow: var(--ema-glass-inner-shadow);
+  }
+
+  .glass-selected {
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--ema-accent) 46%, transparent);
+    background: var(--ema-selected-surface);
+    color: var(--ema-selected-text);
+  }
+
+  .glass-hoverable,
+  .motion-hover-lift {
+    transition:
+      transform var(--ema-motion-fast) var(--ema-motion-ease-standard),
+      box-shadow var(--ema-motion-fast) var(--ema-motion-ease-standard),
+      border-color var(--ema-motion-fast) var(--ema-motion-ease-standard),
+      background var(--ema-motion-fast) var(--ema-motion-ease-standard);
+  }
+
+  .glass-hoverable:hover,
+  .motion-hover-lift:hover {
+    transform: translateY(-1px);
+    border-color: var(--ema-glass-border-strong);
+    box-shadow: var(--ema-glass-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .data-safe-surface,
+  .table-safe-surface,
+  .row-safe-surface,
+  .readable-data {
+    border: 1px solid var(--ema-border);
+    background: var(--ema-data-surface);
+    color: var(--ema-text);
+    box-shadow: var(--ema-shadow-sm);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .code-safe-surface {
+    border: 1px solid var(--ema-border);
+    background: var(--ema-code-surface);
+    color: var(--ema-text-code);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .status-safe-surface {
+    border: 1px solid var(--ema-border);
+    background: var(--ema-status-surface);
+    color: var(--ema-text);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .warning-safe-surface { background: var(--ema-warning-surface); border-color: color-mix(in srgb, var(--ema-warning) 38%, transparent); }
+  .error-safe-surface { background: var(--ema-error-surface); border-color: color-mix(in srgb, var(--ema-danger) 38%, transparent); }
+  .success-safe-surface { background: var(--ema-success-surface); border-color: color-mix(in srgb, var(--ema-success) 38%, transparent); }
+
+  .focus-ring:focus-visible,
+  .focus-ring:focus-within {
+    outline: 2px solid var(--ema-ring);
+    outline-offset: 2px;
+  }
+
+  .readable-on-glass {
+    color: var(--ema-text);
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--ema-bg) 36%, transparent);
+  }
+
+  .truncate-safe {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .wrap-critical-label {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.2;
+  }
+
+  .motion-surface,
+  .motion-route-enter {
+    animation: ema-slide-in-up var(--ema-motion-normal) var(--ema-motion-ease-standard);
+  }
+
+  .motion-status-pulse {
+    animation: ema-heartbeat var(--ema-motion-heartbeat-duration) var(--ema-motion-ease-standard) infinite;
+  }
+
+  .motion-progress-fill {
+    transition: width var(--ema-motion-slow) var(--ema-motion-ease-standard);
+  }
+
+  .motion-drawer {
+    animation: ema-slide-in-up var(--ema-motion-normal) var(--ema-motion-ease-standard);
+  }
+
+  .motion-copy-success {
+    animation: ema-copy-success 1400ms var(--ema-motion-ease-standard) 1;
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    [data-visual-theme="liquid-glass"] .glass-surface,
+    [data-visual-theme="liquid-glass"] .glass-surface-subtle,
+    [data-visual-theme="liquid-glass"] .glass-surface-medium,
+    [data-visual-theme="liquid-glass"] .glass-surface-strong,
+    [data-visual-theme="liquid-glass"] .glass-panel,
+    [data-visual-theme="liquid-glass"] .glass-hero,
+    [data-theme-variant="liquid_glass_light"] .glass-surface,
+    [data-theme-variant="liquid_glass_light"] .glass-surface-subtle,
+    [data-theme-variant="liquid_glass_light"] .glass-surface-medium,
+    [data-theme-variant="liquid_glass_light"] .glass-surface-strong,
+    [data-theme-variant="liquid_glass_light"] .glass-panel,
+    [data-theme-variant="liquid_glass_light"] .glass-hero,
+    [data-theme-variant="liquid_glass_dark"] .glass-surface,
+    [data-theme-variant="liquid_glass_dark"] .glass-surface-subtle,
+    [data-theme-variant="liquid_glass_dark"] .glass-surface-medium,
+    [data-theme-variant="liquid_glass_dark"] .glass-surface-strong,
+    [data-theme-variant="liquid_glass_dark"] .glass-panel,
+    [data-theme-variant="liquid_glass_dark"] .glass-hero {
+      backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+      -webkit-backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+    }
+  }
+
+  .ema-glass-card {
+    position: relative;
+    isolation: isolate;
+    background: var(--ema-surface-solid);
+    border: 1px solid var(--ema-glass-border);
+    border-radius: var(--ema-glass-radius);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-shadow), var(--ema-glass-inner-shadow);
+    overflow: hidden;
+  }
+
+  .ema-glass-card > *,
+  .ema-glass-panel > *,
+  .ema-glass-preview > *,
+  .ema-glass-hero > *,
+  .ema-glass-toolbar > *,
+  .ema-glass-chip > *,
+  .ema-glass-capsule > *,
+  .ema-glass-modal > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ema-glass-card::before,
+  .ema-glass-panel::before,
+  .ema-glass-preview::before,
+  .ema-glass-hero::before,
+  .ema-glass-modal::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      linear-gradient(150deg, var(--ema-glass-highlight), transparent 46%),
+      radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--ema-glass-glow) calc(var(--ema-background-depth, 0.72) * 100%), transparent), transparent 42%),
+      radial-gradient(circle at 100% 12%, color-mix(in srgb, var(--ema-glass-highlight-2) calc(var(--ema-background-depth, 0.72) * 100%), transparent), transparent 38%);
+    opacity: calc(var(--ema-glass-highlight-opacity) * (0.7 + 0.3 * var(--ema-background-intensity, 0.85)));
+  }
+
+  .ema-glass-card::after,
+  .ema-glass-panel::after,
+  .ema-glass-preview::after,
+  .ema-glass-hero::after,
+  .ema-glass-modal::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--ema-glass-edge) var(--ema-glass-edge-opacity), transparent),
+      inset 1px 0 0 color-mix(in srgb, var(--ema-glass-edge) 58%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--ema-glass-chromatic) 50%, transparent);
+  }
+
+  [data-visual-theme="liquid-glass"] .ema-glass-card::after,
+  [data-theme-variant="liquid_glass_light"] .ema-glass-card::after,
+  [data-theme-variant="liquid_glass_dark"] .ema-glass-card::after,
+  [data-visual-theme="liquid-glass"] .ema-glass-panel::after,
+  [data-theme-variant="liquid_glass_light"] .ema-glass-panel::after,
+  [data-theme-variant="liquid_glass_dark"] .ema-glass-panel::after,
+  [data-visual-theme="liquid-glass"] .ema-glass-preview::after,
+  [data-theme-variant="liquid_glass_light"] .ema-glass-preview::after,
+  [data-theme-variant="liquid_glass_dark"] .ema-glass-preview::after {
+    background:
+      radial-gradient(
+        circle at var(--ema-pointer-x, 50%) var(--ema-pointer-y, 50%),
+        color-mix(in srgb, var(--ema-glass-highlight) 40%, transparent) 0%,
+        transparent 50%
+      );
+    opacity: calc(var(--ema-pointer-active, 0) * 0.35);
+    transition: opacity 0.25s ease;
+  }
+
+  [data-motion="reduced"] [data-visual-theme="liquid-glass"] .ema-glass-card::after,
+  [data-motion="reduced"] [data-theme-variant="liquid_glass_light"] .ema-glass-card::after,
+  [data-motion="reduced"] [data-theme-variant="liquid_glass_dark"] .ema-glass-card::after {
+    opacity: 0 !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ema-glass-card::after,
+    .ema-glass-panel::after,
+    .ema-glass-preview::after {
+      opacity: 0 !important;
+    }
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    [data-visual-theme="liquid-glass"] .ema-glass-card,
+    [data-theme-variant="liquid_glass_light"] .ema-glass-card,
+    [data-theme-variant="liquid_glass_dark"] .ema-glass-card,
+    [data-visual-theme="liquid-glass"] .ema-glass-panel,
+    [data-theme-variant="liquid_glass_light"] .ema-glass-panel,
+    [data-theme-variant="liquid_glass_dark"] .ema-glass-panel,
+    [data-visual-theme="liquid-glass"] .ema-glass-preview,
+    [data-theme-variant="liquid_glass_light"] .ema-glass-preview,
+    [data-theme-variant="liquid_glass_dark"] .ema-glass-preview,
+    [data-visual-theme="liquid-glass"] .ema-glass-hero,
+    [data-theme-variant="liquid_glass_light"] .ema-glass-hero,
+    [data-theme-variant="liquid_glass_dark"] .ema-glass-hero,
+    [data-visual-theme="liquid-glass"] .ema-glass-toolbar,
+    [data-visual-theme="liquid-glass"] .ema-glass-chip,
+    [data-visual-theme="liquid-glass"] .ema-glass-capsule,
+    [data-visual-theme="liquid-glass"] .ema-glass-modal {
+      background: var(--ema-glass-gradient);
+      backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+      -webkit-backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+    }
+  }
+
+  .ema-glass-panel {
+    position: relative;
+    isolation: isolate;
+    background: var(--ema-surface-solid);
+    border: 1px solid var(--ema-glass-border);
+    border-radius: 1rem;
+    box-shadow: var(--ema-shadow-glass);
+    overflow: hidden;
+  }
+
+  .ema-glass-nav {
+    background: var(--ema-surface-solid);
+    border-right: 1px solid var(--ema-border);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    [data-translucent-sidebar="true"] .ema-glass-nav,
+    [data-visual-theme="liquid-glass"] .ema-glass-nav {
+      /* Use a more opaque base so sidebar text stays readable over the ambient gradient */
+      background:
+        radial-gradient(circle at var(--ema-pointer-x, 50%) var(--ema-pointer-y, 50%), color-mix(in srgb, var(--ema-ambient-highlight) 8%, transparent), transparent 18rem),
+        linear-gradient(180deg,
+          color-mix(in srgb, var(--ema-surface-solid) 88%, var(--ema-glass-bg-subtle) 12%),
+          color-mix(in srgb, var(--ema-surface-solid) 82%, var(--ema-glass-bg-medium) 18%)
+        );
+      backdrop-filter: blur(calc(var(--ema-glass-blur) * 0.6)) saturate(var(--ema-glass-saturate));
+      -webkit-backdrop-filter: blur(calc(var(--ema-glass-blur) * 0.6)) saturate(var(--ema-glass-saturate));
+    }
+  }
+
+  .ema-glass-toolbar,
+  .ema-glass-chip,
+  .ema-glass-capsule,
+  .ema-glass-preview,
+  .ema-glass-modal,
+  .ema-glass-hero,
+  .ema-glass-layer {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-surface-solid);
+    box-shadow: var(--ema-glass-inner-shadow);
+  }
+
+  .ema-glass-toolbar,
+  .ema-glass-capsule,
+  .ema-glass-chip {
+    border-radius: 999px;
+    background: var(--ema-glass-gradient-capsule);
+  }
+
+  .ema-glass-preview,
+  .ema-glass-hero,
+  .ema-glass-modal,
+  .ema-glass-layer {
+    border-radius: var(--ema-glass-radius);
+    overflow: hidden;
+  }
+
+  .ema-material-page {
+    min-height: 100%;
+    background: var(--ema-bg-gradient);
+    position: relative;
+    isolation: isolate;
+  }
+
+  .ema-material-background {
+    background: var(--ema-bg-gradient);
+  }
+
+  .ema-material-grid {
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--ema-border) 38%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--ema-border) 38%, transparent) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-position: center;
+  }
+
+  .ema-liquid-hero,
+  .ema-liquid-card,
+  .ema-liquid-panel,
+  .ema-liquid-preview {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .ema-liquid-hero,
+  .ema-liquid-preview {
+    border-radius: var(--ema-glass-radius);
+    overflow: hidden;
+  }
+
+  .ema-liquid-card,
+  .ema-liquid-panel {
+    border-radius: 0.75rem;
+  }
+
+  .ema-liquid-capsule,
+  .ema-liquid-toolbar,
+  .ema-liquid-chip,
+  .ema-liquid-button,
+  .ema-liquid-selected {
+    border-radius: 999px;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient-capsule);
+    box-shadow: var(--ema-glass-inner-shadow);
+    transition:
+      transform var(--ema-motion-duration-fast) var(--ema-motion-ease-standard),
+      border-color var(--ema-motion-duration-fast) var(--ema-motion-ease-standard),
+      box-shadow var(--ema-motion-duration-fast) var(--ema-motion-ease-standard),
+      background var(--ema-motion-duration-fast) var(--ema-motion-ease-standard);
+  }
+
+  .ema-liquid-button:hover,
+  .ema-liquid-chip:hover,
+  .ema-liquid-capsule:hover,
+  .ema-liquid-nav-item:hover {
+    transform: translateY(-1px);
+    border-color: var(--ema-glass-border-strong);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .ema-liquid-selected {
+    background: var(--ema-glass-gradient-selected);
+    border-color: color-mix(in srgb, var(--ema-accent) 44%, transparent);
+    color: var(--ema-selected-text);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--ema-glass-edge) 78%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--ema-accent) 12%, transparent),
+      var(--ema-glass-bottom-shadow);
+  }
+
+  .ema-liquid-sidebar,
+  .ema-liquid-topbar {
+    background:
+      radial-gradient(circle at var(--ema-pointer-x, 50%) var(--ema-pointer-y, 50%), color-mix(in srgb, var(--ema-ambient-highlight) 12%, transparent), transparent 20rem),
+      var(--ema-glass-gradient-subtle);
+    border-color: var(--ema-glass-border);
+  }
+
+  .ema-liquid-topbar {
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+    backdrop-filter: blur(calc(var(--ema-glass-blur) * 0.75)) saturate(var(--ema-glass-saturate));
+    -webkit-backdrop-filter: blur(calc(var(--ema-glass-blur) * 0.75)) saturate(var(--ema-glass-saturate));
+  }
+
+  .ema-liquid-sidebar {
+    box-shadow: var(--ema-glass-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .ema-liquid-stack {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .ema-liquid-orb {
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 20%, var(--ema-glass-highlight), var(--ema-glass-glow) 42%, transparent 72%);
+    opacity: var(--ema-bg-mesh-opacity);
+    pointer-events: none;
+  }
+
+  .ema-solid-data-surface,
+  .ema-solid-json-surface,
+  .ema-solid-table-surface {
+    background: var(--ema-surface-solid) !important;
+    border: 1px solid var(--ema-border);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .ema-solid-data-surface,
+  .ema-solid-log-surface,
+  .ema-solid-table-surface,
+  .ema-dense-surface,
+  table,
+  tbody,
+  thead,
+  tr,
+  td,
+  th {
+    background-color: var(--ema-table-surface);
+  }
+
+  pre,
+  code,
+  .ema-solid-json-surface,
+  .ema-solid-log-surface {
+    background-color: var(--ema-code-surface);
+    color: var(--ema-text-code);
+  }
+
+  .ema-solid-warning-surface,
+  .warning-safe-surface {
+    background: var(--ema-warning-surface) !important;
+    color: var(--ema-text-on-tint);
+  }
+
+  .ema-solid-error-surface,
+  .error-safe-surface {
+    background: var(--ema-error-surface) !important;
+    color: var(--ema-text-on-tint);
+  }
+
+  .ema-semantic-success-surface,
+  .success-safe-surface {
+    background: var(--ema-success-surface) !important;
+    color: var(--ema-text-on-tint);
+  }
+
+  .ema-solid-warning-surface {
+    background: var(--ema-warning-soft) !important;
+    border: 1px solid color-mix(in srgb, var(--ema-warning) 34%, transparent);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .ema-solid-error-surface {
+    background: var(--ema-danger-soft) !important;
+    border: 1px solid color-mix(in srgb, var(--ema-danger) 34%, transparent);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .ema-semantic-warning-surface,
+  .ema-semantic-error-surface,
+  .ema-semantic-info-surface,
+  .ema-semantic-success-surface {
+    border-radius: 0.75rem;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .ema-semantic-warning-surface {
+    background: var(--ema-glass-gradient-warning);
+    border: 1px solid color-mix(in srgb, var(--ema-warning) 36%, transparent);
+  }
+
+  .ema-semantic-error-surface {
+    background: var(--ema-glass-gradient-danger);
+    border: 1px solid color-mix(in srgb, var(--ema-danger) 36%, transparent);
+  }
+
+  .ema-semantic-info-surface {
+    background: var(--ema-glass-gradient-info);
+    border: 1px solid color-mix(in srgb, var(--ema-info) 36%, transparent);
+  }
+
+  .ema-semantic-success-surface {
+    background: var(--ema-glass-gradient-success);
+    border: 1px solid color-mix(in srgb, var(--ema-success) 36%, transparent);
+  }
+
+  .ema-route-gradient {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .ema-route-gradient::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 140% 55% at 12% 6%, color-mix(in srgb, var(--ema-liquid-cool-glow, var(--ema-bg-radial-2)) calc(100% * var(--ema-background-intensity, 0.85)), transparent) 0, transparent 44rem),
+      radial-gradient(ellipse 120% 50% at 88% 4%, color-mix(in srgb, var(--ema-liquid-warm-glow, var(--ema-bg-radial-3)) calc(100% * var(--ema-background-intensity, 0.85)), transparent) 0, transparent 38rem),
+      radial-gradient(ellipse 80% 40% at 50% 50%, color-mix(in srgb, var(--ema-liquid-neutral-glow, rgba(79, 100, 116, 0.06)) calc(100% * var(--ema-background-intensity, 0.85)), transparent) 0, transparent 36rem),
+      var(--ema-route-bg-gradient, transparent);
+    opacity: var(--ema-bg-mesh-opacity);
+  }
+
+  [data-visual-theme="liquid-glass"] .ema-route-gradient::before,
+  [data-theme-variant="liquid_glass_light"] .ema-route-gradient::before,
+  [data-theme-variant="liquid_glass_dark"] .ema-route-gradient::before {
+    opacity: clamp(0, calc(var(--ema-bg-mesh-opacity) * 2.4 * var(--ema-background-intensity, 0.85)), 0.7);
+  }
+
+  /* ── App ambient depth layer ── */
+  .ema-app-ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    will-change: background-position;
+    background:
+      radial-gradient(ellipse 120% 50% at 14% 6%, color-mix(in srgb, var(--ema-ambient-a) 100%, transparent) 0, transparent 38rem),
+      radial-gradient(ellipse 100% 42% at 86% 12%, color-mix(in srgb, var(--ema-ambient-b) 100%, transparent) 0, transparent 34rem),
+      radial-gradient(ellipse 70% 34% at 50% 54%, color-mix(in srgb, var(--ema-ambient-c) 100%, transparent) 0, transparent 30rem),
+      radial-gradient(ellipse 80% 36% at 68% 68%, color-mix(in srgb, var(--ema-ambient-c) 60%, transparent) 0, transparent 24rem);
+  }
+
+  [data-color-scheme="dark"] .ema-app-ambient {
+    background:
+      radial-gradient(ellipse 120% 50% at 12% 4%, color-mix(in srgb, var(--ema-ambient-a) 100%, transparent) 0, transparent 36rem),
+      radial-gradient(ellipse 100% 42% at 88% 10%, color-mix(in srgb, var(--ema-ambient-b) 100%, transparent) 0, transparent 32rem),
+      radial-gradient(ellipse 70% 34% at 48% 52%, color-mix(in srgb, var(--ema-ambient-c) 100%, transparent) 0, transparent 28rem),
+      radial-gradient(ellipse 80% 36% at 72% 66%, color-mix(in srgb, var(--ema-ambient-c) 60%, transparent) 0, transparent 22rem);
+  }
+
+  [data-visual-theme="liquid-glass"] .ema-app-ambient,
+  [data-theme-variant="liquid_glass_light"] .ema-app-ambient,
+  [data-theme-variant="liquid_glass_dark"] .ema-app-ambient {
+    /* ema-app-ambient is a sibling of [data-route-kind], not a descendant — it reads
+       --ema-calibration-scale from :root. Cap with clamp() so extreme QA mode (scale=2.2)
+       cannot push opacity above 0.75 and create an opaque colored fog over all routes. */
+    opacity: clamp(0, calc(var(--ema-background-depth, 0.72) * var(--ema-background-intensity, 0.85) * 1.1 * var(--ema-calibration-scale, 1)), 0.75);
+    filter: saturate(calc(0.6 + 0.4 * var(--ema-background-vividness, 0.7)));
+  }
+
+  .ema-app-ambient::before,
+  .ema-app-ambient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .ema-app-ambient::before {
+    background-image: var(--ema-grid-pattern);
+    background-size: 48px 48px;
+    opacity: calc(var(--ema-ambient-grid-opacity) * (0.5 + 0.5 * var(--ema-background-mesh-opacity, 0.18)));
+    mask-image: linear-gradient(180deg, black 0%, transparent 88%);
+  }
+
+  .ema-app-ambient::after {
+    background-image: var(--ema-noise-pattern);
+    background-size: 18px 18px, 24px 24px;
+    opacity: var(--ema-ambient-noise-opacity);
+  }
+
+  /* ── Ambient drift animation for dynamic background ── */
+  :root[data-ambient-motion]:not([data-ambient-motion="off"]) .ema-app-ambient {
+    animation: ema-ambient-drift var(--ema-ambient-drift-duration, 50s) var(--ema-motion-ease-standard) infinite alternate;
+  }
+
+  :root[data-ambient-motion]:not([data-ambient-motion="off"]) .ema-app-ambient::before {
+    animation: ema-grid-shift var(--ema-ambient-refraction-duration, 40s) linear infinite;
+  }
+
+  :root[data-ambient-motion]:not([data-ambient-motion="off"]) .ema-app-ambient::after {
+    animation: ema-noise-breathe var(--ema-ambient-hue-duration, 70s) var(--ema-motion-ease-standard) infinite alternate;
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    [data-visual-theme="high-contrast"] .ema-route-gradient::before,
+    [data-glass="none"] .ema-route-gradient::before {
+      display: none;
+    }
+    [data-visual-theme="high-contrast"] .ema-app-ambient,
+    [data-glass="none"] .ema-app-ambient {
+      display: none;
+    }
+    [data-visual-theme="high-contrast"] .ema-pointer-light,
+    [data-glass="none"] .ema-pointer-light {
+      display: none;
+    }
+  }
+
+  [data-visual-theme="high-contrast"] .ema-route-gradient::before,
+  [data-visual-theme="high-contrast"] .ema-app-ambient,
+  [data-visual-theme="high-contrast"] .ema-pointer-light,
+  [data-glass="none"] .ema-route-gradient::before,
+  [data-glass="none"] .ema-app-ambient,
+  [data-glass="none"] .ema-pointer-light {
+    display: none;
+  }
+
+  /* ── Refraction field — page-level ambient depth behind glass ── */
+  .refraction-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .refraction-field::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        108deg,
+        transparent 0px,
+        transparent 62px,
+        color-mix(in srgb, var(--ema-ambient-a) calc(var(--ema-background-intensity, 0.85) * var(--ema-background-refraction-opacity, 0.25) * 24%), transparent) 62px,
+        color-mix(in srgb, var(--ema-ambient-a) calc(var(--ema-background-intensity, 0.85) * var(--ema-background-refraction-opacity, 0.25) * 24%), transparent) 63px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 44px,
+        color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-intensity, 0.85) * var(--ema-background-refraction-opacity, 0.25) * 20%), transparent) 44px,
+        color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-intensity, 0.85) * var(--ema-background-refraction-opacity, 0.25) * 20%), transparent) 45px
+      );
+    opacity: calc(0.6 * var(--ema-calibration-scale, 1));
+  }
+
+  .refraction-field::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--ema-grid-pattern);
+    background-size: 38px 38px;
+    opacity: calc(var(--ema-ambient-grid-opacity) * var(--ema-background-intensity, 0.85) * var(--ema-background-mesh-opacity, 0.18) * 4);
+  }
+
+  :root[data-ambient-motion]:not([data-ambient-motion="off"]) .refraction-field::before {
+    animation: ema-refraction-shift var(--ema-ambient-refraction-duration, 40s) var(--ema-motion-ease-standard) infinite alternate;
+  }
+
+  [data-visual-theme="high-contrast"] .refraction-field,
+  [data-glass="none"] .refraction-field {
+    display: none;
+  }
+
+  /* ── Gradient orb field ── */
+  .ema-gradient-orb-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle 28rem at 22% 8%, color-mix(in srgb, var(--ema-ambient-a) calc(var(--ema-background-color-strength, 0.85) * 38%), transparent), transparent 60%),
+      radial-gradient(circle 26rem at 82% 14%, color-mix(in srgb, var(--ema-ambient-b) calc(var(--ema-background-color-strength, 0.85) * 32%), transparent), transparent 58%),
+      radial-gradient(circle 22rem at 46% 48%, color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-color-strength, 0.85) * 26%), transparent), transparent 54%),
+      radial-gradient(circle 18rem at 74% 62%, color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-color-strength, 0.85) * 18%), transparent), transparent 48%);
+    filter: saturate(calc(var(--ema-background-vividness, 0.7) * 0.6));
+    opacity: calc(var(--ema-calibration-scale, 1) * 0.85);
+  }
+
+  /* ── Technical mesh layer ── */
+  .ema-technical-mesh {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--ema-grid-pattern);
+    background-size: 42px 42px;
+    opacity: calc(var(--ema-background-mesh-opacity, 0.18) * 0.6);
+    mask-image: linear-gradient(180deg, black 0%, transparent 75%);
+  }
+
+  /* ── Pointer-responsive optical light ── */
+  .ema-pointer-light {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(
+        circle at var(--ema-pointer-x, 50%) var(--ema-pointer-y, 50%),
+        rgba(255, 255, 255, 0.06) 0%,
+        transparent 42%
+      );
+    background:
+      radial-gradient(
+        circle at var(--ema-pointer-x, 50%) var(--ema-pointer-y, 50%),
+        color-mix(in srgb, var(--ema-pointer-light) 58%, rgba(255, 255, 255, 0.10)) 0%,
+        color-mix(in srgb, var(--ema-pointer-light) 18%, transparent) 18%,
+        transparent 42%
+      );
+  }
+
+  [data-color-scheme="dark"] .ema-pointer-light {
+    background:
+      radial-gradient(
+        circle at var(--ema-pointer-x, 50%) var(--ema-pointer-y, 50%),
+        rgba(91, 184, 168, 0.08) 0%,
+        rgba(40, 130, 115, 0.05) 18%,
+        transparent 45%
+      );
+  }
+
+  [data-visual-theme="liquid-glass"] .ema-pointer-light,
+  [data-theme-variant="liquid_glass_light"] .ema-pointer-light,
+  [data-theme-variant="liquid_glass_dark"] .ema-pointer-light {
+    opacity: calc(var(--ema-pointer-active, 0) * var(--ema-pointer-light-strength, 0.45) * 0.9);
+  }
+
+  [data-visual-theme="liquid-glass"][data-motion="reduced"] .ema-pointer-light,
+  [data-theme-variant="liquid_glass_light"][data-motion="reduced"] .ema-pointer-light,
+  [data-theme-variant="liquid_glass_dark"][data-motion="reduced"] .ema-pointer-light {
+    opacity: 0 !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ema-pointer-light {
+      opacity: 0 !important;
+    }
+  }
+
+  /* ── P3–P4: LiquidGlass variant pointer-light opacity tuning ── */
+  [data-theme-variant="liquid_glass_dark"] .ema-pointer-light {
+    opacity: calc(var(--ema-pointer-active, 0) * var(--ema-pointer-intensity, 0.4) * var(--ema-pointer-light-strength, 0.45));
+  }
+
+  [data-theme-variant="liquid_glass_light"] .ema-pointer-light {
+    opacity: calc(var(--ema-pointer-active, 0) * var(--ema-pointer-intensity, 0.55) * var(--ema-pointer-light-strength, 0.45));
+  }
+
+  /* ── P5: Dense data protection — scoped to explicit data contexts ── */
+  :root[data-density="dense"] .ema-data-grid .ema-glass-card,
+  :root[data-density="dense"] .ema-data-grid .ema-glass-panel,
+  :root[data-density="dense"] .ema-data-grid .ema-glass-preview,
+  :root[data-density="dense"] .data-safe-surface,
+  :root[data-density="dense"] .table-safe-surface,
+  :root[data-density="dense"] .row-safe-surface,
+  :root[data-density="dense"] .code-safe-surface {
+    background: var(--ema-data-surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  :root[data-density="dense"] .ema-data-grid .ema-glass-card::before,
+  :root[data-density="dense"] .ema-data-grid .ema-glass-panel::before,
+  :root[data-density="dense"] .ema-data-grid .ema-glass-preview::before,
+  :root[data-density="dense"] .data-safe-surface::before,
+  :root[data-density="dense"] .table-safe-surface::before,
+  :root[data-density="dense"] .row-safe-surface::before,
+  :root[data-density="dense"] .code-safe-surface::before {
+    display: none;
+  }
+
+  :root[data-density="dense"] .ema-data-grid .ema-glass-card::after,
+  :root[data-density="dense"] .ema-data-grid .ema-glass-panel::after,
+  :root[data-density="dense"] .ema-data-grid .ema-glass-preview::after,
+  :root[data-density="dense"] .data-safe-surface::after,
+  :root[data-density="dense"] .table-safe-surface::after,
+  :root[data-density="dense"] .row-safe-surface::after,
+  :root[data-density="dense"] .code-safe-surface::after {
+    opacity: 0 !important;
+  }
+
+  :root[data-density="dense"] .ema-pointer-light {
+    opacity: 0 !important;
+  }
+
+  /* ── P6: Semantic label / status surface protection ── */
+  .ema-semantic-warning-surface,
+  .ema-semantic-error-surface,
+  .ema-semantic-info-surface,
+  .ema-semantic-success-surface,
+  .ema-solid-data-surface,
+  .ema-solid-json-surface,
+  .ema-solid-table-surface,
+  .ema-solid-warning-surface,
+  .ema-solid-error-surface,
+  .ema-status-badge,
+  .ema-badge {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── P7: Controls and navigation protection ── */
+  .ema-button,
+  .ema-btn-primary,
+  .ema-btn-secondary,
+  .ema-btn-ghost,
+  .ema-btn-glass,
+  .ema-segmented,
+  .ema-input,
+  .ema-select,
+  .ema-textarea,
+  .ema-glass-nav,
+  .ema-liquid-topbar,
+  .ema-liquid-toolbar,
+  .ema-liquid-chip,
+  .ema-liquid-capsule {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ema-material-background,
+  .ema-app-background {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ema-liquid-kpi,
+  .ema-liquid-metric,
+  .ema-liquid-milestone,
+  .ema-liquid-section,
+  .ema-liquid-filterbar,
+  .ema-liquid-tabbar,
+  .ema-liquid-empty-state,
+  .ema-liquid-map-shell,
+  .ema-liquid-viewer-shell,
+  .ema-liquid-suggestion-panel,
+  .ema-liquid-document-card,
+  .ema-liquid-settings-card,
+  .ema-liquid-health-card {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient-subtle);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .ema-liquid-kpi,
+  .ema-liquid-metric,
+  .ema-liquid-milestone,
+  .ema-liquid-section,
+  .ema-liquid-empty-state,
+  .ema-liquid-map-shell,
+  .ema-liquid-viewer-shell,
+  .ema-liquid-suggestion-panel,
+  .ema-liquid-document-card,
+  .ema-liquid-settings-card,
+  .ema-liquid-health-card {
+    border-radius: 0.75rem;
+  }
+
+  .ema-liquid-filterbar,
+  .ema-liquid-tabbar {
+    border-radius: 999px;
+  }
+
+  .ema-map-viewport {
+    position: relative;
+    min-height: clamp(24rem, 52vw, 38rem);
+    overflow: hidden;
+    border-radius: var(--ema-glass-radius);
+    border: 1px solid var(--ema-glass-border);
+    background:
+      radial-gradient(circle at 50% 15%, color-mix(in srgb, var(--ema-accent) 14%, transparent), transparent 40%),
+      radial-gradient(ellipse at 50% 75%, color-mix(in srgb, var(--ema-info) 10%, transparent), transparent 50%),
+      var(--ema-bg-elevated);
+    box-shadow: var(--ema-glass-bottom-shadow), inset 0 1px 0 var(--ema-glass-top-edge);
+  }
+
+  .ema-map-bg {
+    fill: color-mix(in srgb, var(--ema-bg-elevated) 92%, var(--ema-surface-3));
+  }
+
+  .ema-map-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ema-usa-map-state {
+    fill: color-mix(in srgb, var(--ema-accent-soft) 20%, var(--ema-surface-2) 80%);
+    stroke: color-mix(in srgb, var(--ema-accent) 52%, var(--ema-border));
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+    transition: fill var(--ema-motion-duration-fast) var(--ema-motion-ease-standard);
+    filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--ema-text-muted) 6%, transparent));
+  }
+
+  .ema-usa-map-state:hover {
+    fill: color-mix(in srgb, var(--ema-accent-soft) 38%, var(--ema-surface-2) 62%);
+  }
+
+  .ema-map-usa-outline {
+    display: none;
+  }
+
+  .ema-map-orbit-gradient ellipse {
+    fill: color-mix(in srgb, var(--ema-accent-soft) 42%, transparent);
+    stroke: color-mix(in srgb, var(--ema-accent) 24%, transparent);
+    stroke-width: 1.5;
+  }
+
+  .ema-map-gridline path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--ema-text-muted) 28%, transparent);
+    stroke-width: 1;
+    stroke-dasharray: 8 10;
+  }
+
+  [data-motion="reduced"] .ema-usa-map-state {
+    transition: none;
+  }
+
+  .ema-map-marker {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .ema-map-marker:focus-visible .ema-map-marker-ring {
+    stroke: var(--ema-ring);
+    stroke-width: 3;
+  }
+
+  .ema-map-marker-ring {
+    fill: color-mix(in srgb, var(--ema-accent) 14%, transparent);
+    stroke: var(--ema-accent);
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--ema-text-muted) 16%, transparent));
+  }
+
+  .ema-map-marker-core {
+    fill: var(--ema-accent);
+    stroke: var(--ema-selected-text);
+    stroke-width: 1.5;
+  }
+
+  .ema-map-marker-demo-ring {
+    fill: none;
+    stroke: var(--ema-text-muted);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 4;
+  }
+
+  .ema-map-marker.is-selected .ema-map-marker-ring {
+    stroke-width: 3;
+    filter: drop-shadow(0 0 12px var(--ema-accent));
+  }
+
+  .ema-map-marker--on-track .ema-map-marker-core,
+  .ema-map-marker--on-track.ema-map-legend-dot {
+    fill: var(--ema-success);
+  }
+
+  .ema-map-marker--on-track .ema-map-marker-ring {
+    stroke: var(--ema-success);
+  }
+
+  .ema-map-marker--in-execution .ema-map-marker-core,
+  .ema-map-marker--in-execution.ema-map-legend-dot {
+    fill: var(--ema-info);
+  }
+
+  .ema-map-marker--in-execution .ema-map-marker-ring {
+    stroke: var(--ema-info);
+  }
+
+  .ema-map-marker--behind .ema-map-marker-core,
+  .ema-map-marker--behind.ema-map-legend-dot {
+    fill: var(--ema-warning);
+  }
+
+  .ema-map-marker--behind .ema-map-marker-ring {
+    stroke: var(--ema-warning);
+  }
+
+  .ema-map-marker--blocked .ema-map-marker-core,
+  .ema-map-marker--blocked.ema-map-legend-dot {
+    fill: var(--ema-danger);
+  }
+
+  .ema-map-marker--blocked .ema-map-marker-ring {
+    stroke: var(--ema-danger);
+  }
+
+  .ema-map-marker--historical .ema-map-marker-core,
+  .ema-map-marker--historical.ema-map-legend-dot {
+    fill: var(--ema-text-muted);
+  }
+
+  .ema-map-marker--demo .ema-map-marker-core,
+  .ema-map-marker--demo.ema-map-legend-dot {
+    fill: var(--ema-advisory);
+  }
+
+  .ema-map-marker--synthetic.ema-map-legend-dot {
+    background: transparent;
+    border: 1px dashed var(--ema-text-muted);
+  }
+
+  .ema-map-popover,
+  .ema-map-legend {
+    border-radius: 0.875rem;
+    border: 1px solid var(--ema-glass-border);
+    background: color-mix(in srgb, var(--ema-surface-solid) 90%, transparent);
+    box-shadow: var(--ema-glass-bottom-shadow);
+  }
+
+  .ema-map-popover {
+    padding: 0.875rem;
+  }
+
+  .ema-map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    padding: 0.625rem;
+    font-size: 0.75rem;
+    color: var(--ema-text-muted);
+  }
+
+  .ema-map-legend-dot {
+    display: inline-flex;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 999px;
+    background: var(--ema-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ema-accent) 10%, transparent);
+  }
+
+  .ema-map-controls,
+  .ema-map-pan-controls {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ema-map-controls {
+    left: 0.75rem;
+    top: 0.75rem;
+  }
+
+  .ema-map-pan-controls {
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .ema-map-control {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    border: 1px solid var(--ema-control-border);
+    background: color-mix(in srgb, var(--ema-control-bg) 92%, transparent);
+    color: var(--ema-control-text);
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: transform var(--ema-motion-duration-fast) var(--ema-motion-ease-standard), border-color var(--ema-motion-duration-fast) var(--ema-motion-ease-standard), background var(--ema-motion-duration-fast) var(--ema-motion-ease-standard);
+  }
+
+  .ema-map-control:hover {
+    transform: translateY(-1px);
+    border-color: var(--ema-control-border-hover);
+    background: var(--ema-control-bg-hover);
+  }
+
+  .ema-map-control:focus-visible,
+  .ema-map-project-row:focus-visible {
+    outline: 2px solid var(--ema-ring);
+    outline-offset: 2px;
+  }
+
+  .ema-map-project-row {
+    display: flex;
+    min-height: 3.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.15rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--ema-glass-border);
+    background: color-mix(in srgb, var(--ema-surface-2) 86%, transparent);
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    font-size: 0.75rem;
+  }
+
+  .ema-liquid-tab,
+  .ema-liquid-nav-item,
+  .ema-liquid-badge {
+    border-radius: 999px;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient-capsule);
+  }
+
+  .ema-anim-hover-lift {
+    transition: transform var(--ema-motion-duration-normal) var(--ema-motion-ease-standard), box-shadow var(--ema-motion-duration-normal) var(--ema-motion-ease-standard);
+  }
+
+  .ema-anim-hover-lift:hover {
+    transform: var(--ema-motion-scale-hover);
+    box-shadow: var(--ema-shadow-md);
+  }
+
+  .ema-overlay-glass {
+    background: color-mix(in srgb, var(--ema-bg) 70%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .ema-stepper-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 2px solid var(--ema-border);
+    background: var(--ema-surface);
+    color: var(--ema-text-muted);
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ema-stepper-node-active {
+    border-color: var(--ema-accent);
+    background: var(--ema-accent-soft);
+    color: var(--ema-accent);
+  }
+
+  .ema-stepper-node-completed {
+    border-color: var(--ema-success);
+    background: var(--ema-success-soft);
+    color: var(--ema-success);
+  }
+
+  .ema-stepper-node-failed {
+    border-color: var(--ema-danger);
+    background: var(--ema-danger-soft);
+    color: var(--ema-danger);
+  }
+
+  .ema-stepper-connector {
+    flex: 1;
+    height: 2px;
+    background: var(--ema-border);
+    position: relative;
+  }
+
+  .ema-stepper-connector-active {
+    background: var(--ema-accent);
+  }
+
+  .ema-stepper-connector-completed {
+    background: var(--ema-success);
+  }
+
+  .ema-stepper-connector-failed {
+    background: var(--ema-danger);
+  }
+
+  .ema-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: var(--ema-text-muted);
+    gap: 0.75rem;
+  }
+
+  .ema-loading-pulse {
+    animation: ema-pulse 1.5s ease-in-out infinite;
+  }
+
+  .ema-timeline-card {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .ema-timeline-card::before {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--ema-border);
+  }
+
+  .ema-timeline-card:last-child::before {
+    display: none;
+  }
+
+  .ema-timeline-dot {
+    position: absolute;
+    left: 0.125rem;
+    top: 0.625rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 999px;
+    border: 2px solid var(--ema-border);
+    background: var(--ema-surface);
+    z-index: 1;
+  }
+
+  .ema-timeline-dot-success {
+    border-color: var(--ema-success);
+    background: var(--ema-success-soft);
+  }
+
+  .ema-timeline-dot-warning {
+    border-color: var(--ema-warning);
+    background: var(--ema-warning-soft);
+  }
+
+  .ema-timeline-dot-danger {
+    border-color: var(--ema-danger);
+    background: var(--ema-danger-soft);
+  }
+
+  .ema-timeline-dot-info {
+    border-color: var(--ema-info);
+    background: var(--ema-info-soft);
+  }
+
+  .ema-glass-surface,
+  .ema-glass-surface-medium,
+  .ema-glass-surface-strong,
+  .ema-glass-control,
+  .ema-glass-edge,
+  .ema-readable-surface,
+  .ema-data-surface,
+  .ema-dense-surface,
+  .ema-status-badge {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--ema-glass-border);
+    color: var(--ema-text);
+  }
+
+  .ema-glass-surface {
+    background: var(--ema-glass-gradient-subtle);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .ema-glass-surface-medium {
+    background: var(--ema-glass-gradient);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .ema-glass-surface-strong {
+    background: var(--ema-glass-gradient-strong);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-shadow), var(--ema-glass-inner-shadow);
+  }
+
+  .ema-glass-control {
+    background: var(--ema-glass-gradient-capsule);
+    box-shadow: var(--ema-glass-inner-shadow);
+    border-radius: 999px;
+  }
+
+  .ema-glass-edge {
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--ema-glass-edge) var(--ema-glass-edge-opacity), transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--ema-glass-chromatic) 46%, transparent);
+  }
+
+  .ema-readable-surface,
+  .ema-data-surface,
+  .ema-dense-surface {
+    background: var(--ema-data-surface);
+    box-shadow: var(--ema-shadow-sm);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .ema-readable-surface {
+    background: var(--ema-readable-surface);
+  }
+
+  .ema-dense-surface {
+    background: var(--ema-readable-surface-strong);
+  }
+
+  .ema-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--ema-badge-surface);
+    box-shadow: var(--ema-glass-inner-shadow);
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .ema-status-badge::before {
+    content: "";
+    width: 0.42rem;
+    height: 0.42rem;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.68;
+  }
+}
+
+@keyframes ema-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes ema-heartbeat {
+  0%, 92%, 100% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--ema-accent) 28%, transparent); }
+  94% { transform: scale(1.12); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ema-accent) 0%, transparent); }
+  96% { transform: scale(1); }
+}
+
+@keyframes ema-glass-shimmer-once {
+  0% { transform: translateX(-120%); opacity: 0; }
+  35% { opacity: 0.32; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+
+@keyframes ema-copy-success {
+  0% { opacity: 0; transform: translateY(4px); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-2px); }
+}
+
+/* ── UI Scale ── */
+:root[data-ui-scale="90"] {
+  --ema-scale-ratio: 0.9;
+  font-size: 90%;
+}
+
+:root[data-ui-scale="100"] {
+  --ema-scale-ratio: 1;
+  font-size: 100%;
+}
+
+:root[data-ui-scale="110"] {
+  --ema-scale-ratio: 1.1;
+  font-size: 110%;
+}
+
+:root[data-ui-scale="125"] {
+  --ema-scale-ratio: 1.25;
+  font-size: 125%;
+}
+
+/* ── Sidebar mode layout ── */
+:root[data-sidebar="iconOnly"] .sidebar-nav-text {
+  display: none;
+}
+
+:root[data-visual-theme="high-contrast"] .ema-glass-card,
+:root[data-visual-theme="high-contrast"] .ema-card,
+:root[data-visual-theme="high-contrast"] .ema-glass-panel,
+:root[data-visual-theme="high-contrast"] .ema-glass-preview,
+:root[data-visual-theme="high-contrast"] .ema-glass-hero,
+:root[data-visual-theme="high-contrast"] .ema-glass-toolbar,
+:root[data-visual-theme="high-contrast"] .ema-glass-chip,
+:root[data-visual-theme="high-contrast"] .ema-glass-capsule,
+:root[data-visual-theme="high-contrast"] .ema-glass-modal,
+:root[data-glass="none"] .ema-glass-card,
+:root[data-glass="none"] .ema-card,
+:root[data-glass="none"] .ema-glass-panel,
+:root[data-glass="none"] .ema-glass-preview,
+:root[data-glass="none"] .ema-glass-hero,
+:root[data-glass="none"] .ema-glass-toolbar,
+:root[data-glass="none"] .ema-glass-chip,
+:root[data-glass="none"] .ema-glass-capsule,
+:root[data-glass="none"] .ema-glass-modal,
+:root[data-density="dense"] .ema-data-grid .ema-glass-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--ema-surface-solid) !important;
+}
+
+:root[data-sidebar="expanded"] .sidebar-nav-text {
+  display: inline;
+}
+
+:root[data-sidebar="compact"] .sidebar-nav-text {
+  display: inline;
+  font-size: 0.75rem;
+}
+
+/* ── Material Engineering surface adjustments ── */
+:root[data-visual-theme="material-engineering"] {
+  --ema-card-border-radius: 0.375rem;
+  --ema-btn-border-radius: 0.25rem;
+}
+
+/* ── High-contrast focus ring override ── */
+:root[data-visual-theme="high-contrast"] {
+  --ema-focus-ring: 0 0 0 2px var(--ema-accent), 0 0 0 4px var(--ema-bg);
+}
+
+.ema-app-shell {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+.ema-route-content,
+.ema-main,
+.ema-liquid-topbar,
+.ema-liquid-sidebar,
+.ema-glass-nav,
+.ema-card,
+.ema-glass-card,
+.ema-glass-panel,
+.ema-glass-preview,
+.ema-glass-hero {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Semantic color utility overrides (non-Tailwind classes used in JSX) ── */
+.text-muted { color: var(--ema-text-muted) !important; }
+.text-subtle { color: var(--ema-text-subtle) !important; }
+.text-accent { color: var(--ema-accent) !important; }
+.text-inverse { color: var(--ema-text-inverse) !important; }
+.text-success { color: var(--ema-success) !important; }
+.text-warning { color: var(--ema-warning) !important; }
+.text-danger { color: var(--ema-danger) !important; }
+.text-info { color: var(--ema-info) !important; }
+
+.bg-surface { background-color: var(--ema-surface) !important; }
+.bg-surface-2 { background-color: var(--ema-surface-2) !important; }
+.bg-surface-3 { background-color: var(--ema-surface-3) !important; }
+.bg-accent { background-color: var(--ema-accent) !important; }
+.bg-accent-soft { background-color: var(--ema-accent-soft) !important; }
+.bg-danger { background-color: var(--ema-danger) !important; }
+.bg-warning { background-color: var(--ema-warning) !important; }
+.bg-success { background-color: var(--ema-success) !important; }
+
+.border-accent { border-color: var(--ema-accent) !important; }
+.border-accent-soft { border-color: color-mix(in srgb, var(--ema-accent) 40%, transparent) !important; }
+
+.bg-success-soft { background-color: var(--ema-success-soft) !important; }
+.bg-warning-soft { background-color: var(--ema-warning-soft) !important; }
+.bg-danger-soft { background-color: var(--ema-danger-soft) !important; }
+.bg-info-soft { background-color: var(--ema-info-soft) !important; }
+.bg-advisory-soft { background-color: var(--ema-advisory-soft) !important; }
+
+.border-success { border-color: var(--ema-success) !important; }
+.border-warning { border-color: var(--ema-warning) !important; }
+.border-danger { border-color: var(--ema-danger) !important; }
+.border-info { border-color: var(--ema-info) !important; }
+.border-advisory { border-color: var(--ema-advisory) !important; }
+
+.text-advisory { color: var(--ema-advisory) !important; }
+.text-official { color: var(--ema-official) !important; }
+.text-blocked { color: var(--ema-blocked) !important; }
+.text-partial { color: var(--ema-partial) !important; }
+.text-local-demo { color: var(--ema-local-demo) !important; }
+
+.bg-official-soft { background-color: var(--ema-official-soft) !important; }
+.bg-blocked-soft { background-color: var(--ema-blocked-soft) !important; }
+.bg-partial-soft { background-color: var(--ema-partial-soft) !important; }
+.bg-local-demo-soft { background-color: var(--ema-local-demo-soft) !important; }
+
+.border-official { border-color: var(--ema-official) !important; }
+.border-blocked { border-color: var(--ema-blocked) !important; }
+.border-partial { border-color: var(--ema-partial) !important; }
+.border-local-demo { border-color: var(--ema-local-demo) !important; }
+
+/* ── Animation utility classes ── */
+@keyframes ema-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ema-slide-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ema-slide-in-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ema-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--ema-accent-rgb, 30, 106, 90), 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(var(--ema-accent-rgb, 30, 106, 90), 0); }
+}
+
+@keyframes ema-data-flow {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes ema-success-check {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes ema-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ema-anim-fade-in {
+  animation: ema-fade-in var(--ema-motion-duration-normal) var(--ema-motion-ease-standard);
+}
+
+.ema-anim-enter,
+.ema-anim-fade {
+  animation: ema-fade-in var(--ema-motion-duration-normal) var(--ema-motion-ease-standard);
+}
+
+.ema-anim-slide-up {
+  animation: ema-slide-in-up var(--ema-motion-duration-normal) var(--ema-motion-ease-standard);
+}
+
+.ema-anim-soft-rise {
+  animation: ema-slide-in-up var(--ema-motion-duration-slow) var(--ema-motion-ease-standard);
+}
+
+.ema-anim-slide-down {
+  animation: ema-slide-in-down 0.35s ease-out;
+}
+
+.ema-anim-running {
+  animation: ema-pulse-glow var(--ema-motion-glow-duration) ease-in-out infinite;
+}
+
+.ema-anim-heartbeat {
+  animation: ema-heartbeat var(--ema-motion-heartbeat-duration) var(--ema-motion-ease-standard) infinite;
+}
+
+.ema-anim-glass-shimmer-once {
+  position: relative;
+  overflow: hidden;
+}
+
+.ema-anim-glass-shimmer-once::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, var(--ema-glass-highlight), transparent);
+  animation: ema-glass-shimmer-once 900ms var(--ema-motion-ease-standard) 1;
+}
+
+[data-anim="data-flow"] .ema-anim-running {
+  background: linear-gradient(90deg, transparent 0%, var(--ema-accent-soft) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: ema-data-flow 1.5s linear infinite;
+}
+
+.ema-anim-success {
+  animation: ema-success-check 0.4s ease-out;
+}
+
+.ema-anim-success-once {
+  animation: ema-success-check var(--ema-motion-duration-slow) var(--ema-motion-ease-emphasized) 1;
+}
+
+.ema-anim-warning {
+  animation: ema-pulse 2s ease-in-out infinite;
+  color: var(--ema-warning);
+}
+
+.ema-anim-warning-once {
+  animation: ema-pulse var(--ema-motion-duration-slow) var(--ema-motion-ease-standard) 1;
+  color: var(--ema-warning);
+}
+
+.ema-anim-copy-success {
+  animation: ema-copy-success 1400ms var(--ema-motion-ease-standard) 1;
+}
+
+.ema-anim-reduced-safe {
+  transition-duration: var(--ema-motion-duration-fast);
+}
+
+.ema-anim-error {
+  animation: ema-pulse 2s ease-in-out infinite;
+  color: var(--ema-danger);
+}
+
+.ema-anim-spin {
+  animation: ema-spin-slow 2s linear infinite;
+}
+
+.ema-anim-data-flow {
+  position: relative;
+  overflow: hidden;
+}
+
+.ema-anim-data-flow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ema-accent-soft) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: ema-data-flow 1.5s linear infinite;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.ema-anim-data-flow.ema-step-completed::after {
+  display: none;
+}
+
+/* ── Card hover lift ── */
+.ema-card-hover {
+  transition: transform var(--ema-motion-duration-normal) var(--ema-motion-ease-standard), box-shadow var(--ema-motion-duration-normal) var(--ema-motion-ease-standard);
+}
+
+.ema-card-hover:hover {
+  transform: var(--ema-motion-scale-hover);
+  box-shadow: var(--ema-shadow-md);
+}
+
+/* ── Data flow step connector pulse ── */
+.ema-connector-pulse {
+  animation: ema-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Dynamic ambient background keyframes ── */
+@keyframes ema-ambient-drift {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 3% 2%; }
+}
+
+@keyframes ema-grid-shift {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 8% -4%; }
+}
+
+@keyframes ema-noise-breathe {
+  0% { opacity: var(--ema-ambient-noise-opacity); }
+  100% { opacity: calc(var(--ema-ambient-noise-opacity) * 1.6); }
+}
+
+@keyframes ema-refraction-shift {
+  0% { transform: translateX(0%) translateY(0%); }
+  50% { transform: translateX(2%) translateY(-1%); }
+  100% { transform: translateX(-1%) translateY(1%); }
+}
+
+@keyframes ema-hue-breathe {
+  0% { filter: hue-rotate(calc(-1 * var(--ema-ambient-hue-drift, 0deg))); }
+  100% { filter: hue-rotate(var(--ema-ambient-hue-drift, 0deg)); }
+}
+
+/* ── Reduced motion disables dynamic background animation ── */
+[data-motion="reduced"] .ema-app-ambient,
+[data-motion="reduced"] .ema-app-ambient::before,
+[data-motion="reduced"] .ema-app-ambient::after {
+  animation: none !important;
+}
+
+[data-motion="reduced"] .ema-gradient-orb-field,
+[data-motion="reduced"] .ema-refraction-field,
+[data-motion="reduced"] .ema-background-motion {
+  animation: none !important;
+}
+
+/* ── Glass utility classes are defined above in @layer components ── */
+
+/* ── Appearance / Liquid Glass visual QA board ── */
+@layer components {
+  .ema-theme-preview-shell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    border: 1px solid var(--ema-glass-border);
+    background:
+      radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--ema-ambient-a) 78%, transparent), transparent 28rem),
+      radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--ema-ambient-b) 70%, transparent), transparent 26rem),
+      radial-gradient(circle at 48% 42%, color-mix(in srgb, var(--ema-ambient-c) 54%, transparent), transparent 24rem),
+      linear-gradient(180deg, color-mix(in srgb, var(--ema-bg) 78%, transparent), color-mix(in srgb, var(--ema-bg-elevated) 56%, transparent));
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+    padding: 1.25rem;
+  }
+
+  .ema-theme-preview-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--ema-border) 40%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--ema-border) 40%, transparent) 1px, transparent 1px),
+      radial-gradient(circle at var(--ema-pointer-x, 50%) var(--ema-pointer-y, 50%), color-mix(in srgb, var(--ema-ambient-highlight) 36%, transparent), transparent 20rem);
+    background-size: 42px 42px, 42px 42px, auto;
+    opacity: calc(0.22 + (var(--ema-pointer-active, 0) * 0.18));
+  }
+
+  .ema-theme-preview-shell > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ema-theme-preview-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .ema-theme-preview-board {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .ema-preview-panel {
+    position: relative;
+    isolation: isolate;
+    grid-column: span 4;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient-subtle);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+    padding: 1rem;
+  }
+
+  .ema-preview-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--ema-glass-highlight) 44%, transparent), transparent 42%),
+      radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--ema-accent-soft) 82%, transparent), transparent 18rem);
+    opacity: var(--ema-glass-highlight-opacity);
+  }
+
+  .ema-preview-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ema-preview-panel-feature {
+    grid-column: span 6;
+  }
+
+  .ema-preview-panel-title h4 {
+    margin: 0;
+    color: var(--ema-text);
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+
+  .ema-preview-panel-title p {
+    margin: 0.25rem 0 0;
+    color: var(--ema-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .ema-preview-panel-body {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.85rem;
+  }
+
+  .ema-preview-ambient-field {
+    position: relative;
+    min-height: 13rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--ema-glass-border);
+    background:
+      radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--ema-ambient-a) 100%, transparent), transparent 10rem),
+      radial-gradient(circle at 84% 22%, color-mix(in srgb, var(--ema-ambient-b) 100%, transparent), transparent 11rem),
+      radial-gradient(circle at 56% 84%, color-mix(in srgb, var(--ema-ambient-c) 80%, transparent), transparent 9rem),
+      var(--ema-bg-gradient);
+  }
+
+  .ema-preview-mesh {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--ema-border) 46%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--ema-border) 46%, transparent) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: var(--ema-ambient-grid-opacity);
+  }
+
+  .ema-preview-floating-glass {
+    position: absolute;
+    inset: 1.2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--ema-glass-border-strong);
+    background: var(--ema-glass-gradient-strong);
+    box-shadow: var(--ema-glass-shadow), var(--ema-glass-inner-shadow);
+    padding: 1rem;
+  }
+
+  .ema-material-scale-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .ema-material-swatch {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    border-radius: 0.7rem;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-readable-surface);
+    padding: 0.55rem;
+  }
+
+  .ema-material-swatch-sample {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--ema-border-strong);
+    background: var(--ema-glass-gradient);
+    box-shadow: var(--ema-glass-inner-shadow);
+  }
+
+  .ema-material-swatch-0 .ema-material-swatch-sample { background: var(--ema-bg-gradient); }
+  .ema-material-swatch-1 .ema-material-swatch-sample { background: var(--ema-glass-gradient-subtle); }
+  .ema-material-swatch-2 .ema-material-swatch-sample { background: var(--ema-glass-gradient); }
+  .ema-material-swatch-3 .ema-material-swatch-sample { background: var(--ema-glass-gradient-strong); }
+  .ema-material-swatch-4 .ema-material-swatch-sample { background: var(--ema-readable-surface); }
+  .ema-material-swatch-5 .ema-material-swatch-sample { background: var(--ema-data-surface); }
+  .ema-material-swatch-6 .ema-material-swatch-sample { background: var(--ema-code-surface); }
+  .ema-material-swatch-7 .ema-material-swatch-sample { background: var(--ema-warning-surface); }
+  .ema-material-swatch-8 .ema-material-swatch-sample { background: var(--ema-error-surface); }
+  .ema-material-swatch-9 .ema-material-swatch-sample { background: var(--ema-success-surface); }
+
+  .ema-typography-strip {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.45rem;
+    border-radius: 0.8rem;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-readable-surface);
+    padding: 0.7rem;
+  }
+
+  .ema-preview-sidebar,
+  .ema-preview-topbar,
+  .ema-kpi-glass {
+    border-radius: 1rem;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient);
+    box-shadow: var(--ema-glass-inner-shadow);
+    padding: 0.9rem;
+  }
+
+  .ema-preview-nav-row {
+    border-radius: 999px;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-badge-surface);
+    color: var(--ema-text-muted);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .ema-preview-nav-row.is-active {
+    border-color: color-mix(in srgb, var(--ema-accent) 44%, transparent);
+    background: var(--ema-glass-gradient-selected);
+    color: var(--ema-selected-text);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 34%, transparent), 0 0 0 1px color-mix(in srgb, var(--ema-accent) 10%, transparent);
+  }
+
+  .ema-preview-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .ema-preview-control-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    border-radius: 1rem;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-readable-surface);
+    padding: 0.8rem;
+  }
+
+  .ema-data-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr);
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    border-radius: 0.7rem;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-data-surface);
+    padding: 0.6rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .ema-data-row span,
+  .ema-data-row strong,
+  .ema-data-row em {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ema-data-row span { color: var(--ema-text); font-weight: 800; }
+  .ema-data-row strong { color: var(--ema-text); font-style: normal; font-weight: 900; }
+  .ema-data-row em { color: var(--ema-text-muted); font-style: normal; }
+
+  .ema-data-row.is-success { background: var(--ema-success-surface); }
+  .ema-data-row.is-warning { background: var(--ema-warning-surface); }
+  .ema-data-row.is-error { background: var(--ema-error-surface); }
+  .ema-data-row.is-selected,
+  .ema-data-row.is-info { background: var(--ema-readable-surface); border-color: var(--ema-border-strong); }
+  .ema-data-row.is-muted { background: var(--ema-readable-surface); }
+
+  .ema-qa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-badge-surface);
+    color: var(--ema-text);
+    padding: 0.28rem 0.62rem;
+    font-size: 0.72rem;
+    font-weight: 850;
+    line-height: 1.1;
+  }
+
+  .ema-qa-badge::before {
+    content: "";
+    width: 0.42rem;
+    height: 0.42rem;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: var(--ema-text-muted);
+  }
+
+  .ema-qa-badge.is-success { background: var(--ema-success-surface); border-color: color-mix(in srgb, var(--ema-success) 36%, transparent); }
+  .ema-qa-badge.is-warning { background: var(--ema-warning-surface); border-color: color-mix(in srgb, var(--ema-warning) 38%, transparent); }
+  .ema-qa-badge.is-error { background: var(--ema-error-surface); border-color: color-mix(in srgb, var(--ema-danger) 38%, transparent); }
+  .ema-qa-badge.is-selected,
+  .ema-qa-badge.is-info { background: var(--ema-accent-soft); border-color: color-mix(in srgb, var(--ema-accent) 38%, transparent); }
+  .ema-qa-badge.is-muted { background: var(--ema-badge-surface); border-color: var(--ema-border); }
+  .ema-qa-badge.is-success::before { background: var(--ema-success); }
+  .ema-qa-badge.is-warning::before { background: var(--ema-warning); }
+  .ema-qa-badge.is-error::before { background: var(--ema-danger); }
+  .ema-qa-badge.is-selected::before,
+  .ema-qa-badge.is-info::before { background: var(--ema-accent); }
+  .ema-qa-badge.is-muted::before { background: var(--ema-text-muted); }
+
+  .ema-truth-row,
+  .ema-token-row,
+  .ema-calibration-row {
+    min-width: 0;
+    border-radius: 0.7rem;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-readable-surface);
+    color: var(--ema-text);
+    padding: 0.55rem 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .ema-token-row,
+  .ema-calibration-row {
+    display: grid;
+    grid-template-columns: 1.35rem minmax(0, 0.8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ema-token-row code,
+  .ema-calibration-row strong {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ema-text-muted);
+    font-family: var(--ema-code-font);
+    font-size: 0.67rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ema-token-swatch {
+    display: block;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 0.35rem;
+    border: 1px solid var(--ema-border-strong);
+    background: var(--ema-glass-gradient);
+  }
+
+  .ema-calibration-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  }
+
+  .ema-solid-json-surface {
+    background: var(--ema-code-surface) !important;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 1280px) {
+    .ema-preview-panel,
+    .ema-preview-panel-feature {
+      grid-column: span 6;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .ema-theme-preview-board {
+      grid-template-columns: 1fr;
+    }
+
+    .ema-preview-panel,
+    .ema-preview-panel-feature {
+      grid-column: span 1;
+    }
+
+    .ema-preview-control-grid,
+    .ema-typography-strip {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .ema-transparency-proof-field {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ema-theme-preview-shell::before {
+      opacity: 0.12;
+    }
+  }
+
+  :root[data-visual-theme="high-contrast"] .ema-theme-preview-shell,
+  :root[data-glass="none"] .ema-theme-preview-shell {
+    background: var(--ema-surface-solid);
+  }
+
+  :root[data-visual-theme="high-contrast"] .ema-theme-preview-shell::before,
+  :root[data-glass="none"] .ema-theme-preview-shell::before {
+    display: none;
+  }
+
+  .ema-glass-material-lab {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .ema-glass-calibration-panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--ema-glass-border);
+    background:
+      radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--ema-ambient-a) calc(var(--ema-background-depth) * 60%), transparent), transparent 16rem),
+      radial-gradient(circle at 94% 20%, color-mix(in srgb, var(--ema-ambient-b) calc(var(--ema-background-depth) * 50%), transparent), transparent 15rem),
+      var(--ema-glass-gradient-subtle);
+    box-shadow: var(--ema-glass-bottom-shadow), var(--ema-glass-inner-shadow);
+    padding: 1rem;
+  }
+
+  .ema-glass-calibration-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--ema-grid-pattern);
+    background-size: 32px 32px;
+    opacity: calc(var(--ema-background-depth) * 0.08);
+  }
+
+  .ema-glass-calibration-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ema-calibration-control {
+    display: block;
+    min-width: 0;
+    border-radius: 0.8rem;
+    border: 1px solid var(--ema-border);
+    background: color-mix(in srgb, var(--ema-readable-surface) 88%, transparent);
+    padding: 0.75rem;
+  }
+
+  .ema-calibration-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .ema-calibration-chip {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 0.7rem;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-data-surface);
+    padding: 0.55rem 0.65rem 0.75rem;
+  }
+
+  .ema-calibration-chip span,
+  .ema-calibration-chip strong {
+    position: relative;
+    z-index: 1;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ema-calibration-chip span {
+    color: var(--ema-text-muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .ema-calibration-chip strong {
+    margin-top: 0.15rem;
+    color: var(--ema-text);
+    font-family: var(--ema-code-font);
+    font-size: 0.76rem;
+  }
+
+  .ema-calibration-chip i {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0.2rem;
+    min-width: 0.5rem;
+    border-radius: 999px;
+    background: var(--ema-accent);
+  }
+
+  .ema-transparency-proof {
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--ema-glass-border);
+    background:
+      linear-gradient(135deg, rgb(var(--ema-glass-highlight-rgb) / 0.16), transparent 42%),
+      var(--ema-glass-bg-subtle);
+    box-shadow: var(--ema-glass-inner-shadow);
+    padding: 0.85rem;
+  }
+
+  .ema-transparency-proof-field {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    overflow: hidden;
+    border-radius: 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--ema-border) 72%, transparent);
+    background:
+      radial-gradient(circle at 8% 20%, color-mix(in srgb, var(--ema-ambient-a) calc(var(--ema-background-depth) * 92%), transparent), transparent 9rem),
+      radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--ema-ambient-b) calc(var(--ema-background-depth) * 84%), transparent), transparent 8rem),
+      radial-gradient(circle at 48% 86%, color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-depth) * 70%), transparent), transparent 7rem),
+      linear-gradient(135deg, color-mix(in srgb, var(--ema-accent) 14%, transparent) 0 25%, transparent 25% 50%, color-mix(in srgb, var(--ema-gold) 10%, transparent) 50% 75%, transparent 75%),
+      var(--ema-bg-gradient);
+    background-size: auto, auto, auto, 28px 28px, auto;
+    padding: 0.8rem;
+  }
+
+  .ema-transparency-proof-block {
+    min-width: 0;
+    min-height: 5.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 0.85rem;
+    padding: 0.75rem;
+    color: var(--ema-text);
+  }
+
+  .ema-transparency-proof-block strong,
+  .ema-transparency-proof-block span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ema-transparency-proof-block strong {
+    font-size: 0.82rem;
+  }
+
+  .ema-transparency-proof-block span {
+    color: var(--ema-text-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .ema-glass-demo-card {
+    position: relative;
+    isolation: isolate;
+    min-height: 12.5rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--ema-glass-border);
+    background:
+      radial-gradient(circle at 16% 12%, color-mix(in srgb, var(--ema-ambient-a) calc(var(--ema-background-depth) * 100%), transparent), transparent 8rem),
+      radial-gradient(circle at 86% 20%, color-mix(in srgb, var(--ema-ambient-b) calc(var(--ema-background-depth) * 92%), transparent), transparent 8rem),
+      radial-gradient(circle at 48% 84%, color-mix(in srgb, var(--ema-ambient-c) calc(var(--ema-background-depth) * 70%), transparent), transparent 7rem),
+      var(--ema-bg-gradient);
+    box-shadow: var(--ema-glass-bottom-shadow);
+    padding: 0.85rem;
+  }
+
+  .ema-glass-demo-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--ema-border) 42%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--ema-border) 42%, transparent) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: calc(var(--ema-ambient-grid-opacity) * var(--ema-background-depth));
+  }
+
+  .ema-glass-demo-noise {
+    position: absolute;
+    inset: 0.7rem;
+    z-index: 0;
+    border-radius: 0.85rem;
+    background:
+      repeating-linear-gradient(115deg, color-mix(in srgb, var(--ema-accent) calc(16% * var(--ema-background-intensity, 0.85)), transparent) 0 2px, transparent 2px 9px),
+      radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--ema-accent-soft) calc(100% * var(--ema-background-intensity, 0.85)), transparent), transparent 8rem);
+    opacity: calc(0.55 * var(--ema-background-intensity, 0.85));
+  }
+
+  .ema-glass-demo-noise.is-dense {
+    background:
+      repeating-linear-gradient(90deg, color-mix(in srgb, var(--ema-text-muted) calc(16% * var(--ema-background-intensity, 0.85)), transparent) 0 1px, transparent 1px 8px),
+      repeating-linear-gradient(0deg, color-mix(in srgb, var(--ema-text-muted) calc(10% * var(--ema-background-intensity, 0.85)), transparent) 0 1px, transparent 1px 8px),
+      radial-gradient(circle at 72% 24%, color-mix(in srgb, var(--ema-accent-soft) calc(100% * var(--ema-background-intensity, 0.85)), transparent), transparent 8rem);
+  }
+
+  .ema-glass-demo-surface,
+  .ema-glass-demo-shell {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    min-height: 10.8rem;
+    border-radius: 0.9rem;
+    border: 1px solid var(--ema-glass-border-strong);
+    background: var(--ema-glass-gradient);
+    box-shadow: var(--ema-glass-shadow), var(--ema-glass-inner-shadow);
+    padding: 0.9rem;
+  }
+
+  .ema-glass-demo-surface.is-transparent {
+    background: color-mix(in srgb, var(--ema-glass-bg) 82%, transparent);
+  }
+
+  .ema-glass-demo-surface.is-blur {
+    backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+    -webkit-backdrop-filter: blur(var(--ema-glass-blur)) saturate(var(--ema-glass-saturate));
+  }
+
+  .ema-glass-demo-surface::after,
+  .ema-glass-demo-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--ema-glass-edge) calc(var(--ema-rim-highlight-strength) * 100%), transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--ema-glass-chromatic) 42%, transparent);
+  }
+
+  .ema-glass-demo-chip {
+    min-width: 0;
+    border-radius: 999px;
+    border: 1px solid var(--ema-glass-border);
+    background: var(--ema-glass-gradient-capsule);
+    padding: 0.35rem 0.45rem;
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--ema-text);
+  }
+
+  .ema-glass-demo-shell {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .ema-glass-demo-sidebar {
+    display: grid;
+    align-content: start;
+    gap: 0.55rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--ema-border);
+    background: var(--ema-surface-solid);
+    padding: 0.55rem;
+  }
+
+  .ema-glass-demo-sidebar.is-translucent {
+    background: var(--ema-glass-gradient-subtle);
+    border-color: var(--ema-glass-border);
+    box-shadow: var(--ema-glass-inner-shadow);
+  }
+
+  .ema-glass-demo-sidebar span {
+    display: block;
+    height: 1.65rem;
+    border-radius: 999px;
+    background: var(--ema-glass-gradient-capsule);
+    border: 1px solid var(--ema-glass-border);
+  }
+
+  .ema-glass-demo-sidebar span:first-child {
+    background: var(--ema-glass-gradient-selected);
+  }
+
+  .ema-glass-demo-main {
+    min-width: 0;
+    border-radius: 0.75rem;
+    background: var(--ema-readable-surface);
+    border: 1px solid var(--ema-border);
+    padding: 0.75rem;
+  }
+
+  .ema-audit-preview-frame {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--ema-ambient-a) 70%, transparent), transparent 18rem),
+      radial-gradient(circle at 88% 20%, color-mix(in srgb, var(--ema-ambient-b) 64%, transparent), transparent 18rem),
+      var(--ema-readable-surface) !important;
+  }
+
+  @media (max-width: 920px) {
+    .ema-glass-material-lab {
+      grid-template-columns: 1fr;
+    }
+
+    .ema-calibration-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   OPERATIONAL ROUTE SAFETY LAYER
+   Must remain at END of file — !important beats all non-important rules.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root[data-route-kind="operational"],
+:root[data-operational-safe="true"] {
+  --ema-glass-opacity: 0.82;
+  --ema-glass-opacity-subtle: 0.74;
+  --ema-glass-opacity-medium: 0.82;
+  --ema-glass-opacity-strong: 0.9;
+  --ema-glass-blur: 0px;
+  --ema-glass-saturate: 1;
+  --ema-rim-highlight-strength: 0;
+  --ema-background-depth: 0;
+  --ema-background-intensity: 0.45;
+  --ema-background-vividness: 0.45;
+  --ema-background-color-strength: 0.45;
+  --ema-background-mesh-opacity: 0;
+  --ema-background-refraction-opacity: 0;
+  --ema-pointer-light-strength: 0;
+  --ema-ambient-motion-speed-effective: 0.35;
+  --ema-data-opacity: 0.98;
+  --ema-capsule-opacity: 0.8;
+  --ema-control-opacity: 0.8;
+}
+
+/* ── NUCLEAR SAFE MODE: Disable ALL decorative layers for operational routes ── */
+:root[data-route-kind="operational"] .ema-app-ambient,
+:root[data-route-kind="operational"] .ema-app-ambient::before,
+:root[data-route-kind="operational"] .ema-app-ambient::after {
+  display: none !important;
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+:root[data-route-kind="operational"] .ema-pointer-light {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Suppress the fixed route gradient overlay that creates a colored fog
+   over the entire viewport behind content. */
+:root[data-route-kind="operational"] .ema-route-gradient::before {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Refraction field inside operational route content — hide it */
+[data-route-kind="operational"] .refraction-field,
+[data-route-kind="operational"] .refraction-field::before,
+[data-route-kind="operational"] .refraction-field::after {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* ── Sidebar: fully solid, no glass, no blur ── */
+:root[data-route-kind="operational"] .ema-glass-nav,
+:root[data-route-kind="operational"] .ema-liquid-sidebar {
+  --ema-glass-opacity: 1;
+  --ema-glass-opacity-subtle: 1;
+  --ema-glass-opacity-medium: 1;
+  --ema-glass-opacity-strong: 1;
+  --ema-capsule-opacity: 1;
+  --ema-control-opacity: 1;
+  --ema-glass-blur: 0px;
+  --ema-glass-saturate: 1;
+  --ema-background-depth: 0;
+  --ema-background-color-strength: 0;
+  --ema-rim-highlight-strength: 0;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--ema-surface-solid) !important;
+  filter: none !important;
+}
+
+/* Sidebar children that have their own glass gradients (nav-item, selected, panel) */
+:root[data-route-kind="operational"] .ema-liquid-nav-item,
+:root[data-route-kind="operational"] .ema-liquid-selected,
+:root[data-route-kind="operational"] .ema-liquid-panel {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+:root[data-route-kind="operational"] .ema-liquid-nav-item:hover,
+:root[data-route-kind="operational"] .ema-liquid-selected {
+  background: var(--ema-surface-2) !important;
+}
+
+/* Sidebar text: fully opaque, readable colors */
+:root[data-route-kind="operational"] .sidebar-nav-text,
+:root[data-route-kind="operational"] .ema-glass-nav [class*="text-muted"],
+:root[data-route-kind="operational"] .ema-sidebar-desktop [class*="text-muted"],
+:root[data-route-kind="operational"] .ema-sidebar-desktop .text-ink,
+:root[data-route-kind="operational"] .ema-glass-nav .text-ink {
+  opacity: 1 !important;
+}
+
+/* Sidebar icons */
+:root[data-route-kind="operational"] .ema-glass-nav svg,
+:root[data-route-kind="operational"] .ema-liquid-sidebar svg {
+  opacity: 1 !important;
+}
+
+/* ── Topbar: fully solid, no glass blur ── */
+:root[data-route-kind="operational"] .ema-liquid-topbar {
+  --ema-glass-opacity: 1;
+  --ema-glass-opacity-subtle: 1;
+  --ema-glass-opacity-medium: 1;
+  --ema-glass-opacity-strong: 1;
+  --ema-capsule-opacity: 1;
+  --ema-control-opacity: 1;
+  --ema-glass-blur: 0px;
+  --ema-glass-saturate: 1;
+  --ema-background-depth: 0;
+  --ema-background-color-strength: 0;
+  --ema-rim-highlight-strength: 0;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  background: var(--ema-surface-solid) !important;
+}
+
+/* Topbar children that have their own glass gradients (capsule, button, chip) */
+:root[data-route-kind="operational"] .ema-liquid-capsule,
+:root[data-route-kind="operational"] .ema-liquid-button,
+:root[data-route-kind="operational"] .ema-liquid-chip {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+:root[data-route-kind="operational"] .ema-liquid-topbar h1,
+:root[data-route-kind="operational"] .ema-liquid-topbar .text-ink,
+:root[data-route-kind="operational"] .ema-liquid-topbar .text-muted {
+  opacity: 1 !important;
+}
+
+/* ── Footer: solid and readable ── */
+:root[data-route-kind="operational"] footer {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ── Content elements: strip all backdrop-filter and glass effects ── */
+[data-route-kind="operational"] .ema-card,
+[data-route-kind="operational"] .ema-glass-card,
+[data-route-kind="operational"] .ema-glass-panel,
+[data-route-kind="operational"] .ema-glass-layer,
+[data-route-kind="operational"] .ema-glass-preview,
+[data-route-kind="operational"] .ema-glass-hero,
+[data-route-kind="operational"] .ema-glass-toolbar,
+[data-route-kind="operational"] .ema-glass-chip,
+[data-route-kind="operational"] .ema-glass-capsule,
+[data-route-kind="operational"] .ema-glass-modal,
+[data-route-kind="operational"] .ema-glass-surface,
+[data-route-kind="operational"] .ema-glass-surface-medium,
+[data-route-kind="operational"] .ema-glass-surface-strong,
+[data-route-kind="operational"] .ema-glass-control,
+[data-route-kind="operational"] .ema-liquid-kpi,
+[data-route-kind="operational"] .ema-liquid-section,
+[data-route-kind="operational"] .ema-liquid-card,
+[data-route-kind="operational"] .ema-liquid-panel,
+[data-route-kind="operational"] .ema-liquid-hero,
+[data-route-kind="operational"] .ema-liquid-metric,
+[data-route-kind="operational"] .ema-liquid-milestone,
+[data-route-kind="operational"] .ema-liquid-health-card,
+[data-route-kind="operational"] .ema-liquid-document-card,
+[data-route-kind="operational"] .ema-liquid-settings-card,
+[data-route-kind="operational"] .ema-liquid-suggestion-panel,
+[data-route-kind="operational"] .ema-liquid-filterbar,
+[data-route-kind="operational"] .ema-liquid-tabbar,
+[data-route-kind="operational"] .ema-liquid-empty-state,
+[data-route-kind="operational"] .ema-liquid-map-shell,
+[data-route-kind="operational"] .ema-liquid-viewer-shell,
+[data-route-kind="operational"] .ema-liquid-tab,
+[data-route-kind="operational"] .ema-liquid-nav-item,
+[data-route-kind="operational"] .ema-liquid-badge,
+[data-route-kind="operational"] .ema-liquid-capsule,
+[data-route-kind="operational"] .ema-liquid-toolbar,
+[data-route-kind="operational"] .ema-liquid-chip,
+[data-route-kind="operational"] .ema-liquid-button,
+[data-route-kind="operational"] .ema-liquid-selected,
+[data-route-kind="operational"] .ema-liquid-preview,
+[data-route-kind="operational"] .glass-surface,
+[data-route-kind="operational"] .glass-surface-subtle,
+[data-route-kind="operational"] .glass-surface-medium,
+[data-route-kind="operational"] .glass-surface-strong,
+[data-route-kind="operational"] .glass-panel,
+[data-route-kind="operational"] .glass-hero,
+[data-route-kind="operational"] .bg-white,
+[data-route-kind="operational"] section,
+[data-route-kind="operational"] .rounded-lg,
+[data-route-kind="operational"] .rounded-xl,
+[data-route-kind="operational"] input,
+[data-route-kind="operational"] select,
+[data-route-kind="operational"] textarea {
+  background: var(--ema-surface-solid) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* ── Solid background for bare section containers ── */
+[data-route-kind="operational"] section:not([data-force-glass]) {
+  background: var(--ema-surface-solid) !important;
+}
+
+/* ── Overlay glass: strip blur but keep semi-transparency so modals remain usable ── */
+[data-route-kind="operational"] .ema-overlay-glass {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ── Nav-item hover and selected states inside route content ── */
+[data-route-kind="operational"] .ema-liquid-nav-item:hover,
+[data-route-kind="operational"] .ema-liquid-selected {
+  background: var(--ema-surface-2) !important;
+}
+
+/* ── Operations on .bg-white: force solid background, strip glass gradient ── */
+:root [data-route-kind="operational"] .bg-white:not([data-force-glass]) {
+  background: var(--ema-surface-solid) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ── Operational surface classes stay solid even when Liquid Glass is active ── */
+:root[data-route-kind="operational"] .bg-surface,
+:root[data-route-kind="operational"] .bg-surface-2,
+:root[data-route-kind="operational"] .bg-surface-3,
+:root[data-route-kind="operational"] .bg-surface-solid,
+:root[data-route-kind="operational"] .bg-canvas,
+:root[data-operational-safe="true"] .bg-surface,
+:root[data-operational-safe="true"] .bg-surface-2,
+:root[data-operational-safe="true"] .bg-surface-3,
+:root[data-operational-safe="true"] .bg-surface-solid,
+:root[data-operational-safe="true"] .bg-canvas {
+  background: var(--ema-surface-solid) !important;
+  background-color: var(--ema-surface-solid) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* ── Tables fully opaque ── */
+[data-route-kind="operational"] table,
+[data-route-kind="operational"] thead,
+[data-route-kind="operational"] tbody,
+[data-route-kind="operational"] tr,
+[data-route-kind="operational"] td,
+[data-route-kind="operational"] th {
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ── Table header solid surface ── */
+[data-route-kind="operational"] thead,
+[data-route-kind="operational"] th {
+  background-color: color-mix(in srgb, var(--ema-surface-solid) 96%, var(--ema-surface-2) 4%) !important;
+}
+
+/* ── Row hover readable ── */
+[data-route-kind="operational"] tr:hover,
+[data-route-kind="operational"] .hover\:bg-slate-50:hover {
+  background-color: var(--ema-surface-2) !important;
+}
+
+/* ── Text must not be dimmed by any rule ── */
+:root[data-route-kind="operational"] .text-muted,
+:root[data-route-kind="operational"] .text-subtle,
+:root[data-route-kind="operational"] .ema-text-muted,
+:root[data-route-kind="operational"] [class*="text-muted"],
+:root[data-route-kind="operational"] [class*="text-subtle"],
+:root[data-operational-safe="true"] .text-muted,
+:root[data-operational-safe="true"] .text-subtle,
+:root[data-operational-safe="true"] .ema-text-muted,
+:root[data-operational-safe="true"] [class*="text-muted"],
+:root[data-operational-safe="true"] [class*="text-subtle"] {
+  color: var(--ema-text-muted) !important;
+  opacity: 1 !important;
+}
+
+[data-route-kind="operational"] .text-slate-400,
+[data-route-kind="operational"] .text-slate-500,
+[data-route-kind="operational"] .text-slate-600,
+[data-route-kind="operational"] .text-slate-700,
+:root[data-operational-safe="true"] .text-slate-400,
+:root[data-operational-safe="true"] .text-slate-500,
+:root[data-operational-safe="true"] .text-slate-600,
+:root[data-operational-safe="true"] .text-slate-700 {
+  color: var(--ema-text-muted) !important;
+  opacity: 1 !important;
+}
+
+[data-route-kind="operational"] .ema-local-demo-watermark,
+:root[data-operational-safe="true"] .ema-local-demo-watermark {
+  opacity: 1 !important;
+}
+
+[data-route-kind="operational"] [class*="text-muted"],
+[data-route-kind="operational"] [class*="text-subtle"],
+[data-route-kind="operational"] .text-ink {
+  opacity: 1 !important;
+}
+
+/* ── Root-scoped bg-white override (catches any .bg-white outside the route div) ── */
+:root[data-route-kind="operational"] .bg-white {
+  background: var(--ema-surface-solid) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ── Missing Tailwind color overrides (theme-routing for hardcoded utility classes) ── */
+
+/* teal-700 used in some raw primary buttons */
+.bg-teal-700 {
+  background-color: var(--ema-accent-strong, var(--ema-accent)) !important;
+}
+
+/* blue-600/700 used in inline progress bar fills and icons */
+.bg-blue-600,
+.bg-blue-700 {
+  background-color: var(--ema-info) !important;
+}
+
+/* emerald-500 used in status dots */
+.bg-emerald-500 {
+  background-color: var(--ema-success) !important;
+}
+
+/* rose-500 used in status dots */
+.bg-rose-500 {
+  background-color: var(--ema-danger) !important;
+}
+
+/* slate-100 used in progress bar tracks */
+.bg-slate-100 {
+  background-color: var(--ema-surface-2) !important;
+}
+
+/* slate-300 used in pending status dots */
+.bg-slate-300 {
+  background-color: color-mix(in srgb, var(--ema-text-subtle) 45%, var(--ema-surface-2)) !important;
+}
+
+/* purple-500 used in advisory dots */
+.bg-purple-500 {
+  background-color: var(--ema-advisory) !important;
+}
+
+/* ── Themed progress bar utilities ── */
+/* Data-safe track for progress bars inside dense/table contexts */
+.ema-progress-track {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ema-border) 60%, var(--ema-surface-2));
+  overflow: hidden;
+}
+
+.ema-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--ema-accent);
+  transition: width var(--ema-motion-slow) var(--ema-motion-ease-standard);
+}
+
+.ema-progress-fill-success { background: var(--ema-success); }
+.ema-progress-fill-warning { background: var(--ema-warning); }
+.ema-progress-fill-danger  { background: var(--ema-danger); }
+.ema-progress-fill-info    { background: var(--ema-info); }
+
+/* ── Raw-button compatibility: generic bordered button pattern used across pages ── */
+/* Selects and inputs without ema-select/ema-input classes still get themed defaults */
+button.rounded-md,
+button.rounded {
+  transition: background-color var(--ema-motion-duration-fast) var(--ema-motion-ease-standard),
+              border-color var(--ema-motion-duration-fast) var(--ema-motion-ease-standard),
+              opacity var(--ema-motion-duration-fast) var(--ema-motion-ease-standard);
+}
+
+/* ── Action-strip / CTA semantic surface ── */
+.ema-cta-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, var(--ema-accent), var(--ema-accent-2));
+  color: var(--ema-accent-text, var(--ema-text-inverse));
+}
+
+.ema-cta-strip button,
+.ema-cta-strip .ema-btn-on-accent {
+  background: rgb(var(--ema-surface-solid-rgb) / 0.96);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ema-text);
+  transition: background var(--ema-motion-duration-fast) var(--ema-motion-ease-standard);
+}
+
+.ema-cta-strip button:hover,
+.ema-cta-strip .ema-btn-on-accent:hover {
+  background: rgb(var(--ema-surface-solid-rgb) / 1);
+}
+
+/* ── Filter bar with glassmorphic wrap ── */
+.ema-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Inline search input shell (icon + input in row) ── */
+.ema-search-shell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  border: 1px solid var(--ema-control-border);
+  border-radius: 0.5rem;
+  background: var(--ema-control-bg);
+  padding: 0 0.75rem;
+  transition: border-color var(--ema-motion-duration-fast) var(--ema-motion-ease-standard),
+              background var(--ema-motion-duration-fast) var(--ema-motion-ease-standard);
+}
+
+.ema-search-shell:focus-within {
+  border-color: var(--ema-control-border-hover);
+  box-shadow: 0 0 0 3px var(--ema-control-focus);
+}
+
+.ema-search-shell input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--ema-control-text);
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.ema-search-shell input::placeholder {
+  color: var(--ema-control-placeholder);
+}
+
+/* ── Pagination strip ── */
+.ema-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--ema-border);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--ema-text-muted);
+}
+
+/* ── Section header bar (title + subtitle in a card header) ── */
+.ema-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--ema-border);
+  padding: 0.875rem 1.25rem;
+}
+
+.ema-card-header h2,
+.ema-card-header h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ema-text);
+}
+
+/* ── Diagnostic row (label + value in a readable surface) ── */
+.ema-diagnostic-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  border: 1px solid var(--ema-border);
+  background: var(--ema-surface);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* ── Metric mini-card (label + value, used in health / overview) ── */
+.ema-metric-mini {
+  border-radius: 0.625rem;
+  border: 1px solid var(--ema-border);
+  background: var(--ema-surface);
+  padding: 0.75rem;
+}
+
+.ema-metric-mini .ema-metric-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ema-text-muted);
+}
+
+.ema-metric-mini .ema-metric-value {
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ema-text);
+}
+
+/* ── Warning/semantic notice panel ── */
+.ema-notice-warning {
+  border-radius: 0.625rem;
+  border: 1px solid color-mix(in srgb, var(--ema-warning) 38%, transparent);
+  background: var(--ema-warning-soft);
+  padding: 1rem;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.ema-notice-info {
+  border-radius: 0.625rem;
+  border: 1px solid color-mix(in srgb, var(--ema-info) 38%, transparent);
+  background: var(--ema-info-soft);
+  padding: 1rem;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.ema-notice-success {
+  border-radius: 0.625rem;
+  border: 1px solid color-mix(in srgb, var(--ema-success) 38%, transparent);
+  background: var(--ema-success-soft);
+  padding: 1rem;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.ema-notice-danger {
+  border-radius: 0.625rem;
+  border: 1px solid color-mix(in srgb, var(--ema-danger) 38%, transparent);
+  background: var(--ema-danger-soft);
+  padding: 1rem;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* In operational routes, notice panels must not get glass treatment */
+[data-route-kind="operational"] .ema-notice-warning,
+[data-route-kind="operational"] .ema-notice-info,
+[data-route-kind="operational"] .ema-notice-success,
+[data-route-kind="operational"] .ema-notice-danger {
+  background: var(--ema-surface-solid) !important;
+  border-color: var(--ema-border-strong) !important;
+}
+
+/* ── Chip / discipline tag ── */
+.ema-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--ema-border);
+  background: var(--ema-surface-2);
+  padding: 0.25rem 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ema-text);
+}
+
+.ema-chip-accent {
+  border-color: color-mix(in srgb, var(--ema-accent) 38%, transparent);
+  background: var(--ema-accent-soft);
+  color: var(--ema-accent);
+}
+
+.ema-chip-warning {
+  border-color: color-mix(in srgb, var(--ema-warning) 38%, transparent);
+  background: var(--ema-warning-soft);
+  color: var(--ema-warning);
+}
+
+.ema-chip-danger {
+  border-color: color-mix(in srgb, var(--ema-danger) 38%, transparent);
+  background: var(--ema-danger-soft);
+  color: var(--ema-danger);
+}
+
+/* ── Root-scoped operational safety: liquid-glass topbar/sidebar never blur in operational routes ── */
+:root[data-route-kind="operational"] .ema-liquid-topbar {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--ema-surface-solid) !important;
+}
+
+:root[data-route-kind="operational"] .ema-glass-nav,
+:root[data-route-kind="operational"] .ema-liquid-sidebar {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--ema-surface-solid) !important;
+}
+
+/* ── Shared page / panel / state layer ── */
+.ema-page,
+.ema-page-shell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ema-section-gap, 18px);
+  min-width: 0;
+}
+
+.ema-page-header,
+.ema-section-header,
+.ema-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ema-row-gap, 10px);
+}
+
+.ema-page-title,
+.ema-section-title {
+  color: var(--ema-text);
+  font-weight: 700;
+}
+
+.ema-page-subtitle,
+.ema-section-subtitle {
+  color: var(--ema-text-muted);
+}
+
+.ema-page-actions,
+.ema-section-actions,
+.ema-control-row,
+.ema-control-group,
+.ema-filter-bar,
+.ema-glass-control-strip,
+.ema-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ema-control-gap, 8px);
+  align-items: center;
+}
+
+.ema-page-grid,
+.ema-section-grid,
+.ema-kpi-grid {
+  display: grid;
+  gap: var(--ema-section-gap, 18px);
+}
+
+.ema-glass-card,
+.ema-glass-panel,
+.ema-glass-hero,
+.ema-glass-summary,
+.ema-glass-control-strip,
+.ema-glass-capsule,
+.ema-data-panel,
+.ema-data-card,
+.ema-form-panel,
+.ema-code-panel,
+.ema-log-panel,
+.ema-json-panel,
+.ema-status-card,
+.ema-tab-panel {
+  border: 1px solid var(--ema-border);
+  border-radius: var(--ema-card-radius, 0.75rem);
+  background: var(--ema-surface);
+  color: var(--ema-text);
+}
+
+.ema-data-panel,
+.ema-data-card,
+.ema-form-panel,
+.ema-code-panel,
+.ema-log-panel,
+.ema-json-panel,
+.ema-status-card,
+.ema-tab-panel {
+  background: var(--ema-data-surface);
+}
+
+.ema-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--ema-table-bg);
+  color: var(--ema-table-text);
+}
+
+.ema-data-table thead,
+.ema-data-table th {
+  background: var(--ema-surface-2);
+  color: var(--ema-text-muted);
+}
+
+.ema-data-table td,
+.ema-data-table th {
+  border-color: var(--ema-table-border);
+}
+
+.ema-data-row {
+  background: var(--ema-table-row-bg);
+}
+
+.ema-data-row:hover {
+  background: var(--ema-table-row-hover-bg);
+}
+
+.ema-data-list {
+  display: grid;
+  gap: var(--ema-row-gap, 10px);
+}
+
+.ema-control,
+.ema-search,
+.ema-select,
+.ema-input,
+.ema-textarea,
+.ema-button-primary,
+.ema-button-secondary,
+.ema-button-ghost,
+.ema-btn-primary,
+.ema-btn-secondary,
+.ema-btn-ghost {
+  border-radius: 0.5rem;
+  border: 1px solid var(--ema-control-border);
+  background: var(--ema-control-bg);
+  color: var(--ema-control-text);
+}
+
+.ema-button-primary,
+.ema-btn-primary {
+  background: var(--ema-accent);
+  color: var(--ema-accent-contrast);
+  border-color: color-mix(in srgb, var(--ema-accent) 64%, transparent);
+}
+
+.ema-button-secondary,
+.ema-btn-secondary {
+  background: var(--ema-control-bg);
+  color: var(--ema-control-text);
+}
+
+.ema-button-ghost,
+.ema-btn-ghost {
+  background: transparent;
+  color: var(--ema-text);
+  border-color: var(--ema-border);
+}
+
+.ema-tabs {
+  padding: 0.25rem;
+  border: 1px solid var(--ema-border);
+  border-radius: 0.75rem;
+  background: var(--ema-tab-bg);
+}
+
+.ema-tab,
+.ema-segmented-option {
+  border-radius: 0.65rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ema-text-muted);
+}
+
+.ema-tab-active,
+.ema-segmented-option.is-active {
+  background: var(--ema-tab-selected-bg);
+  color: var(--ema-tab-selected-text);
+  border-color: var(--ema-selected-border);
+}
+
+.ema-semantic-badge,
+.ema-state-success,
+.ema-state-warning,
+.ema-state-error,
+.ema-state-info,
+.ema-state-advisory,
+.ema-state-prototype,
+.ema-state-candidate,
+.ema-state-accepted,
+.ema-state-official,
+.ema-state-local-demo,
+.ema-state-not-production,
+.ema-state-not-compliance,
+.ema-state-pending,
+.ema-state-blocked,
+.ema-state-partial,
+.ema-state-simulated,
+.ema-state-indexed,
+.ema-state-no-sync,
+.ema-state-operational,
+.ema-loading-state,
+.ema-error-state,
+.ema-warning-state,
+.ema-success-state,
+.ema-info-state,
+.ema-empty-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--ema-border);
+  background: var(--ema-readable-surface);
+  color: var(--ema-text);
+}
+
+.ema-state-success { background: var(--ema-success-surface); border-color: var(--ema-success-border); }
+.ema-state-warning { background: var(--ema-warning-surface); border-color: var(--ema-warning-border); }
+.ema-state-error { background: var(--ema-error-surface); border-color: var(--ema-error-border); }
+.ema-state-info { background: var(--ema-info-surface); border-color: var(--ema-info-border); }
+.ema-state-advisory { background: var(--ema-advisory-surface); }
+.ema-state-prototype { background: var(--ema-prototype-surface); }
+.ema-state-candidate { background: var(--ema-candidate-surface); }
+.ema-state-accepted { background: var(--ema-success-surface); }
+.ema-state-official { background: color-mix(in srgb, var(--ema-official-soft) 72%, var(--ema-readable-surface)); }
+.ema-state-local-demo,
+.ema-state-not-production,
+.ema-state-not-compliance,
+.ema-state-pending,
+.ema-state-blocked,
+.ema-state-partial,
+.ema-state-simulated,
+.ema-state-indexed,
+.ema-state-no-sync,
+.ema-state-operational {
+  background: var(--ema-readable-surface);
+}
+
+.ema-empty-state,
+.ema-loading-state,
+.ema-error-state,
+.ema-warning-state,
+.ema-success-state,
+.ema-info-state {
+  justify-content: center;
+  padding: 1rem;
+}

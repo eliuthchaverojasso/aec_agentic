@@ -1,0 +1,28 @@
+runtime: ollama
+routes:
+  code_production:
+    model: qwen3.6:27b
+    context_tokens: 65536
+    tools: true
+    structured_output: true
+  critical_review:
+    model: gemma4:26b
+    context_tokens: 32768
+    tools: false
+    structured_output: true
+  document_extraction:
+    model: granite4.1:30b
+    context_tokens: 32768
+    tools: false
+    structured_output: true
+  embeddings:
+    model: bge-m3:latest
+    context_tokens: 8192
+    tools: false
+    structured_output: false
+  emergency_fallback:
+    model: qwen3.6:27b
+    context_tokens: 8192
+    tools: false
+    structured_output: true
+

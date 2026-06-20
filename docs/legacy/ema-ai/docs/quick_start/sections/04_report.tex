@@ -1,0 +1,70 @@
+\section{Review the Report}
+The HTML report is the main review artifact. Start with the executive summary, then filter by discipline, status, or urgency, and then open a requirement card.
+
+\subsection*{What to look for}
+\begin{itemize}
+  \item Executive summary
+  \item Discipline filters
+  \item Status filters
+  \item Urgency
+  \item Key issues
+  \item Requirement cards
+  \item Evidence found
+  \item Missing information
+  \item Revit Element IDs
+  \item Recommended action
+\end{itemize}
+
+\subsection*{Requirement card anatomy}
+\begin{infobox}{One requirement card}
+\begin{tikzpicture}[font=\small, node distance=3mm]
+  \node[draw,rounded corners,fill=white,minimum width=0.96\textwidth,minimum height=6.0cm,align=left,inner sep=4mm] (card) {};
+  \node[anchor=north west] at ($(card.north west)+(4mm,-4mm)$) {\textbf{Requirement ID:} \code{REQ-101}};
+  \node[anchor=north west] at ($(card.north west)+(4mm,-11mm)$) {\textbf{Requirement Text:} Provide panel and circuit assignment for lighting fixtures.};
+  \node[anchor=north west] at ($(card.north west)+(4mm,-22mm)$) {\textbf{Status:} Not Met \hspace{1em} \textbf{Confidence:} 0.86 \hspace{1em} \textbf{Urgency:} Critical};
+  \node[anchor=north west] at ($(card.north west)+(4mm,-33mm)$) {\textbf{Evidence Used:} 1 candidate element inspected. 0 element(s) already contain the required parameter data.};
+  \node[anchor=north west] at ($(card.north west)+(4mm,-44mm)$) {\textbf{Missing Evidence:} Panel and circuit values};
+  \node[anchor=north west] at ($(card.north west)+(4mm,-55mm)$) {\textbf{Next Best Action:} Assign panel and circuit values to the listed elements before the next deliverable.};
+  \node[anchor=north west] at ($(card.north west)+(4mm,-66mm)$) {\textbf{Element IDs:} 123456, 123457, 123458};
+\end{tikzpicture}
+\end{infobox}
+
+\subsection*{How to read the requirement card}
+\begin{enumerate}
+  \item \textbf{Requirement ID} is the primary identifier for feedback.
+  \item \textbf{Requirement Text} is the workbook statement being checked.
+  \item \textbf{Status} tells you the automated result.
+  \item \textbf{Confidence} shows how strongly the deterministic check matched the available evidence.
+  \item \textbf{Urgency} shows how quickly the team should review it.
+  \item \textbf{Evidence Used} lists the model evidence the engine found.
+  \item \textbf{Missing Evidence} tells you what is still absent.
+  \item \textbf{Next Best Action} is the recommended follow-up.
+  \item \textbf{Element IDs} are the Revit IDs you can use to locate the evidence in the model.
+\end{enumerate}
+
+\subsection*{How to open the report}
+Use \textbf{Report Navigator} if your build includes the report window inside Revit. Use \textbf{Open Browser} if your build opens the latest report in the default browser. Both options are acceptable when available.
+
+\subsection*{Report source}
+The example report folder is here:
+\begin{center}
+\link{https://drive.google.com/drive/folders/1_b_eXT1muhlJ2Ytza267ZEXhCdizI3fq?usp=drive_link}
+\end{center}
+
+\subsection*{Status meanings}
+\begin{longtable}{@{}p{0.24\textwidth}p{0.46\textwidth}p{0.22\textwidth}@{}}
+\toprule
+\textbf{Status} & \textbf{What it means} & \textbf{What the reviewer should do} \\
+\midrule
+Met & Available evidence appears to satisfy the requirement. & Confirm the evidence is correct. \\
+Not Met & The requirement is evaluable and the evidence does not satisfy it. & Verify the gap and expected correction. \\
+Needs Human Review & Engineering judgment or document evidence is required. & Identify the missing drawing, spec, or decision. \\
+Insufficient Model Data & Required model information is missing. & Identify the missing parameter or model content. \\
+Not Applicable & The requirement does not apply to the scope. & Confirm the scope exclusion. \\
+\bottomrule
+\end{longtable}
+
+\begin{warnbox}{Pilot boundary}
+These are pilot evaluation results. They do not represent engineering approval or compliance certification.
+\end{warnbox}
+\clearpage

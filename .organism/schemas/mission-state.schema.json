@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aec-control-plane.local/organism/schemas/mission-state.schema.json",
+  "title": "ORGANISM Mission State",
+  "type": "object",
+  "required": ["mission_id", "objective", "status", "current_phase", "active_plan_version", "iteration", "budget"],
+  "properties": {
+    "mission_id": { "type": "string", "minLength": 1 },
+    "objective": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": ["created", "running", "paused", "waiting_approval", "completed", "failed", "escalated"]
+    },
+    "current_phase": { "type": "string", "minLength": 1 },
+    "active_plan_version": { "type": "integer", "minimum": 1 },
+    "iteration": { "type": "integer", "minimum": 0 },
+    "budget": {
+      "type": "object",
+      "required": ["max_iterations", "max_runtime_hours", "max_failures_per_action"],
+      "properties": {
+        "max_iterations": { "type": "integer", "minimum": 1 },
+        "max_runtime_hours": { "type": "number", "exclusiveMinimum": 0 },
+        "max_failures_per_action": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "working_set": {
+      "type": "object",
+      "properties": {
+        "current_task": { "type": ["string", "null"] },
+        "relevant_artifacts": { "type": "array", "items": { "type": "string" } },
+        "retrieved_memories": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "pending_approvals": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}
+

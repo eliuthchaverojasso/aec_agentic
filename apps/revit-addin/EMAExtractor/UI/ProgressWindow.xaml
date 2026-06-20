@@ -1,0 +1,34 @@
+﻿<Window x:Class="EMAExtractor.UI.ProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="EMA Export Progress"
+        Height="130"
+        Width="420"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Topmost="True">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="StatusText"
+                   Grid.Row="0"
+                   Margin="0,0,0,8"
+                   Text="Starting..." />
+
+        <ProgressBar x:Name="MainProgressBar"
+                     Grid.Row="1"
+                     Height="22"
+                     Minimum="0"
+                     Maximum="100"
+                     Value="0" />
+
+        <TextBlock x:Name="PercentText"
+                   Grid.Row="2"
+                   Margin="0,8,0,0"
+                   Text="0%" />
+    </Grid>
+</Window>

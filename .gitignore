@@ -1,0 +1,59 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.local.json
+
+# Python
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+*.pyc
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+coverage/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.pdb
+*.dll
+
+# AEC/client/generated data
+*.rvt
+*.rfa
+*.ifc
+*.dwfx
+*.nwd
+*.nwc
+*.xlsx
+*.xls
+*.db
+*.bak
+*.dump
+landing/
+**/legacy-landing/**
+!apps/landing/legacy-landing/.gitkeep
+!apps/landing/legacy-landing/example_landing_manifest.json
+
+# Reports and build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.toc
+*.log
+*.zip
+*.pdf
+artifacts/
+_DELIVERY/
+_diagnostics/
+**/EMA_AI_Requirement_Check_*.html

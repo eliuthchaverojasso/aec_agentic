@@ -1,0 +1,2 @@
+"""Persistent memory metadata contracts."""
+

@@ -1,0 +1,67 @@
+\section{Submit Feedback}
+Users must submit one Google Form response for each requirement that needs review.
+
+\subsection*{Feedback form}
+\begin{center}
+\fcolorbox{EMA Blue}{EMA SoftBlue}{\parbox{0.95\textwidth}{\centering\link{https://forms.gle/6JCgsHnbua8pn7mu9}}}
+\end{center}
+
+\subsection*{Required fields}
+\begin{itemize}
+  \item Project Name
+  \item Reviewer Name
+  \item Requirement ID
+  \item Current Result
+  \item Expected Result
+  \item Supporting Reason
+  \item Expected Evidence
+\end{itemize}
+
+\subsection*{Recommended but optional}
+\begin{itemize}
+  \item Screenshot
+  \item Revit Element ID
+  \item Drawing sheet
+  \item Specification section
+\end{itemize}
+
+\subsection*{Example response}
+\begin{longtable}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\toprule
+\textbf{Field} & \textbf{Example} \\
+\midrule
+Project & MEP-NISD-MIDDLE SCHOOL \\
+Requirement ID & REQ-E-042 \\
+Current Result & Not Met \\
+Expected Result & Met \\
+Supporting Reason & Panel and circuit information are present in the model \\
+Expected Evidence & Panel, Circuit Number, Voltage, and Load Classification parameters; Element ID 458921 \\
+\bottomrule
+\end{longtable}
+
+\subsection*{After feedback}
+\begin{center}
+\begin{tikzpicture}[node distance=7mm and 7mm, every node/.style={font=\small}]
+  \node[draw,rounded corners,fill=white,minimum width=2.2cm,minimum height=0.9cm,align=center] (a) {EMA Review};
+  \node[draw,rounded corners,fill=EMA SoftBlue,minimum width=2.4cm,minimum height=0.9cm,align=center,right=of a] (b) {Feedback Form};
+  \node[draw,rounded corners,fill=white,minimum width=2.6cm,minimum height=0.9cm,align=center,right=of b] (c) {Shokworks Triage};
+  \node[draw,rounded corners,fill=EMA SoftTeal,minimum width=2.2cm,minimum height=0.9cm,align=center,right=of c] (d) {Rule / Evidence Fix};
+  \node[draw,rounded corners,fill=white,minimum width=2.0cm,minimum height=0.9cm,align=center,right=of d] (e) {Regression Test};
+  \node[draw,rounded corners,fill=EMA SoftAmber,minimum width=1.9cm,minimum height=0.9cm,align=center,right=of e] (f) {Updated Result};
+  \node[draw,rounded corners,fill=white,minimum width=2.1cm,minimum height=0.9cm,align=center,right=of f] (g) {EMA Confirmation};
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (a) -- (b);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (b) -- (c);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (c) -- (d);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (d) -- (e);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (e) -- (f);
+  \draw[-{Latex[length=2.2mm]},thick,color=EMA Blue] (f) -- (g);
+\end{tikzpicture}
+\end{center}
+
+Accepted corrections should become versioned logic or regression tests. That keeps the pilot repeatable and protects the deterministic workflow from informal one-off changes.
+
+\subsection*{Example feedback screenshot placeholder}
+\begin{infobox}{Google Form reference}
+If you have a form screenshot from the shared folder, place it here as a sanitized image named \code{feedback_form.png}. Until then, the PDF uses this text reference rather than a fabricated screenshot.
+\end{infobox}
+\clearpage

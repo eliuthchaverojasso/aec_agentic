@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
+\setlength{\parskip}{0.65em}
+\setlength{\parindent}{0pt}
+
+\title{EMA-AI Product Overview: A Local MVP for Engineering Deliverable Readiness and Evidence-Based Project Tracking}
+\author{EMA-AI Project Team}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Executive Summary}
+EMA-AI is a local MVP for engineering deliverable readiness. It helps teams answer a concrete operational question: is a project, trade, or milestone ready for the next DD/CD deliverable? The product is designed for local demo use, operator review, and stakeholder visibility. It is not production-ready and not official compliance software.
+
+\section{Why EMA-AI Exists}
+Project teams often need to reconcile Revit exports, drawings, specifications, owner requirements, issue backlogs, and milestone expectations without relying on fragmented spreadsheets and manual memory. EMA-AI provides a structured local workflow that makes those artifacts visible and reviewable in one place.
+
+\section{The Engineering Delivery Problem}
+Deliverable readiness is usually a coordination problem, not a single-score problem. Teams need to know what is missing, what is a candidate for evidence, what is still under review, and what is actually covered. EMA-AI keeps those distinctions explicit so that the dashboard remains honest.
+
+\section{What EMA-AI Does}
+\begin{itemize}[leftmargin=*]
+\item Organizes local landing files from Revit and operator workflows.
+\item Discovers and indexes drawings, specifications, owner requirements, and Revit exports.
+\item Calculates deterministic readiness and snapshot history.
+\item Surfaces QA/QC issues and model health.
+\item Presents a Processing / Sync control room for operators.
+\item Labels evidence as evidence candidates rather than claiming official evidence.
+\end{itemize}
+
+\section{What EMA-AI Does Not Do}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Not doing & Reason \\
+\midrule
+Production auth/RBAC & This is a local MVP with local demo users only. \\
+Official compliance & Readiness is deterministic and reviewable, not an official compliance decision. \\
+Automatic continuous sync & Ingestion is operator controlled. \\
+APS production viewer & Not implemented in this paper set. \\
+AI approval of readiness & AI is advisory only. \\
+\bottomrule
+\end{tabularx}
+
+\section{User Personas}
+\begin{itemize}[leftmargin=*]
+\item Director / Engineering Leader: wants a quick portfolio view and risk summary.
+\item BIM Manager: wants file integrity, export status, and issue trends.
+\item Project Manager: wants project context, readiness blockers, and next actions.
+\item Engineer / Reviewer: wants details, evidence candidates, and QA/QC traceability.
+\item IT / Admin: wants safe local setup, clear boundaries, and deployment guidance.
+\end{itemize}
+
+\section{Core Workflows}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Workflow & What the user sees \\
+\midrule
+Executive Overview & Portfolio KPIs, action queue, landing-root visibility, and readiness summary. \\
+Processing / Sync & Operator controls for scan, manifest rebuild, ingest, snapshot, and logs. \\
+Project Setup & Project/client binding and landing folder configuration. \\
+Documents / Evidence & Indexed files labeled as evidence candidates. \\
+Requirements & Owner requirements state, client binding state, and coverage semantics. \\
+Drawing Reel & Indexed drawing PDFs and empty-state guidance. \\
+Model Health & Export health and issue backlog context. \\
+Trade Readiness & Deterministic and fallback trade views. \\
+Debug / Logs & Operation history, warnings, and diagnostics. \\
+\bottomrule
+\end{tabularx}
+
+\section{Revit Ribbon Experience}
+The Revit add-in is the local capture edge. It provides commands for export, landing folder navigation, and opening the dashboard. It does not parse PDFs or claim readiness itself; it packages model data and operator intent for the backend.
+
+\section{Dashboard Experience}
+The dashboard is a route-based review surface, not a marketing site. It is built for scanning, comparing, and acting. The UI is intentionally explicit about demo boundaries, local-only state, and candidate evidence labels.
+
+\section{Local Demo Boundaries}
+The local demo is useful because it is real enough to validate the workflow and safe enough to keep its limits visible. Documents are indexed locally, readiness is deterministic, and the demo story can be shown without claiming production adoption or official compliance.
+
+\section{Value Proposition}
+EMA-AI helps teams reduce uncertainty before a deliverable handoff. It makes the landing root legible, links files to project context, and gives operators a repeatable way to inspect readiness, issues, and evidence candidates.
+
+\section{Demo Script}
+\begin{enumerate}[leftmargin=*]
+\item Open the dashboard.
+\item Show Executive Overview.
+\item Explain local demo and non-production boundaries.
+\item Open Processing / Sync.
+\item Show project context and batch landing workflow.
+\item Open Requirements and Documents / Evidence.
+\item Open Drawing Reel and Model Health.
+\item Show Debug / Logs and snapshots.
+\end{enumerate}
+
+\section{Current MVP Readiness}
+The repository currently records 246 C\# add-in tests passing, 127 backend tests passing without the database stack, and 47 backend tests that still require the Docker/PostgreSQL stack. Manual browser smoke and Revit runtime smoke remain validation gaps unless explicitly executed in the host environment.
+
+\section{Roadmap to Azure Pilot}
+The Azure path should preserve the local-first workflow: a hosted frontend, a containerized FastAPI backend, Azure PostgreSQL, managed secrets, and observability. The pilot should not erase the deterministic readiness model or the evidence-candidate policy.
+
+\section{Risks and Caveats}
+\begin{itemize}[leftmargin=*]
+\item Missing client binding can block owner requirements ingestion.
+\item PDF preview may remain metadata-only depending on parser availability.
+\item Revit runtime must be validated in Revit itself before any runtime claim.
+\item Evidence candidate labels must remain visible.
+\end{itemize}
+
+\section{Conclusion}
+EMA-AI is most valuable as an honest local MVP: useful enough to support real operator workflows, clear enough to avoid overclaiming, and structured enough to become a better Azure pilot later.
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

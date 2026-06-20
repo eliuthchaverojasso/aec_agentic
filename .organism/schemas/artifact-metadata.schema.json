@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aec-control-plane.local/organism/schemas/artifact-metadata.schema.json",
+  "title": "ORGANISM Artifact Metadata",
+  "type": "object",
+  "required": ["artifact_id", "source", "mime_type", "content_hash", "sensitivity", "parser_version", "created_at"],
+  "properties": {
+    "artifact_id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "mime_type": { "type": "string", "minLength": 1 },
+    "content_hash": { "type": "string", "minLength": 1 },
+    "project_id": { "type": ["string", "null"] },
+    "sensitivity": { "enum": ["public", "internal", "confidential", "secret"] },
+    "parser_version": { "type": "string", "minLength": 1 },
+    "provenance": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}
+

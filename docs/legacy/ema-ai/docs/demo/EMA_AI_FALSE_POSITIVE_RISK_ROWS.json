@@ -1,0 +1,271 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-06-08",
+  "description": "False positive risk analysis for all 142 Met rows. Every row marked Met is analyzed against the principle: Category + Level can prove presence/placement only, NOT size, manufacturer, controls, DDC/EMCS, conduit length, installation method, spec restrictions, owner approval, demolition execution, or compliance with product constraints.",
+  "total_met": 142,
+  "confirmed_true_positive": 0,
+  "confirmed_false_positive": 72,
+  "suspected_false_positive": 38,
+  "borderline_acceptable": 32,
+  "false_positive_patterns": [
+    {
+      "pattern_id": "FP01_MANUFACTURER_OVERCLAIM",
+      "description": "Engine proves category presence but requirement specifies exact manufacturer/brand. Model cannot verify Manufacturer parameter is populated with correct value.",
+      "severity": "critical",
+      "affected_rows": [3, 20, 42, 58, 72, 155, 188, 250, 302, 337, 338, 395, 403, 424, 432, 454, 455, 458, 466, 473, 478, 529, 539, 553, 555, 589, 592, 593, 595, 616, 618, 623, 625, 626, 627, 651, 661, 663, 670, 699, 725, 726, 727, 728, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 773, 774, 790, 791, 793, 796, 800],
+      "count": 63,
+      "root_cause": "No check of Manufacturer or Model parameter values. Engine checks category presence only.",
+      "fix_approach": "For any requirement containing a brand/manufacturer name, verify Manufacturer parameter contains matching value before allowing Met."
+    },
+    {
+      "pattern_id": "FP02_CONTROLS_DDC_EMCS_OVERCLAIM",
+      "description": "Engine proves mechanical/electrical equipment exists but requirement specifies control sequences, DDC/EMCS tie-ins, or automation requirements.",
+      "severity": "critical",
+      "affected_rows": [480, 485, 529, 403, 418, 450],
+      "count": 6,
+      "root_cause": "No controls/BMS/BAS elements exist in the model. Engine falls through to mechanical_equipment_placement or lighting_fixture_coverage.",
+      "fix_approach": "New type mechanical_controls_ddc_emcs must prevent Met status. Any requirement mentioning DDC, EMCS, BAS, BMS, control sequence must be NeedsHumanReview."
+    },
+    {
+      "pattern_id": "FP03_CONDUIT_SIZE_OVERCLAIM",
+      "description": "Engine proves lighting/electrical presence but requirement specifies conduit sizes. No conduit elements exist in the model.",
+      "severity": "critical",
+      "affected_rows": [155, 188, 250, 424, 784],
+      "count": 5,
+      "root_cause": "No Conduit/Raceway category in Revit export. Classifier assigns wrong type (technology_low_voltage) and engine matches lighting fixtures.",
+      "fix_approach": "New type conduit_raceway_size_requirement must prevent Met. Detect 'conduit.*inch' or 'minimum conduit size' patterns."
+    },
+    {
+      "pattern_id": "FP04_FIELD_EXECUTION_OVERCLAIM",
+      "description": "Engine proves model elements exist but requirement describes field work (backfill, installation methods, concrete pads, protection).",
+      "severity": "high",
+      "affected_rows": [608, 610, 734],
+      "count": 3,
+      "root_cause": "Backfill/earthwork requirements not caught by field_execution_demolition_protection classifier. Fall through to plumbing_routing_coverage.",
+      "fix_approach": "Expand field_execution patterns to include backfill, excavation, compaction, pipe burial, geotechnical."
+    },
+    {
+      "pattern_id": "FP05_SUBMITTAL_CLOSEOUT_OVERCLAIM",
+      "description": "Engine proves model elements exist but requirement is about O&M manuals, testing, commissioning, or training deliverables.",
+      "severity": "high",
+      "affected_rows": [72, 699],
+      "count": 2,
+      "root_cause": "O&M manual sections classified as technology_low_voltage instead of commissioning_testing_om_training.",
+      "fix_approach": "Add operation_maintenance_manual type with higher priority for O&M/manual/training patterns."
+    },
+    {
+      "pattern_id": "FP06_WRONG_RULE_ASSIGNMENT",
+      "description": "Engine applies completely wrong evaluation rule. Requirement is about one discipline/system but matched against unrelated category.",
+      "severity": "high",
+      "affected_rows": [25, 479, 485, 530, 608, 610, 728],
+      "count": 7,
+      "root_cause": "Fallback rules match broad categories. Example: Row 479 (RTU compressor type) evaluated via plumbing_routing_coverage.",
+      "fix_approach": "Tighter candidate scoping per requirement type. Mechanical requirements should not fall to plumbing rules."
+    },
+    {
+      "pattern_id": "FP07_SPECIFICATION_TEXT_OVERCLAIM",
+      "description": "Requirement is a specification section with detailed material/product requirements. Engine proves category presence but not specification compliance.",
+      "severity": "medium",
+      "affected_rows": [266, 286, 358, 493, 589, 623, 626, 627, 732, 734, 745],
+      "count": 11,
+      "root_cause": "Specification-type requirements (Drawing validation_type) still get Met when category is present.",
+      "fix_approach": "Drawing/Specification validation types should require stronger evidence than category-only presence."
+    },
+    {
+      "pattern_id": "FP08_ATTIC_STOCK_SPARES_OVERCLAIM",
+      "description": "Requirement specifies attic stock quantities (often zero). Engine cannot verify physical inventory.",
+      "severity": "medium",
+      "affected_rows": [58],
+      "count": 1,
+      "root_cause": "No attic_stock type exists. Classified as unknown_ambiguous, matched via technology.",
+      "fix_approach": "Add attic_stock_spare_parts type. Always Manual or NotApplicable."
+    }
+  ],
+  "critical_rows_deep_analysis": [
+    {
+      "row": 155,
+      "requirement_text_short": "Minimum conduit size shall be 3/4-inch. Tech/Data/Video 1-inch. Security 1-inch.",
+      "current_status": "Met",
+      "current_rule": "lighting_fixture_coverage",
+      "current_type": "technology_low_voltage_security_fire_alarm",
+      "matched_elements": 2612,
+      "evidence_alignment": "Strong",
+      "false_positive": true,
+      "reason": "Lighting fixture presence cannot prove conduit sizes. No conduit elements exist in model. This is the #1 example of category-level overclaim.",
+      "correct_type": "conduit_raceway_size_requirement",
+      "correct_status": "NeedsHumanReview",
+      "correct_validation": "Drawing"
+    },
+    {
+      "row": 478,
+      "requirement_text_short": "RTU BASE BID: Aaon HVAC equipment. ALT BID: Lennox then Trane. No York/JCI.",
+      "current_status": "Met",
+      "current_rule": "mechanical_equipment_placement",
+      "current_type": "mechanical_equipment_coverage",
+      "matched_elements": 286,
+      "evidence_alignment": "Strong",
+      "false_positive": true,
+      "reason": "286 mechanical elements prove equipment exists. Model has Aaon RTU families, BUT engine does not verify Manufacturer parameter. More critically, this is a BID requirement (base bid vs alt bid) which is a procurement/specification matter, not model-checkable.",
+      "correct_type": "manufacturer_brand_restriction",
+      "correct_status": "NeedsHumanReview",
+      "correct_validation": "Specification",
+      "partial_evidence": "Family names contain 'Aaon RTU' which partially confirms brand, but bid structure cannot be model-verified"
+    },
+    {
+      "row": 479,
+      "requirement_text_short": "RTUs with two-speed compressors, bi-polar ionization without demand control ventilation.",
+      "current_status": "Met",
+      "current_rule": "plumbing_routing_coverage",
+      "current_type": "mechanical_equipment_coverage",
+      "matched_elements": 739,
+      "evidence_alignment": "Strong",
+      "false_positive": true,
+      "reason": "WRONG RULE: plumbing_routing_coverage applied to mechanical compressor requirement. 739 plumbing elements have zero relevance. Compressor type (two-speed), ionization type (bi-polar), and DCV absence cannot be verified from model.",
+      "correct_type": "mechanical_controls_ddc_emcs",
+      "correct_status": "NeedsHumanReview",
+      "correct_validation": "Specification"
+    },
+    {
+      "row": 480,
+      "requirement_text_short": "Control small restroom exhaust fan with lights. Control large gang restroom exhaust fan with EMCS.",
+      "current_status": "Met",
+      "current_rule": "mechanical_equipment_placement",
+      "current_type": "mechanical_equipment_coverage",
+      "matched_elements": 286,
+      "evidence_alignment": "Strong",
+      "false_positive": true,
+      "reason": "Mechanical equipment presence proves fans exist. But control method (lights vs EMCS) and size-based control differentiation cannot be verified from model. EMCS connection is not modeled.",
+      "correct_type": "mechanical_controls_ddc_emcs",
+      "correct_status": "NeedsHumanReview",
+      "correct_validation": "Specification"
+    },
+    {
+      "row": 485,
+      "requirement_text_short": "Venturi meters tied to DDC",
+      "current_status": "Met",
+      "current_rule": "plumbing_routing_coverage",
+      "current_type": "unknown_ambiguous",
+      "matched_elements": 739,
+      "evidence_alignment": "Strong",
+      "false_positive": true,
+      "reason": "WRONG RULE: plumbing_routing_coverage for a DDC controls requirement. Venturi meters are not modeled. DDC connection is not verifiable from model. Classified as unknown_ambiguous, fell through to plumbing.",
+      "correct_type": "mechanical_controls_ddc_emcs",
+      "correct_status": "NeedsHumanReview",
+      "correct_validation": "Specification"
+    },
+    {
+      "row": 491,
+      "requirement_text_short": "All exhaust fans will be In-Line for general exhaust and located above attic space.",
+      "current_status": "Met",
+      "current_rule": "mechanical_equipment_placement",
+      "current_type": "mechanical_equipment_coverage",
+      "matched_elements": 286,
+      "evidence_alignment": "Strong",
+      "false_positive": true,
+      "reason": "Mechanical equipment presence proves fans exist. But fan TYPE (In-Line vs direct) and LOCATION (above attic space) cannot be verified from category + level alone. Would need family/type to encode 'In-Line' and level/elevation to confirm attic placement.",
+      "correct_type": "mechanical_equipment_coverage",
+      "correct_status": "NeedsHumanReview",
+      "correct_validation": "Model",
+      "partial_evidence": "Some exhaust fan family names (GC_75, SQN-D) exist but don't encode 'In-Line' type"
+    }
+  ],
+  "canary_rows_analysis": [
+    {
+      "row": 22,
+      "status": "NeedsHumanReview",
+      "type": "panel_circuit_power",
+      "rule": "outlet_circuit_assignment",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Soap dispenser outlet requirement correctly identified as weak evidence - outlet existence doesn't prove it's at a soap dispenser location."
+    },
+    {
+      "row": 100,
+      "status": "NeedsHumanReview",
+      "type": "manufacturer_product_spec_submittal",
+      "rule": "manufacturer_product_spec_submittal",
+      "evidence_alignment": "Mismatch Risk",
+      "assessment": "CORRECT. Equipment identification with specific manufacturers (W.H. Brady) correctly flagged as MismatchRisk."
+    },
+    {
+      "row": 103,
+      "status": "NeedsHumanReview",
+      "type": "field_execution_demolition_protection",
+      "rule": "field_execution_demolition_protection",
+      "evidence_alignment": "Mismatch Risk",
+      "assessment": "CORRECT. Protection requirement correctly classified as field execution with MismatchRisk. 20369 matched elements confirms full model leak but guardrail prevents Met."
+    },
+    {
+      "row": 112,
+      "status": "NeedsHumanReview",
+      "type": "field_execution_demolition_protection",
+      "rule": "field_execution_demolition_protection",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Demolition/electrical alteration correctly classified and guardrailed."
+    },
+    {
+      "row": 113,
+      "status": "NeedsHumanReview",
+      "type": "field_execution_demolition_protection",
+      "rule": "field_execution_demolition_protection",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Outlet removal/demolition correctly classified."
+    },
+    {
+      "row": 133,
+      "status": "NeedsHumanReview",
+      "type": "grounding_bonding_conductors",
+      "rule": "grounding_bonding_conductors",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Insulated ground conductor in all conduit systems - correctly flagged as weak because conduit system evidence is absent."
+    },
+    {
+      "row": 142,
+      "status": "NeedsHumanReview",
+      "type": "grounding_bonding_conductors",
+      "rule": "grounding_bonding_conductors",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Ground bar with specific manufacturer (Erico Cadweld) correctly flagged as weak."
+    },
+    {
+      "row": 149,
+      "status": "NeedsHumanReview",
+      "type": "grounding_bonding_conductors",
+      "rule": "grounding_bonding_conductors",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Installation restrictions (don't fasten to pipes/ducts) correctly identified as not model-verifiable."
+    },
+    {
+      "row": 150,
+      "status": "NeedsHumanReview",
+      "type": "grounding_bonding_conductors",
+      "rule": "grounding_bonding_conductors",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Grounding electrode conductor for technology systems correctly flagged as weak."
+    },
+    {
+      "row": 600,
+      "status": "NeedsHumanReview",
+      "type": "plumbing_hose_bibb_rpz_valves",
+      "rule": "plumbing_hose_bibb_rpz_valves",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. RPZ per roof zone with 200-foot radius requirement - correctly flagged because radius coverage cannot be verified from model."
+    },
+    {
+      "row": 601,
+      "status": "NeedsHumanReview",
+      "type": "plumbing_hose_bibb_rpz_valves",
+      "rule": "plumbing_hose_bibb_rpz_valves",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. Shut-off valve at each hose bibb correctly flagged as weak - valve-to-bibb pairing cannot be verified."
+    },
+    {
+      "row": 602,
+      "status": "NeedsHumanReview",
+      "type": "plumbing_hose_bibb_rpz_valves",
+      "rule": "plumbing_hose_bibb_rpz_valves",
+      "evidence_alignment": "Weak",
+      "assessment": "CORRECT. In-ground valve box requirement correctly flagged - model shows roof-mount and wall-mount bibbs but cannot verify in-ground installation."
+    }
+  ],
+  "canary_summary": "All 12 canary rows are correctly handled as NeedsHumanReview. The guardrail system works well for these cases. The false positive problem is concentrated in the Met rows, not the NeedsHumanReview rows."
+}

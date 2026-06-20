@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aec-control-plane.local/organism/schemas/tool-call-event.schema.json",
+  "title": "ORGANISM Tool Call Event",
+  "type": "object",
+  "required": ["event_id", "mission_id", "actor", "tool", "risk_level", "input_summary", "result", "created_at"],
+  "properties": {
+    "event_id": { "type": "string", "minLength": 1 },
+    "mission_id": { "type": "string", "minLength": 1 },
+    "actor": { "type": "string", "minLength": 1 },
+    "tool": { "type": "string", "minLength": 1 },
+    "risk_level": { "type": "integer", "minimum": 0, "maximum": 4 },
+    "input_summary": { "type": "string" },
+    "output_summary": { "type": "string" },
+    "result": { "enum": ["success", "failure", "blocked", "requires_approval"] },
+    "correlation_id": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}
+

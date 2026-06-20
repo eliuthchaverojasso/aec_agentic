@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: aec_control_plane
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./apps/control-plane-api
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@postgres:5432/aec_control_plane
+    ports:
+      - "8010:8010"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+

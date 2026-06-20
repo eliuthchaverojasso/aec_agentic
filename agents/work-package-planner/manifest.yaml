@@ -1,0 +1,31 @@
+id: work-package-planner
+version: 0.1.0
+capability:
+  type: work.plan.propose
+inputs:
+  - accepted_obligations
+  - asset_context
+  - schedule_context
+  - actor_capabilities
+outputs:
+  - proposed_work_packages
+  - proposed_dependencies
+  - unresolved_questions
+permissions:
+  read:
+    - obligations
+    - assets
+    - schedules
+  propose:
+    - work_packages
+  write: []
+required_approval:
+  type: human
+  role:
+    - project_manager
+    - vdc_manager
+limits:
+  maximum_cost_usd: 2.00
+  maximum_actions: 30
+  maximum_runtime_seconds: 180
+

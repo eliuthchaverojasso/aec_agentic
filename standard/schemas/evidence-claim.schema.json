@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aec-control-plane.local/schemas/evidence-claim.schema.json",
+  "title": "Evidence Claim",
+  "type": "object",
+  "required": ["id", "claim", "subject_ref", "artifact_refs", "producer", "policy_id", "status"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "claim": { "type": "string", "minLength": 1 },
+    "subject_ref": { "$ref": "./shared.schema.json#/$defs/entity_ref" },
+    "artifact_refs": { "type": "array", "minItems": 1, "items": { "$ref": "./shared.schema.json#/$defs/entity_ref" } },
+    "producer": { "$ref": "./shared.schema.json#/$defs/entity_ref" },
+    "policy_id": { "type": "string", "minLength": 1 },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "status": {
+      "enum": ["captured", "linked", "validated", "reviewed", "accepted", "superseded", "rejected"]
+    }
+  },
+  "additionalProperties": false
+}
+

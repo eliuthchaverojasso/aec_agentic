@@ -1,0 +1,87 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in,headheight=24pt,headsep=18pt,footskip=22pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titlesec}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,shapes.geometric}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  urlcolor=blue!55!black,
+  citecolor=blue!60!black,
+  pdfauthor={EMA Engineering \& Consulting},
+  pdftitle={EMA AI Pilot Quick Start Guide}
+}
+\definecolor{EMA Navy}{HTML}{0B1F3A}
+\definecolor{EMA Charcoal}{HTML}{1F2937}
+\definecolor{EMA Slate}{HTML}{475569}
+\definecolor{EMA Blue}{HTML}{2563EB}
+\definecolor{EMA Teal}{HTML}{0F766E}
+\definecolor{EMA Amber}{HTML}{D97706}
+\definecolor{EMA Red}{HTML}{B91C1C}
+\definecolor{EMA BG}{HTML}{F6F8FB}
+\definecolor{EMA Line}{HTML}{D6E0EC}
+\definecolor{EMA SoftBlue}{HTML}{EFF6FF}
+\definecolor{EMA SoftTeal}{HTML}{F0FDFA}
+\definecolor{EMA SoftAmber}{HTML}{FFFBEB}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\titleformat{\section}{\Large\bfseries\color{EMA Navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{EMA Charcoal}}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{EMA Slate}{EMA AI Pilot Quick Start Guide}}
+\rhead{\textcolor{EMA Slate}{Controlled Pilot}}
+\cfoot{\textcolor{EMA Slate}{\thepage/\pageref{LastPage}}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{EMA Line}\leaders\hrule height \headrulewidth\hfill}}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.25em,topsep=0.25em}
+\setlist[enumerate]{leftmargin=1.4em,itemsep=0.25em,topsep=0.25em}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\link}[1]{\href{#1}{\nolinkurl{#1}}}
+\newtcolorbox{infobox}[1]{
+  colback=white,
+  colframe=EMA Line,
+  arc=2mm,
+  boxrule=0.5pt,
+  title=\textbf{#1}
+}
+\newtcolorbox{warnbox}[1]{
+  colback=EMA SoftAmber,
+  colframe=EMA Amber,
+  arc=2mm,
+  boxrule=0.6pt,
+  title=\textbf{#1}
+}
+\newtcolorbox{tipbox}[1]{
+  colback=EMA SoftBlue,
+  colframe=EMA Blue,
+  arc=2mm,
+  boxrule=0.6pt,
+  title=\textbf{#1}
+}
+\newcommand{\sectiondivider}{\vspace{0.3em}\hrule height 0.4pt color EMA Line \vspace{0.45em}}
+\begin{document}
+\pagenumbering{roman}
+\include{sections/01_overview}
+\include{sections/02_installation}
+\include{sections/03_workflow}
+\include{sections/04_report}
+\include{sections/05_feedback}
+\include{sections/06_troubleshooting}
+\end{document}

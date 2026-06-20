@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-06-08",
+  "audit_type": "semantic_extraction_evidence_mapping",
+  "project": "MEP-NISD-MIDDLE SCHOOL 8",
+  "core_principle": "Category + Level can prove presence or placement only. Cannot prove size, manufacturer, controls, DDC/EMCS, conduit length, installation method, spec restrictions, owner approval, demolition execution, or product constraints.",
+  "input_sources": {
+    "html_report": {
+      "path": "Pipeline/pipeline/landing/EMA_AI_Requirement_Check_MEP-NISD-MIDDLE SCHOOL 8_All Disciplines_20260608_071504.html",
+      "size_mb": 574,
+      "hidden_json_offset_bytes": 284226526,
+      "hidden_json_size_mb": 302.8,
+      "requirement_results": 804,
+      "model_elements_reviewed": 21868
+    },
+    "xlsx_workbook": {
+      "path": "Pipeline/pipeline/landing/NISD-MIDDLE SCHOOL/Owner Requirements/NORTHWEST ISD 06.02.2025.xlsx",
+      "rows": 804,
+      "columns": 10,
+      "disciplines": {"ELECTRICAL": 392, "PLUMBING": 214, "LIGHTING": 82, "MECHANICAL": 61, "TECHNOLOGY": 55},
+      "category_tags": ["Manufacturers", "Gym", "MDF/IDF", "Controls", "Storm Shelter", "CCTV", "Contactors", "Conductors", "Conduits", "Boxes", "Transformers", "Fire Protection", "Data Cabling", "Intercom", "Building Access Control", "Fire Alarm", "Security"]
+    },
+    "revit_json": {
+      "path": "Pipeline/pipeline/landing/derived_local_project__revit_export__all__all__20260608_011533.json",
+      "size_mb": 454,
+      "elements": 21868,
+      "categories": 12,
+      "levels": 4,
+      "parameters": 769
+    },
+    "system_code": {
+      "files_analyzed": [
+        "EMAExtractor/Requirements/RequirementSemanticClassifier.cs",
+        "EMAExtractor/Requirements/RequirementComparisonEngine.cs",
+        "EMAExtractor/Requirements/ValidationTypeClassifier.cs",
+        "EMAExtractor/Requirements/ConfidenceScorer.cs",
+        "EMAExtractor/Requirements/KeyIssueRanker.cs",
+        "EMAExtractor/Requirements/RequirementCheckModels.cs"
+      ]
+    }
+  },
+  "distributions": {
+    "status": {"Needs Human Review": 662, "Met": 142},
+    "validation_type": {"Model": 450, "Manual": 114, "Hybrid": 109, "Specification": 83, "Drawing": 48},
+    "requirement_type": {
+      "unknown_ambiguous": 190, "panel_circuit_power": 112, "field_execution_demolition_protection": 89,
+      "manufacturer_product_spec_submittal": 83, "level_location_mounting_placement": 72,
+      "identification_labeling_nameplate": 54, "conduit_raceway": 39,
+      "technology_low_voltage_security_fire_alarm": 38, "grounding_bonding_conductors": 34,
+      "outlets_receptacles_devices": 25, "plumbing_hose_bibb_rpz_valves": 22,
+      "mechanical_equipment_coverage": 13, "drawing_spec_manual_owner_approval": 12,
+      "commissioning_testing_om_training": 11, "controls_bms_bas_contactors_relays": 10
+    },
+    "evidence_alignment": {"Weak": 322, "Manual Only": 189, "Mismatch Risk": 151, "Strong": 142},
+    "urgency": {"Needs Review": 431, "Critical": 142, "Low": 142, "High": 89},
+    "discipline": {"Electrical": 392, "Plumbing": 214, "Lighting": 82, "Mechanical": 61, "Technology": 55}
+  },
+  "false_positive_summary": {
+    "total_met": 142,
+    "confirmed_false_positive": 72,
+    "suspected_false_positive": 38,
+    "borderline_acceptable": 32,
+    "pattern_count": 8,
+    "critical_patterns": ["FP01_MANUFACTURER_OVERCLAIM", "FP02_CONTROLS_DDC_EMCS_OVERCLAIM", "FP03_CONDUIT_SIZE_OVERCLAIM"]
+  },
+  "canary_row_results": {
+    "total_checked": 12,
+    "all_correct": true,
+    "all_status": "NeedsHumanReview",
+    "conclusion": "Guardrail system works correctly for NeedsHumanReview path. False positives are in Met path only."
+  },
+  "taxonomy_summary": {
+    "current_types": 15,
+    "recommended_types": 37,
+    "missing_critical": ["conduit_raceway_size_requirement", "mechanical_controls_ddc_emcs", "manufacturer_brand_restriction"],
+    "missing_high": ["operation_maintenance_manual", "backfill_excavation_earthwork", "engraving_labeling_finishing", "attic_stock_spare_parts", "lighting_control_scheme"],
+    "missing_medium": ["pipe_material_specification", "plumbing_fixture_model_specification", "testing_inspection_startup"]
+  },
+  "revit_evidence_gaps": {
+    "missing_categories": ["Conduit/Raceway", "Wire/Cable", "Ductwork", "Cable Tray", "Controls/BMS Points", "Sprinkler Heads"],
+    "empty_parameters": ["Manufacturer (mostly empty)", "Model (mostly empty)"],
+    "available_but_unused": ["XLSX Category List tags (17 semantic hints)"]
+  },
+  "implementation_priority": {
+    "P0_critical": 4,
+    "P1_high": 6,
+    "P2_medium": 5,
+    "P3_low": 7,
+    "estimated_met_after_P0": 70,
+    "estimated_false_positive_after_P0": 5,
+    "estimated_met_after_P0_P1": 40,
+    "estimated_false_positive_after_P0_P1": 0
+  }
+}
