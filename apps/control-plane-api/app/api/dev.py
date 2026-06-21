@@ -9,7 +9,6 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.database import get_db
 from app.models import Export, Issue, LandingDocument, Project, ReadinessAction, ReadinessSnapshot
-from app.readiness.persistence import ensure_readiness_tables
 from app.readiness.service import build_project_readiness
 from app.schemas import DevSmokeEndpointResult, DevSmokeTestOut, DevStatusCounts, DevStatusOut
 
@@ -18,7 +17,6 @@ router = APIRouter(prefix="/api/v1/dev", tags=["dev"])
 
 @router.get("/status", response_model=DevStatusOut, summary="Aggregated local dev status")
 def get_dev_status(db: Session = Depends(get_db)) -> DevStatusOut:
-    ensure_readiness_tables(db)
     project_count = int(db.execute(select(func.count(Project.id))).scalar_one())
     export_count = int(db.execute(select(func.count(Export.id))).scalar_one())
     issue_count = int(db.execute(select(func.count(Issue.id))).scalar_one())

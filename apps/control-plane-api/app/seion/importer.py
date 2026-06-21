@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session
 
 from app.models import Project, SeionPrediction
 from app.seion.exporter import DEFAULT_OUTPUT_DIR
-from app.seion.service import ensure_seion_tables
 
 
 @dataclass(frozen=True)
@@ -42,7 +41,6 @@ def import_seion_predictions(
 ) -> SeionPredictionImportResult:
     """Import advisory predictions without mutating official readiness records."""
 
-    ensure_seion_tables(db)
     path = resolve_allowed_prediction_path(predictions_path, allowed_base)
     if not path.exists():
         raise FileNotFoundError(f"Prediction file not found: {path}")

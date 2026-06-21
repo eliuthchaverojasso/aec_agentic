@@ -15,7 +15,6 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.database import get_db
 from app.ingestion.requirements_loader import ingest_requirements_file
-from app.readiness.persistence import ensure_readiness_tables
 from app.services.evidence_service import (
     coverage_status_from_requirement,
     evidence_review_status,
@@ -435,7 +434,6 @@ def get_project_requirements(
     db: Session = Depends(get_db),
 ) -> ProjectRequirementsResponse:
     project = _resolve_project(db, project_id)
-    ensure_readiness_tables(db)
     if project.client_id is None:
         return ProjectRequirementsResponse(
             project_id=project_id,

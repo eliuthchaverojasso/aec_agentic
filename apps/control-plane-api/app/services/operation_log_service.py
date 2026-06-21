@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import json
 import os
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from sqlalchemy import text, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -40,50 +39,6 @@ def redact_payload(payload: Any) -> Any:
     return payload
 
 
-def ensure_operation_log_table(db: Session) -> None:
-    db.execute(
-        text(
-            """
-            CREATE TABLE IF NOT EXISTS pipeline_operation_log (
-                id BIGSERIAL PRIMARY KEY,
-                run_id VARCHAR(64),
-                request_id VARCHAR(64),
-                project_id INTEGER NULL,
-                project_name VARCHAR(500),
-                operation_type VARCHAR(100) NOT NULL,
-                operation_label VARCHAR(255),
-                source VARCHAR(100) NOT NULL DEFAULT 'backend',
-                endpoint VARCHAR(255),
-                method VARCHAR(20),
-                status VARCHAR(30) NOT NULL DEFAULT 'started',
-                severity VARCHAR(20) NOT NULL DEFAULT 'info',
-                started_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-                finished_at TIMESTAMPTZ NULL,
-                duration_ms INTEGER NULL,
-                actor_type VARCHAR(100),
-                actor_label VARCHAR(255),
-                landing_root TEXT,
-                project_folder_name VARCHAR(255),
-                file_path_relative TEXT,
-                file_name VARCHAR(500),
-                file_hash VARCHAR(128),
-                counts_json JSONB,
-                request_summary_json JSONB,
-                response_summary_json JSONB,
-                warnings_json JSONB,
-                errors_json JSONB,
-                environment_json JSONB,
-                metadata_json JSONB
-            );
-            CREATE INDEX IF NOT EXISTS idx_pipeline_operation_project_started ON pipeline_operation_log(project_id, started_at);
-            CREATE INDEX IF NOT EXISTS idx_pipeline_operation_type_status ON pipeline_operation_log(operation_type, status);
-            CREATE INDEX IF NOT EXISTS idx_pipeline_operation_run_request ON pipeline_operation_log(run_id, request_id);
-            """
-        )
-    )
-    db.commit()
-
-
 def start_operation(
     db: Session,
     *,
@@ -99,7 +54,6 @@ def start_operation(
     request_summary: dict[str, Any] | None = None,
     metadata: dict[str, Any] | None = None,
 ) -> PipelineOperationLog:
-    ensure_operation_log_table(db)
     entry = PipelineOperationLog(
         run_id=run_id or _new_id(),
         request_id=request_id or _new_id(),
@@ -169,7 +123,6 @@ def finish_operation_failure(
 
 
 def list_operation_logs(db: Session, *, limit: int = 100, offset: int = 0, **filters: Any) -> list[PipelineOperationLog]:
-    ensure_operation_log_table(db)
     stmt = select(PipelineOperationLog)
     if filters.get("project_id") is not None:
         stmt = stmt.where(PipelineOperationLog.project_id == filters["project_id"])
@@ -192,7 +145,6 @@ def list_operation_logs(db: Session, *, limit: int = 100, offset: int = 0, **fil
 
 
 def get_operation_log(db: Session, log_id: int) -> PipelineOperationLog | None:
-    ensure_operation_log_table(db)
     return db.get(PipelineOperationLog, log_id)
 
 

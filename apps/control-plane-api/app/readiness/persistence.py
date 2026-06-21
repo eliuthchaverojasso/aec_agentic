@@ -1,8 +1,7 @@
 """Persistence helpers for readiness snapshots, actions, and MVP evidence.
 
-The current project uses ``db/init.sql`` instead of Alembic migrations.  These
-helpers create the new pilot tables lazily so the existing local demo database
-can use the endpoints without requiring a destructive reset.
+Schema is owned by Alembic (apps/control-plane-api/alembic); these helpers assume
+the readiness/evidence tables already exist and never issue DDL.
 """
 
 from __future__ import annotations
@@ -10,7 +9,6 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.models import (
@@ -29,168 +27,11 @@ from app.schemas import (
 )
 
 
-def ensure_readiness_tables(db: Session) -> None:
-    """Create pilot-readiness tables when an existing demo DB predates them."""
-
-    bind = db.get_bind()
-    if bind is not None and getattr(bind.dialect, "name", "") != "postgresql":
-        return
-
-    existing_tables = db.execute(
-        text(
-            """
-            SELECT
-                to_regclass('public.requirement_evidence') IS NOT NULL
-                AND to_regclass('public.readiness_snapshot') IS NOT NULL
-                AND to_regclass('public.trade_readiness_snapshot') IS NOT NULL
-                AND to_regclass('public.readiness_action') IS NOT NULL
-                AND to_regclass('public.rule_execution_log') IS NOT NULL
-            """
-        )
-    ).scalar()
-    if existing_tables:
-        return
-
-    db.execute(text("SELECT pg_advisory_xact_lock(7420190519)"))
-    existing_tables = db.execute(
-        text(
-            """
-            SELECT
-                to_regclass('public.requirement_evidence') IS NOT NULL
-                AND to_regclass('public.readiness_snapshot') IS NOT NULL
-                AND to_regclass('public.trade_readiness_snapshot') IS NOT NULL
-                AND to_regclass('public.readiness_action') IS NOT NULL
-                AND to_regclass('public.rule_execution_log') IS NOT NULL
-            """
-        )
-    ).scalar()
-    if existing_tables:
-        return
-
-    statements = [
-        """
-        CREATE TABLE IF NOT EXISTS requirement_evidence (
-            id BIGSERIAL PRIMARY KEY,
-            project_id INT NOT NULL REFERENCES project(id) ON DELETE CASCADE,
-            requirement_id BIGINT NOT NULL REFERENCES requirement(id) ON DELETE CASCADE,
-            evidence_type VARCHAR(30) NOT NULL,
-            evidence_status VARCHAR(30) NOT NULL,
-            source_ref TEXT,
-            element_unique_id VARCHAR(100),
-            sheet_number VARCHAR(100),
-            spec_section VARCHAR(100),
-            confidence NUMERIC(5, 2),
-            metadata_json JSONB,
-            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            CONSTRAINT chk_requirement_evidence_type CHECK (
-                evidence_type IN ('model','sheet','spec','manual','hybrid')
-            ),
-            CONSTRAINT chk_requirement_evidence_status CHECK (
-                evidence_status IN ('covered','missing','needs_review','blocked','not_applicable')
-            )
-        )
-        """,
-        """
-        CREATE INDEX IF NOT EXISTS idx_req_evidence_project
-        ON requirement_evidence(project_id, evidence_status)
-        """,
-        """
-        CREATE INDEX IF NOT EXISTS idx_req_evidence_requirement
-        ON requirement_evidence(requirement_id)
-        """,
-        """
-        CREATE UNIQUE INDEX IF NOT EXISTS uq_req_evidence_project_requirement_source
-        ON requirement_evidence(project_id, requirement_id, COALESCE(source_ref, ''))
-        """,
-        """
-        CREATE TABLE IF NOT EXISTS readiness_snapshot (
-            id BIGSERIAL PRIMARY KEY,
-            project_id INT NOT NULL REFERENCES project(id) ON DELETE CASCADE,
-            export_id INT REFERENCES export(id) ON DELETE SET NULL,
-            overall_score NUMERIC(6, 2) NOT NULL,
-            label VARCHAR(50) NOT NULL,
-            requirement_coverage_score NUMERIC(6, 2) NOT NULL,
-            qaqc_health_score NUMERIC(6, 2) NOT NULL,
-            sync_freshness_score NUMERIC(6, 2) NOT NULL,
-            gap_summary JSONB,
-            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-        )
-        """,
-        """
-        CREATE INDEX IF NOT EXISTS idx_readiness_snapshot_project_created
-        ON readiness_snapshot(project_id, created_at DESC)
-        """,
-        """
-        CREATE TABLE IF NOT EXISTS trade_readiness_snapshot (
-            id BIGSERIAL PRIMARY KEY,
-            snapshot_id BIGINT NOT NULL REFERENCES readiness_snapshot(id) ON DELETE CASCADE,
-            discipline VARCHAR(100) NOT NULL,
-            score NUMERIC(6, 2) NOT NULL,
-            requirements_total INT NOT NULL DEFAULT 0,
-            requirements_covered INT NOT NULL DEFAULT 0,
-            missing_requirements INT NOT NULL DEFAULT 0,
-            needs_review INT NOT NULL DEFAULT 0,
-            open_issues INT NOT NULL DEFAULT 0,
-            critical_gaps INT NOT NULL DEFAULT 0
-        )
-        """,
-        """
-        CREATE INDEX IF NOT EXISTS idx_trade_readiness_snapshot
-        ON trade_readiness_snapshot(snapshot_id)
-        """,
-        """
-        CREATE TABLE IF NOT EXISTS readiness_action (
-            id BIGSERIAL PRIMARY KEY,
-            project_id INT NOT NULL REFERENCES project(id) ON DELETE CASCADE,
-            requirement_id BIGINT REFERENCES requirement(id) ON DELETE SET NULL,
-            issue_id BIGINT REFERENCES issue(id) ON DELETE SET NULL,
-            rule_code VARCHAR(30),
-            action_type VARCHAR(100) NOT NULL,
-            title VARCHAR(255) NOT NULL,
-            description TEXT,
-            status VARCHAR(30) NOT NULL DEFAULT 'open',
-            priority VARCHAR(30) NOT NULL DEFAULT 'medium',
-            owner VARCHAR(255),
-            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            CONSTRAINT chk_readiness_action_status CHECK (
-                status IN ('open','in_review','done','dismissed')
-            ),
-            CONSTRAINT chk_readiness_action_priority CHECK (
-                priority IN ('low','medium','high','critical')
-            )
-        )
-        """,
-        """
-        CREATE INDEX IF NOT EXISTS idx_readiness_action_project_status
-        ON readiness_action(project_id, status, priority)
-        """,
-        """
-        CREATE TABLE IF NOT EXISTS rule_execution_log (
-            id BIGSERIAL PRIMARY KEY,
-            project_id INT REFERENCES project(id) ON DELETE CASCADE,
-            export_id INT REFERENCES export(id) ON DELETE SET NULL,
-            rule_code VARCHAR(30) NOT NULL,
-            status VARCHAR(30) NOT NULL,
-            findings_count INT NOT NULL DEFAULT 0,
-            duration_ms INT,
-            error_message TEXT,
-            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-        )
-        """,
-    ]
-    for statement in statements:
-        db.execute(text(statement))
-    db.commit()
-
-
 def persist_readiness_snapshot(
     db: Session,
     project: Project,
     readiness: ProjectReadinessOut,
 ) -> ReadinessSnapshotOut:
-    ensure_readiness_tables(db)
     _sync_missing_evidence_rows(db, project, readiness)
 
     snapshot = ReadinessSnapshot(
@@ -249,7 +90,6 @@ def persist_readiness_snapshot(
 
 
 def list_readiness_snapshots(db: Session, project_id: int) -> list[ReadinessSnapshotOut]:
-    ensure_readiness_tables(db)
     snapshots = (
         db.query(ReadinessSnapshot)
         .filter(ReadinessSnapshot.project_id == project_id)
@@ -274,7 +114,6 @@ def list_readiness_snapshots(db: Session, project_id: int) -> list[ReadinessSnap
 
 
 def list_readiness_actions(db: Session, project_id: int) -> list[ReadinessActionOut]:
-    ensure_readiness_tables(db)
     rows = (
         db.query(ReadinessAction)
         .filter(ReadinessAction.project_id == project_id)
@@ -289,7 +128,6 @@ def update_readiness_action(
     action_id: int,
     values: dict[str, Any],
 ) -> ReadinessActionOut | None:
-    ensure_readiness_tables(db)
     row = db.get(ReadinessAction, action_id)
     if row is None:
         return None

@@ -171,3 +171,24 @@ Closes the remaining gap in critical-path step 1 (reproducible repo + Compose).
 | **ORGANISM compose deferred (P3)** | `infra/compose/organism/*` (floating `apache/age:latest` / OTEL `:latest`, debug-only exporter, no runtime worker) is left for the P3 ORGANISM-runtime work; pinning its images needs a verified tag. |
 
 **Verification:** `docker compose config` renders `published: "8010" → target: 8000`, `DATABASE_URL …@postgres:5432`, with healthcheck + `control-plane` network + `landing_data`/`postgres_data` volumes present; `scripts/test.ps1` → **12 passed, 188 deselected**; no live references to the removed file remain outside this log. A live container boot was not run (host `:8010` is occupied by a non-container process and no API image is prebuilt); the container side of the mapping is unchanged from the existing `Dockerfile`.
+
+---
+
+## 10. PR 4 — Alembic migrations (Pending Work Register Item 13) — 2026-06-21
+
+Closes critical-path step 2: **Alembic is now the single schema-authoring mechanism.**
+
+| Change | Detail |
+| --- | --- |
+| **Alembic introduced** | `apps/control-plane-api/alembic.ini` + `alembic/env.py` (DSN from `app.config.settings`, override-able by tests) + baseline `0001_baseline`. `alembic==1.14.0` added to `requirements.txt` and the image. |
+| **Baseline = full live schema (27 tables)** | Reproduces `init.sql` + the two SQL migrations **plus** the two tables that previously existed only via request-time DDL: `pipeline_operation_log` (`ensure_operation_log_table`) and `seion_prediction` (`ensure_seion_tables`). Includes the `app_user` trigger/function, partial/expression indexes, and baseline seed (1 org, 3 clients, 4 rules). DDL is transcribed verbatim from the live sources and executed statement-by-statement via `exec_driver_sql`. |
+| **Request-time DDL removed** | Deleted `ensure_operation_log_table`, `ensure_readiness_tables`, `ensure_document_tables`, `ensure_seion_tables` and every call site (4 service modules + `api/clients.py`, `api/dev.py`, `seion/importer.py`). No production `create_all` remains in app code; SQLite unit tests still build their own schema via `create_all` in fixtures. |
+| **Run path rewired to Alembic** | `docker-compose.yml` drops the `docker-entrypoint-initdb.d` auto-load; a one-shot `migrate` service runs `alembic upgrade head` and `api` waits on `service_completed_successfully`. `bootstrap.ps1` runs the `migrate` service and reports the applied revision. `scripts/migrate.ps1` (was a stub) now drives Alembic (docker default + `-Local`). `Dockerfile` ships `alembic.ini` + `alembic/`. |
+| **Diagnostics** | `/health` now returns `schema_revision` (current `alembic_version`), read defensively so it never breaks the probe. |
+| **Tests** | `tests/test_migrations.py` (auto-marked `integration`): fresh-DB `upgrade head` builds all 27 ORM tables + seed + the drift-prone evidence unique index + the `app_user` trigger; `downgrade base` leaves no app tables; alembic head matches the ORM models at table+column granularity. Each test uses throwaway databases. |
+
+**Verification (this session — no Docker/Postgres available):**
+- `python -m pytest` (fast lane) → **12 passed, 191 deselected**, exit 0 — the four `ensure_*` removals import cleanly across all routers/services.
+- `ruff check` on all changed files → clean.
+- Alembic script parses with a single linear head (`0001_baseline`); an offline structural check confirms the baseline creates **exactly** the 27 ORM tables and the downgrade drops exactly those.
+- **Pending live verification:** the integration migration tests and a `docker compose` boot require PostgreSQL, which was not reachable in this session. Run `pwsh .\scripts\bootstrap.ps1 -Clean` then `pwsh .\scripts\test.ps1 -All` (or CI with a Postgres service) to execute the baseline against a real database. Execution risk is low because the baseline DDL is the verbatim, currently-running `init.sql`/migration/`ensure_*` SQL.

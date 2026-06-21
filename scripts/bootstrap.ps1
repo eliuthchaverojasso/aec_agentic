@@ -6,10 +6,10 @@
   Idempotent and safe to re-run. Performs:
     1. Prerequisite checks (python + docker required; node/.NET optional).
     2. .env generation from .env.example (only if missing).
-    3. PostgreSQL startup via docker compose, with the EMA schema auto-loaded
-       from infra/database on a fresh volume.
+    3. PostgreSQL startup via docker compose.
     4. Wait for the database to become healthy.
-    5. Verify the schema loaded.
+    5. Apply Alembic migrations (`alembic upgrade head`) via the `migrate` service.
+    6. Verify the schema loaded.
 
   After this completes:  pwsh .\scripts\test.ps1 -All   should be green.
 
@@ -82,8 +82,9 @@ try {
 
     if ($NoDocker) {
         Write-Section "Done (-NoDocker)"
-        Write-Warn2 "Skipped Postgres. Ensure DATABASE_URL in .env points to a reachable"
-        Write-Warn2 "Postgres that already has the EMA schema (infra/database/ema-db)."
+        Write-Warn2 "Skipped Postgres. Point DATABASE_URL in .env at a reachable Postgres,"
+        Write-Warn2 "then apply the schema with:  pwsh .\scripts\migrate.ps1 -Local"
+        Write-Warn2 "(runs 'alembic upgrade head' from apps/control-plane-api)."
         Write-Host "`nNext:  pwsh .\scripts\test.ps1        # fast suite (no DB)" -ForegroundColor White
         Write-Host   "       pwsh .\scripts\test.ps1 -All   # + integration (needs the DB)" -ForegroundColor White
         exit 0
@@ -110,7 +111,13 @@ try {
     if (-not $ready) { throw "Postgres did not become ready within 60s. Check: docker compose logs postgres" }
     Write-Ok "database accepting connections"
 
-    # -------------------------------------------------------------- 5. verify
+    # ----------------------------------------------------------- 5. migrations
+    Write-Section "Database migrations (Alembic)"
+    docker compose run --build --rm migrate
+    if ($LASTEXITCODE -ne 0) { throw "alembic upgrade head failed. Check: docker compose run --rm migrate" }
+    Write-Ok "alembic upgrade head applied"
+
+    # -------------------------------------------------------------- 6. verify
     Write-Section "Schema verification"
     $count = (docker compose exec -T postgres psql -U ema -d ema_ai -tAc `
         "SELECT count(*) FROM information_schema.tables WHERE table_schema='public'").Trim()
@@ -118,10 +125,14 @@ try {
         Write-Ok "public schema has $count tables"
     }
     else {
-        Write-Fail "no tables found — schema did not auto-load."
-        Write-Warn2 "If the volume pre-existed an earlier (empty) boot, re-run with -Clean."
+        Write-Fail "no tables found — migrations did not apply."
+        Write-Warn2 "Inspect: docker compose run --rm migrate ; docker compose logs postgres"
         throw "Schema verification failed."
     }
+    $rev = (docker compose exec -T postgres psql -U ema -d ema_ai -tAc `
+        "SELECT version_num FROM alembic_version").Trim()
+    if ($rev) { Write-Ok "alembic revision: $rev" }
+    else { Write-Warn2 "alembic_version is empty — migrations may not have run." }
 
     Write-Section "Bootstrap complete"
     Write-Host "Next:  pwsh .\scripts\test.ps1        # fast suite (no DB)"      -ForegroundColor White

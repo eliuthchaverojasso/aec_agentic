@@ -56,6 +56,22 @@ app.add_middleware(
 )
 
 
+def _schema_revision() -> str | None:
+    """Current Alembic schema revision (from ``alembic_version``), or None.
+
+    Read-only and defensive: a missing table or a DB error yields None rather
+    than failing the probe. Alembic is the single schema-authoring mechanism, so
+    surfacing the applied revision makes drift between a deployment and ``head``
+    diagnosable from the health endpoint.
+    """
+    try:
+        with engine.connect() as conn:
+            row = conn.exec_driver_sql("SELECT version_num FROM alembic_version").first()
+        return row[0] if row else None
+    except Exception:  # noqa: BLE001 - diagnostics must never break health
+        return None
+
+
 @app.get("/health", tags=["system"], summary="Liveness and DB connectivity check")
 def health() -> dict[str, object]:
     db = SessionLocal()
@@ -79,6 +95,7 @@ def health() -> dict[str, object]:
         "git_sha": settings.ema_ai_git_sha,
         "install_root": settings.ema_ai_install_root,
         "database_status": db_status,
+        "schema_revision": _schema_revision(),
     }
 
 

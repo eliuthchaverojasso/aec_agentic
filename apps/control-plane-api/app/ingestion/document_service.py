@@ -5,105 +5,11 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from sqlalchemy import or_, text
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.models import DocumentTextSnippet, DrawingSheet, LandingDocument, Project
 from app.schemas import DocumentTextPreviewOut, LandingDocumentOut
-
-DOCUMENT_TABLE_NAMES = ("landing_document", "drawing_sheet", "document_text_snippet")
-
-
-def ensure_document_tables(db: Session) -> None:
-    if db.bind is not None and db.bind.dialect.name == "sqlite":
-        from app.models import Base
-
-        Base.metadata.create_all(
-            db.bind,
-            tables=[
-                LandingDocument.__table__,
-                DrawingSheet.__table__,
-                DocumentTextSnippet.__table__,
-            ],
-        )
-        return
-
-    existing = db.execute(
-        text(
-            """
-            SELECT
-                to_regclass('public.landing_document') IS NOT NULL
-                AND to_regclass('public.drawing_sheet') IS NOT NULL
-                AND to_regclass('public.document_text_snippet') IS NOT NULL
-            """
-        )
-    ).scalar()
-    if existing:
-        return
-
-    db.execute(text("SELECT pg_advisory_xact_lock(7420190523)"))
-    statements = [
-        """
-        CREATE TABLE IF NOT EXISTS landing_document (
-            id BIGSERIAL PRIMARY KEY,
-            project_id INT REFERENCES project(id) ON DELETE SET NULL,
-            client_id INT REFERENCES client(id) ON DELETE SET NULL,
-            project_folder VARCHAR(500),
-            relative_path TEXT NOT NULL,
-            file_name VARCHAR(500) NOT NULL,
-            file_ext VARCHAR(20) NOT NULL,
-            file_type VARCHAR(50) NOT NULL,
-            document_category VARCHAR(50),
-            discipline VARCHAR(100),
-            sheet_number VARCHAR(100),
-            sheet_title VARCHAR(500),
-            spec_section VARCHAR(100),
-            spec_title VARCHAR(500),
-            page_count INT,
-            file_size_bytes BIGINT,
-            checksum_sha256 VARCHAR(64),
-            manifest_path TEXT,
-            source_system VARCHAR(100) NOT NULL DEFAULT 'landing',
-            ingestion_status VARCHAR(50) NOT NULL DEFAULT 'indexed',
-            indexed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            processed_at TIMESTAMPTZ,
-            evidence_status VARCHAR(50) NOT NULL DEFAULT 'candidate',
-            metadata_json JSONB,
-            CONSTRAINT uq_landing_document_path_hash UNIQUE(relative_path, checksum_sha256)
-        )
-        """,
-        "CREATE INDEX IF NOT EXISTS idx_landing_document_project_category ON landing_document(project_id, document_category)",
-        "CREATE INDEX IF NOT EXISTS idx_landing_document_type ON landing_document(file_type)",
-        """
-        CREATE TABLE IF NOT EXISTS drawing_sheet (
-            id BIGSERIAL PRIMARY KEY,
-            document_id BIGINT NOT NULL REFERENCES landing_document(id) ON DELETE CASCADE,
-            project_id INT REFERENCES project(id) ON DELETE SET NULL,
-            sheet_number VARCHAR(100) NOT NULL,
-            sheet_title VARCHAR(500),
-            discipline VARCHAR(100),
-            page_number INT,
-            metadata_json JSONB,
-            CONSTRAINT uq_drawing_sheet_document_sheet UNIQUE(document_id, sheet_number)
-        )
-        """,
-        "CREATE INDEX IF NOT EXISTS idx_drawing_sheet_project ON drawing_sheet(project_id, sheet_number)",
-        """
-        CREATE TABLE IF NOT EXISTS document_text_snippet (
-            id BIGSERIAL PRIMARY KEY,
-            document_id BIGINT NOT NULL REFERENCES landing_document(id) ON DELETE CASCADE,
-            page_number INT,
-            text_preview TEXT NOT NULL,
-            extraction_method VARCHAR(100) NOT NULL,
-            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            CONSTRAINT uq_document_text_snippet_page UNIQUE(document_id, page_number)
-        )
-        """,
-        "CREATE INDEX IF NOT EXISTS idx_document_text_snippet_document ON document_text_snippet(document_id)",
-    ]
-    for statement in statements:
-        db.execute(text(statement))
-    db.commit()
 
 
 def register_landing_document(
@@ -112,7 +18,6 @@ def register_landing_document(
     values: dict[str, Any],
     dry_run: bool = False,
 ) -> dict[str, Any]:
-    ensure_document_tables(db)
     if dry_run:
         return {"document_id": None, "created": False, "updated": False}
 
@@ -163,7 +68,6 @@ def list_project_documents(
     limit: int = 100,
     offset: int = 0,
 ) -> list[LandingDocumentOut]:
-    ensure_document_tables(db)
     query = db.query(LandingDocument).filter(LandingDocument.project_id == project_id)
     if category:
         query = query.filter(LandingDocument.document_category == category)
@@ -202,13 +106,11 @@ def list_project_documents(
 
 
 def get_document(db: Session, document_id: int) -> LandingDocumentOut | None:
-    ensure_document_tables(db)
     row = db.get(LandingDocument, document_id)
     return LandingDocumentOut.model_validate(row) if row else None
 
 
 def get_document_text_preview(db: Session, document_id: int) -> DocumentTextPreviewOut:
-    ensure_document_tables(db)
     row = (
         db.query(DocumentTextSnippet)
         .filter(DocumentTextSnippet.document_id == document_id)

@@ -16,6 +16,11 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY app ./app
+# Alembic is the authoritative schema mechanism (Pending Work Register Item 13).
+# The image carries the config + versions so the `migrate` service and any
+# container can run `alembic upgrade head`.
+COPY alembic.ini ./alembic.ini
+COPY alembic ./alembic
 RUN mkdir -p /app/landing
 
 EXPOSE 8000

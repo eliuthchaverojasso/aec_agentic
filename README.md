@@ -44,7 +44,7 @@ docs/        Architecture decisions, domain docs, product docs, and legacy EMA c
 - `apps/control-plane-api/` contains the previous FastAPI backend and tests.
 - `apps/web-console/` contains the previous React/Vite dashboard.
 - `apps/revit-addin/` contains the previous EMAExtractor Revit add-in and C# tests.
-- `infra/database/ema-db/` contains the previous database initialization and migrations.
+- `infra/database/ema-db/` holds the historical EMA schema SQL. The schema is now created and versioned by **Alembic** (`apps/control-plane-api/alembic`) as the single schema-authoring mechanism; these files are retained for reference only.
 - `data/taxonomies/ema-ai/` contains the previous requirement taxonomy.
 - `docs/legacy/ema-ai/` preserves previous EMA AI documentation as historical context.
 
@@ -55,15 +55,19 @@ This workspace is a newly created monorepo scaffold with migrated EMA source cod
 ## Useful Commands
 
 ```powershell
-# Inspect repo
+# Bootstrap local env: prereq checks, .env, Postgres, then `alembic upgrade head`
 pwsh .\scripts\bootstrap.ps1
 
 # Run available validation
 pwsh .\scripts\test.ps1
 
-# Start the full local stack (Postgres + API). Same file scripts/dev.ps1 uses.
+# Apply database migrations (Alembic; single schema-authoring mechanism)
+pwsh .\scripts\migrate.ps1            # docker `migrate` service -> upgrade head
+pwsh .\scripts\migrate.ps1 -Local     # host `alembic` against DATABASE_URL
+
+# Start the full local stack (Postgres + migrate + API). Same file scripts/dev.ps1 uses.
 docker compose up -d --build
-# API on http://localhost:8010 (health: /health). The web console runs separately (Vite).
+# API on http://localhost:8010 (health: /health, reports schema_revision). Web console runs separately (Vite).
 ```
 
 ## Design Rule

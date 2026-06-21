@@ -3,8 +3,8 @@
 # This is THE compose file — scripts/bootstrap.ps1 and scripts/dev.ps1 both use it.
 # It provisions:
 #   - postgres : the ema_ai / ema database the migrated control-plane-api and its
-#                test suite use, with the EMA schema auto-loaded from
-#                infra/database/ema-db on a fresh volume.
+#                test suite use. It starts empty; schema is applied by `migrate`.
+#   - migrate  : one-shot `alembic upgrade head`; `api` waits for it to finish.
 #   - api      : the control-plane-api (FastAPI), built from apps/control-plane-api.
 #                The image bundles the app and runs uvicorn on container port 8000
 #                (see apps/control-plane-api/Dockerfile); it is published on
@@ -17,9 +17,11 @@
 # scripts/bootstrap.ps1 generates it from .env.example. The :-defaults below keep
 # the stack runnable even before .env exists.
 #
-# NOTE: schema is seeded via docker-entrypoint-initdb.d (first boot / empty volume
-# only). Authoritative, repeatable migrations move to Alembic in Item 13 of the
-# Pending Work Register; this initdb seeding is the interim mechanism.
+# Schema is created and versioned by Alembic (Pending Work Register Item 13):
+# the one-shot `migrate` service runs `alembic upgrade head` once Postgres is
+# healthy, and `api` waits for it to complete. Postgres starts with an empty
+# volume — the legacy docker-entrypoint-initdb.d auto-load was removed so there
+# is a single schema-authoring mechanism.
 services:
   postgres:
     image: postgres:16
@@ -31,15 +33,27 @@ services:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # Auto-load schema in order on first boot (empty volume only).
-      - ./infra/database/ema-db/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
-      - ./infra/database/ema-db/migrations/20260615_001_requirement_audit_v1.sql:/docker-entrypoint-initdb.d/02_requirement_audit.sql:ro
-      - ./infra/database/ema-db/migrations/20260620_002_landing_documents.sql:/docker-entrypoint-initdb.d/03_landing_documents.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ema} -d ${POSTGRES_DB:-ema_ai}"]
       interval: 5s
       timeout: 5s
       retries: 12
+    networks:
+      - control-plane
+
+  # One-shot schema migrator. Runs `alembic upgrade head` against Postgres and
+  # exits 0; `api` waits for it to complete (service_completed_successfully).
+  # Built from the same image as `api`, so it ships the same alembic/ + models.
+  migrate:
+    build:
+      context: ./apps/control-plane-api
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-ema}:${POSTGRES_PASSWORD:-ema_dev_pw}@postgres:5432/${POSTGRES_DB:-ema_ai}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
     networks:
       - control-plane
 
@@ -74,6 +88,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
       interval: 15s
