@@ -211,3 +211,21 @@ Advances critical-path step 3 (authorization). `organization` is the tenant boun
 - Fast suite → **12 passed, 205 deselected**; ruff clean on all changed files.
 - **Not a regression:** the live-Postgres project tests (`test_api_project_models`, `test_api_project_creation`, `test_api_project_requirements`) fail in this session only because Postgres is unreachable — they don't map `get_db` onto SQLite (or assume Postgres semantics), and the failing frame is `_resolve_project`, an unmodified read. Verify with `test.ps1 -All` under Postgres.
 - **Scope / pending:** enforcement is applied to the `projects` router as the reference implementation. Rolling `require_project_access` out to the remaining project-scoped routers (readiness, evidence, requirements, exports, models, landing, …) and the document endpoints (Item 9) is the next step. The broader register entity set (Principal/Role/Permission/ServiceAccount) and membership-on-create are deferred.
+
+---
+
+## 12. PR 6 — Secure document & file access (Item 9) — 2026-06-21
+
+Applies the Item 8 authorization primitive to the document endpoints and closes the global-by-id leak.
+
+| Change | Detail |
+| --- | --- |
+| **Closed global-by-id leak** | `GET /api/v1/documents/{id}` and `.../text-preview` previously returned any document by id with no project scoping (id enumeration / cross-tenant exposure). They now derive the owning project and enforce access, returning **404 on no-access** so existence is not revealed across tenants. Documents with no owning project are superuser-only. |
+| **Project-scoped endpoints enforce membership** | Every `/projects/{project_id}/documents…` endpoint (list / drawings / specifications / metadata / preview / text / pdf / download) now depends on `require_project_access` (404 missing project, 403 non-member) instead of the old existence-only `_require_project`. |
+| **Tests** | `tests/test_authz_documents.py` (SQLite-isolated, 8 tests): global-by-id 200/404 by access; text-preview access; project-scoped list/detail 200/403. |
+
+**Verification (no Docker/Postgres this session):**
+- `tests/test_authz_documents.py` → **8 passed** on SQLite.
+- `tests/test_documents_api.py` (existing) → **6 passed** — no regression (admin bypass keeps it green).
+- Fast suite → **12 passed, 213 deselected**; ruff clean (also dropped pre-existing unused imports in `documents.py`).
+- **Pending:** rollout of `require_project_access` to the remaining project-scoped routers (readiness, evidence, requirements, exports, models, landing, compliance, viewpoints, seion, requirement_audits) and a live `test.ps1 -All` run under Postgres.

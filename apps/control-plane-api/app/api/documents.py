@@ -1,15 +1,22 @@
-﻿"""Document metadata endpoints for landing-indexed PDFs and source files."""
+"""Document metadata endpoints for landing-indexed PDFs and source files.
+
+Access control (Pending Work Register Item 9): every project-scoped endpoint
+enforces project access via ``require_project_access`` (404 when the project does
+not exist, 403 when the caller is not a member). The two global ``/documents/{id}``
+endpoints derive the owning project and apply the same check, returning 404 on
+no-access so document ids cannot be enumerated across tenants.
+"""
 
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse
-from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
+from app.api.auth import get_current_user
+from app.authz import is_superuser, require_project_access, user_can_access_project
 from app.config import settings
 from app.database import get_db
 from app.ingestion.document_service import (
@@ -18,8 +25,7 @@ from app.ingestion.document_service import (
     list_project_documents,
 )
 from app.ingestion.manifest_loader import resolve_landing_path
-from app.ingestion.landing_scan_service import rebuild_project_manifest
-from app.models import DocumentTextSnippet, DrawingSheet, LandingDocument, Project
+from app.models import AppUser, Project
 from app.schemas import DocumentPreviewOut, DocumentTextPreviewOut, LandingDocumentOut
 
 router = APIRouter(tags=["documents"])
@@ -42,8 +48,8 @@ def list_documents(
     limit: int = Query(100, ge=1, le=500),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
 ) -> list[LandingDocumentOut]:
-    _require_project(db, project_id)
     return list_project_documents(
         db,
         project_id,
@@ -63,8 +69,11 @@ def list_documents(
     response_model=list[LandingDocumentOut],
     summary="List indexed drawing PDFs for a project",
 )
-def list_drawings(project_id: int, db: Session = Depends(get_db)) -> list[LandingDocumentOut]:
-    _require_project(db, project_id)
+def list_drawings(
+    project_id: int,
+    db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
+) -> list[LandingDocumentOut]:
     return list_project_documents(db, project_id, category="drawing", limit=500)
 
 
@@ -73,8 +82,11 @@ def list_drawings(project_id: int, db: Session = Depends(get_db)) -> list[Landin
     response_model=list[LandingDocumentOut],
     summary="List indexed specification PDFs for a project",
 )
-def list_specifications(project_id: int, db: Session = Depends(get_db)) -> list[LandingDocumentOut]:
-    _require_project(db, project_id)
+def list_specifications(
+    project_id: int,
+    db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
+) -> list[LandingDocumentOut]:
     return list_project_documents(db, project_id, category="specification", limit=500)
 
 
@@ -83,11 +95,12 @@ def list_specifications(project_id: int, db: Session = Depends(get_db)) -> list[
     response_model=LandingDocumentOut,
     summary="Get document metadata",
 )
-def get_document_metadata(document_id: int, db: Session = Depends(get_db)) -> LandingDocumentOut:
-    document = get_document(db, document_id)
-    if document is None:
-        raise HTTPException(status_code=404, detail="Document not found")
-    return document
+def get_document_metadata(
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(get_current_user),
+) -> LandingDocumentOut:
+    return _require_document_access(db, current_user, document_id)
 
 
 @router.get(
@@ -95,9 +108,12 @@ def get_document_metadata(document_id: int, db: Session = Depends(get_db)) -> La
     response_model=DocumentTextPreviewOut,
     summary="Get capped local text preview for an indexed document",
 )
-def get_text_preview(document_id: int, db: Session = Depends(get_db)) -> DocumentTextPreviewOut:
-    if get_document(db, document_id) is None:
-        raise HTTPException(status_code=404, detail="Document not found")
+def get_text_preview(
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(get_current_user),
+) -> DocumentTextPreviewOut:
+    _require_document_access(db, current_user, document_id)
     return get_document_text_preview(db, document_id)
 
 
@@ -110,10 +126,9 @@ def get_project_document(
     project_id: int,
     document_id: int,
     db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
 ) -> LandingDocumentOut:
-    _require_project(db, project_id)
-    document = _require_project_document(db, project_id, document_id)
-    return document
+    return _require_project_document(db, project_id, document_id)
 
 
 @router.get(
@@ -125,8 +140,8 @@ def get_project_document_metadata(
     project_id: int,
     document_id: int,
     db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
 ) -> LandingDocumentOut:
-    _require_project(db, project_id)
     return _require_project_document(db, project_id, document_id)
 
 
@@ -139,8 +154,8 @@ def get_project_document_preview(
     project_id: int,
     document_id: int,
     db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
 ) -> DocumentPreviewOut:
-    _require_project(db, project_id)
     document = _require_project_document(db, project_id, document_id)
     parser_status = str((document.metadata_json or {}).get("parser_status") or "indexed")
     return DocumentPreviewOut(
@@ -162,8 +177,8 @@ def get_project_document_text(
     project_id: int,
     document_id: int,
     db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
 ) -> DocumentTextPreviewOut:
-    _require_project(db, project_id)
     _require_project_document(db, project_id, document_id)
     return get_document_text_preview(db, document_id)
 
@@ -176,8 +191,8 @@ def get_project_document_pdf(
     project_id: int,
     document_id: int,
     db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
 ) -> FileResponse:
-    _require_project(db, project_id)
     document = _require_project_document(db, project_id, document_id)
     if document.file_ext.lower() != ".pdf":
         raise HTTPException(status_code=400, detail="Document is not a PDF")
@@ -195,8 +210,8 @@ def download_project_document(
     project_id: int,
     document_id: int,
     db: Session = Depends(get_db),
+    _project: Project = Depends(require_project_access),
 ) -> FileResponse:
-    _require_project(db, project_id)
     document = _require_project_document(db, project_id, document_id)
     if not settings.enable_document_download:
         raise HTTPException(status_code=403, detail="Raw download disabled in this environment")
@@ -206,9 +221,24 @@ def download_project_document(
     return FileResponse(path=file_path, media_type="application/octet-stream", filename=document.file_name)
 
 
-def _require_project(db: Session, project_id: int) -> None:
-    if db.get(Project, project_id) is None:
-        raise HTTPException(status_code=404, detail="Project not found")
+def _require_document_access(
+    db: Session, current_user: AppUser, document_id: int
+) -> LandingDocumentOut:
+    """Load a document by id and enforce access via its owning project.
+
+    Returns 404 both when the document is missing and when the caller may not
+    access it, so document ids cannot be enumerated across tenants. Documents
+    with no owning project are visible only to superusers.
+    """
+    document = get_document(db, document_id)
+    if document is None:
+        raise HTTPException(status_code=404, detail="Document not found")
+    if is_superuser(current_user):
+        return document
+    project = db.get(Project, document.project_id) if document.project_id is not None else None
+    if project is None or not user_can_access_project(db, current_user, project):
+        raise HTTPException(status_code=404, detail="Document not found")
+    return document
 
 
 def _require_project_document(db: Session, project_id: int, document_id: int) -> LandingDocumentOut:
@@ -225,4 +255,3 @@ def _resolve_document_path(document: LandingDocumentOut) -> Path:
         return resolve_landing_path(settings.landing_dir, document.relative_path)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-
