@@ -192,3 +192,22 @@ Closes critical-path step 2: **Alembic is now the single schema-authoring mechan
 - `ruff check` on all changed files → clean.
 - Alembic script parses with a single linear head (`0001_baseline`); an offline structural check confirms the baseline creates **exactly** the 27 ORM tables and the downgrade drops exactly those.
 - **Pending live verification:** the integration migration tests and a `docker compose` boot require PostgreSQL, which was not reachable in this session. Run `pwsh .\scripts\bootstrap.ps1 -Clean` then `pwsh .\scripts\test.ps1 -All` (or CI with a Postgres service) to execute the baseline against a real database. Execution risk is low because the baseline DDL is the verbatim, currently-running `init.sql`/migration/`ensure_*` SQL.
+
+---
+
+## 11. PR 5 — Tenant & project authorization, foundation (Item 8) — 2026-06-21
+
+Advances critical-path step 3 (authorization). `organization` is the tenant boundary.
+
+| Change | Detail |
+| --- | --- |
+| **Authorization model** | New `membership` (user ↔ organization) and `project_membership` (user ↔ project) tables, each with a role + uniqueness, via Alembic `0002_membership` (down_revision `0001_baseline`). ORM models `Membership`/`ProjectMembership` added. |
+| **Authorization primitives** | New `app/authz.py`: `is_superuser` (role `admin`/`owner`), `accessible_organization_ids`, `accessible_project_ids` (`None` = unrestricted superuser), `user_can_access_project`, the `require_project_access` dependency, and idempotent `grant_org_membership`/`grant_project_membership`. |
+| **Enforcement (reference)** | `projects` router: `GET /projects` filters to the caller's accessible projects; `GET /projects/{id}` returns 404/403/200 by access. Superusers (role `admin`/`owner`) bypass — which keeps the existing admin-injected test suite green. |
+| **Tests** | `tests/test_authz_access.py` (SQLite-isolated, 14 tests): list filtering for superuser/org-member/outsider/project-guest; detail 403/404/200; `authz` helper unit tests. |
+
+**Verification (no Docker/Postgres this session):**
+- `tests/test_authz_access.py` → **14 passed** on SQLite (`pytest <file> -o "addopts=--strict-markers"`).
+- Fast suite → **12 passed, 205 deselected**; ruff clean on all changed files.
+- **Not a regression:** the live-Postgres project tests (`test_api_project_models`, `test_api_project_creation`, `test_api_project_requirements`) fail in this session only because Postgres is unreachable — they don't map `get_db` onto SQLite (or assume Postgres semantics), and the failing frame is `_resolve_project`, an unmodified read. Verify with `test.ps1 -All` under Postgres.
+- **Scope / pending:** enforcement is applied to the `projects` router as the reference implementation. Rolling `require_project_access` out to the remaining project-scoped routers (readiness, evidence, requirements, exports, models, landing, …) and the document endpoints (Item 9) is the next step. The broader register entity set (Principal/Role/Permission/ServiceAccount) and membership-on-create are deferred.

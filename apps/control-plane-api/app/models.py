@@ -798,3 +798,49 @@ class RequirementReviewDecision(Base):
     )
 
     audit_record: Mapped["RequirementAuditRecord"] = relationship(back_populates="review_decisions")
+
+
+# ---------------------------------------------------------------------------
+# Tenant & project authorization (Pending Work Register Item 8)
+#
+# `organization` is the tenant boundary. `membership` grants a user access to an
+# organization (and, transitively, its projects); `project_membership` grants
+# access to a single project without org-wide access. Authorization is evaluated
+# in app/authz.py.
+# ---------------------------------------------------------------------------
+
+_MEMBERSHIP_ROLES = "role IN ('owner','admin','member','viewer')"
+
+
+class Membership(Base):
+    __tablename__ = "membership"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("app_user.id", ondelete="CASCADE"))
+    organization_id: Mapped[int] = mapped_column(ForeignKey("organization.id", ondelete="CASCADE"))
+    role: Mapped[str] = mapped_column(String(50), nullable=False, default="member")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "organization_id", name="uq_membership_user_org"),
+        CheckConstraint(_MEMBERSHIP_ROLES, name="chk_membership_role"),
+        Index("idx_membership_user", "user_id"),
+        Index("idx_membership_org", "organization_id"),
+    )
+
+
+class ProjectMembership(Base):
+    __tablename__ = "project_membership"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("app_user.id", ondelete="CASCADE"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("project.id", ondelete="CASCADE"))
+    role: Mapped[str] = mapped_column(String(50), nullable=False, default="member")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "project_id", name="uq_project_membership_user_project"),
+        CheckConstraint(_MEMBERSHIP_ROLES, name="chk_project_membership_role"),
+        Index("idx_project_membership_user", "user_id"),
+        Index("idx_project_membership_project", "project_id"),
+    )

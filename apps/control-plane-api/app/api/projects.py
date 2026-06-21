@@ -21,7 +21,9 @@ from app.ingestion.document_service import register_landing_document
 from app.ingestion.file_classifier import classify_landing_file, infer_discipline_from_path_or_name
 from app.ingestion.landing_scan_service import rebuild_project_manifest
 from app.ingestion.manifest_loader import resolve_landing_path
-from app.models import Client, Element, Export, Issue, Model as ModelRecord, Organization, Project
+from app.api.auth import get_current_user
+from app.authz import accessible_project_ids, user_can_access_project
+from app.models import AppUser, Client, Element, Export, Issue, Model as ModelRecord, Organization, Project
 from app.services.bucket_upload_service import upload_file_to_bucket
 from app.services.operation_log_service import finish_operation_failure, finish_operation_success, start_operation
 from app.schemas import (
@@ -78,8 +80,23 @@ def _compute_health_score(
 
 
 @router.get("", response_model=list[ProjectSummary], summary="Portfolio list of projects")
-def list_projects(db: Session = Depends(get_db)) -> list[ProjectSummary]:
-    projects = db.execute(select(Project).order_by(Project.created_at.desc())).scalars().all()
+def list_projects(
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(get_current_user),
+) -> list[ProjectSummary]:
+    # Project-level data filtering: non-superusers see only projects in their
+    # organizations (plus any project they were granted directly).
+    stmt = select(Project).order_by(Project.created_at.desc())
+    allowed_ids = accessible_project_ids(db, current_user)
+    if allowed_ids is not None:
+        if not allowed_ids:
+            return []
+        stmt = (
+            select(Project)
+            .where(Project.id.in_(allowed_ids))
+            .order_by(Project.created_at.desc())
+        )
+    projects = db.execute(stmt).scalars().all()
 
     summaries: list[ProjectSummary] = []
     for project in projects:
@@ -88,10 +105,16 @@ def list_projects(db: Session = Depends(get_db)) -> list[ProjectSummary]:
 
 
 @router.get("/{project_id}", response_model=ProjectSummary, summary="Project detail with KPIs")
-def get_project(project_id: int, db: Session = Depends(get_db)) -> ProjectSummary:
+def get_project(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(get_current_user),
+) -> ProjectSummary:
     project = db.get(Project, project_id)
     if project is None:
         raise HTTPException(status_code=404, detail="Project not found")
+    if not user_can_access_project(db, current_user, project):
+        raise HTTPException(status_code=403, detail="Not authorized for this project")
     return _build_project_summary(db, project)
 
 
