@@ -61,8 +61,9 @@ pwsh .\scripts\bootstrap.ps1
 # Run available validation
 pwsh .\scripts\test.ps1
 
-# Start legacy EMA API stack from migrated compose file
-docker compose -f .\infra\compose\ema-local.compose.yml up -d --build
+# Start the full local stack (Postgres + API). Same file scripts/dev.ps1 uses.
+docker compose up -d --build
+# API on http://localhost:8010 (health: /health). The web console runs separately (Vite).
 ```
 
 ## Design Rule

@@ -1,16 +1,34 @@
-# Canonical local stack. Postgres is provisioned with the database the migrated
-# control-plane-api + its test suite actually use (ema_ai / ema), and the EMA
-# schema auto-loads from infra/database on a fresh volume. The future canonical
-# `aec_control_plane` schema (Phase 2, Alembic) will be introduced here when it exists.
+# Canonical local stack for the AEC Agentic Control Plane.
+#
+# This is THE compose file — scripts/bootstrap.ps1 and scripts/dev.ps1 both use it.
+# It provisions:
+#   - postgres : the ema_ai / ema database the migrated control-plane-api and its
+#                test suite use, with the EMA schema auto-loaded from
+#                infra/database/ema-db on a fresh volume.
+#   - api      : the control-plane-api (FastAPI), built from apps/control-plane-api.
+#                The image bundles the app and runs uvicorn on container port 8000
+#                (see apps/control-plane-api/Dockerfile); it is published on
+#                ${API_PORT:-8010}.
+#
+# The web console (Vite) runs separately for local dev and is intentionally not
+# containerized here (see apps/web-console).
+#
+# Values interpolate from the repo-root .env, which compose reads automatically;
+# scripts/bootstrap.ps1 generates it from .env.example. The :-defaults below keep
+# the stack runnable even before .env exists.
+#
+# NOTE: schema is seeded via docker-entrypoint-initdb.d (first boot / empty volume
+# only). Authoritative, repeatable migrations move to Alembic in Item 13 of the
+# Pending Work Register; this initdb seeding is the interim mechanism.
 services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_DB: ema_ai
-      POSTGRES_USER: ema
-      POSTGRES_PASSWORD: ema_dev_pw
+      POSTGRES_DB: ${POSTGRES_DB:-ema_ai}
+      POSTGRES_USER: ${POSTGRES_USER:-ema}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ema_dev_pw}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # Auto-load schema in order on first boot (empty volume only).
@@ -18,21 +36,57 @@ services:
       - ./infra/database/ema-db/migrations/20260615_001_requirement_audit_v1.sql:/docker-entrypoint-initdb.d/02_requirement_audit.sql:ro
       - ./infra/database/ema-db/migrations/20260620_002_landing_documents.sql:/docker-entrypoint-initdb.d/03_landing_documents.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ema -d ema_ai"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ema} -d ${POSTGRES_DB:-ema_ai}"]
       interval: 5s
       timeout: 5s
       retries: 12
+    networks:
+      - control-plane
 
   api:
     build:
       context: ./apps/control-plane-api
     environment:
-      DATABASE_URL: postgresql+psycopg://ema:ema_dev_pw@postgres:5432/ema_ai
+      # Host-specific values are set explicitly so they are correct inside the
+      # compose network regardless of the host-local DATABASE_URL in .env
+      # (which points at localhost for non-Docker runs).
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-ema}:${POSTGRES_PASSWORD:-ema_dev_pw}@postgres:5432/${POSTGRES_DB:-ema_ai}
+      LANDING_DIR: /app/landing
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+      # Optional object-store mirroring (off by default; set these in .env to enable).
+      UPLOAD_TO_BUCKET: ${UPLOAD_TO_BUCKET:-false}
+      BUCKET_NAME: ${BUCKET_NAME:-}
+      BUCKET_REGION: ${BUCKET_REGION:-}
+      BUCKET_ENDPOINT_URL: ${BUCKET_ENDPOINT_URL:-}
+      BUCKET_PREFIX: ${BUCKET_PREFIX:-}
+      BUCKET_ACL: ${BUCKET_ACL:-}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
     ports:
-      - "8010:8010"
+      # host ${API_PORT:-8010} -> container 8000 (uvicorn).
+      # Fixes the prior 8010:8010 mismatch that left the API unreachable.
+      - "${API_PORT:-8010}:8000"
+    volumes:
+      # Persist uploaded landing files across container rebuilds.
+      - landing_data:/app/landing
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - control-plane
+
+networks:
+  control-plane:
+    driver: bridge
 
 volumes:
   postgres_data:
+  landing_data:

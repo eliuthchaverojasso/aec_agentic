@@ -157,3 +157,17 @@ All five §7 items are done. Verified on this machine (`pwsh`, Docker, Postgres 
 **Also fixed:** `tests/architecture/test_no_generated_or_secret_files.py` now checks **git-tracked** files (was scanning the working tree, so it false-failed the moment a gitignored local `.env` existed after bootstrap).
 
 **Canonical local DB:** `docker-compose.yml` now provisions the `ema_ai`/`ema` database the migrated backend + tests actually use, with the EMA schema auto-loaded from `infra/database/ema-db`. The future canonical `aec_control_plane` schema (Phase 2, Alembic) will be introduced when it exists.
+
+---
+
+## 9. PR 3 — Compose repair (Pending Work Register Item 2) — 2026-06-20
+
+Closes the remaining gap in critical-path step 1 (reproducible repo + Compose).
+
+| Change | Detail |
+| --- | --- |
+| **Root `docker-compose.yml` is the single canonical stack** | API port mapping corrected `8010:8010` → `${API_PORT:-8010}:8000` — the container's uvicorn listens on 8000 (`Dockerfile`), so the old mapping left the API unreachable. Added: API `/health` healthcheck, persistent `landing_data` volume, a named `control-plane` network, explicit env interpolation with safe `:-` defaults, and the optional object-store/AWS passthrough that previously lived only in the local override. |
+| **Removed `infra/compose/ema-local.compose.yml`** | Both broken (api `build.context: .` + `./app` mounts resolved to `infra/compose/`, which has no Dockerfile/app) and redundant with the root file `scripts/dev.ps1` already uses. `README.md` repointed to `docker compose up -d --build`. (The §5b P1-3 entry above is the historical record of that file; it no longer exists.) |
+| **ORGANISM compose deferred (P3)** | `infra/compose/organism/*` (floating `apache/age:latest` / OTEL `:latest`, debug-only exporter, no runtime worker) is left for the P3 ORGANISM-runtime work; pinning its images needs a verified tag. |
+
+**Verification:** `docker compose config` renders `published: "8010" → target: 8000`, `DATABASE_URL …@postgres:5432`, with healthcheck + `control-plane` network + `landing_data`/`postgres_data` volumes present; `scripts/test.ps1` → **12 passed, 188 deselected**; no live references to the removed file remain outside this log. A live container boot was not run (host `:8010` is occupied by a non-container process and no API image is prebuilt); the container side of the mapping is unchanged from the existing `Dockerfile`.
