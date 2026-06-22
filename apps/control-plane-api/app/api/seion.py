@@ -12,7 +12,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models import Project
+from app.api.auth import get_current_user
+from app.models import AppUser, Project
 from app.schemas import (
     SeionGraphExportOut,
     SeionPredictionImportOut,
@@ -94,14 +95,17 @@ def get_project_suggestions(
 def accept_suggestion(
     prediction_id: int,
     payload: SeionPredictionReviewUpdate | None = None,
+    current_user: AppUser = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> SeionPredictionOut:
+    # Reviewer identity comes from the authenticated user, never the payload.
+    reviewer_note = payload.reviewer_note if payload else None
     updated = review_seion_prediction(
         db,
         prediction_id,
         status="accepted",
-        reviewer_note=payload.reviewer_note if payload else None,
-        accepted_by=payload.accepted_by if payload else None,
+        reviewer_note=reviewer_note,
+        accepted_by=current_user.email or current_user.name or f"user:{current_user.id}",
     )
     if updated is None:
         raise HTTPException(status_code=404, detail="SEION advisory suggestion not found")
@@ -116,13 +120,17 @@ def accept_suggestion(
 def reject_suggestion(
     prediction_id: int,
     payload: SeionPredictionReviewUpdate | None = None,
+    current_user: AppUser = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> SeionPredictionOut:
+    # Reviewer identity comes from the authenticated user, never the payload.
+    reviewer_note = payload.reviewer_note if payload else None
     updated = review_seion_prediction(
         db,
         prediction_id,
         status="rejected",
-        reviewer_note=payload.reviewer_note if payload else None,
+        reviewer_note=reviewer_note,
+        accepted_by=current_user.email or current_user.name or f"user:{current_user.id}",
     )
     if updated is None:
         raise HTTPException(status_code=404, detail="SEION advisory suggestion not found")

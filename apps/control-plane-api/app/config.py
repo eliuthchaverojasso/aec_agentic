@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import urlparse
 
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -6,7 +7,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # The dev default ships in the repo, so it is public knowledge. It is only
 # tolerated in local/test environments; any other app_env must override it.
 _INSECURE_JWT_SECRET = "ema_ai_local_dev_secret_change_me"
+_INSECURE_DB_PASSWORD = "ema_dev_pw"
 _LOCAL_ENVS = {"local", "test"}
+
+# Development-only CORS origins that must not reach staging/production.
+_DEV_CORS_ORIGINS = {
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://192.168.1.66:5173",
+    "http://192.168.1.69:5173",
+}
 
 
 class Settings(BaseSettings):
@@ -57,15 +67,50 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _reject_insecure_defaults(self) -> "Settings":
-        """Fail fast rather than silently boot a non-local env with a forgeable token secret."""
-        if self.app_env.strip().lower() not in _LOCAL_ENVS:
-            secret = self.auth_jwt_secret or ""
-            if secret == _INSECURE_JWT_SECRET or len(secret) < 32:
+        """Fail fast rather than silently boot a non-local env with insecure defaults."""
+        env = self.app_env.strip().lower()
+        if env in _LOCAL_ENVS:
+            return self
+
+        # --- JWT secret ---
+        secret = self.auth_jwt_secret or ""
+        if secret == _INSECURE_JWT_SECRET or len(secret) < 32:
+            raise ValueError(
+                "auth_jwt_secret must be a strong secret (>= 32 chars) and not the "
+                f"bundled dev default when app_env={self.app_env!r}. "
+                "Set AUTH_JWT_SECRET in the environment before starting."
+            )
+
+        # --- Database password ---
+        parsed_db = urlparse(self.database_url)
+        if parsed_db.password and parsed_db.password == _INSECURE_DB_PASSWORD:
+            raise ValueError(
+                f"database_url uses the development default password "
+                f"({_INSECURE_DB_PASSWORD!r}) which is not allowed when "
+                f"app_env={self.app_env!r}. Change the password in DATABASE_URL."
+            )
+
+        # --- CORS origins ---
+        configured_origins = {o.strip() for o in self.cors_origins.split(",") if o.strip()}
+        dev_origins_found = configured_origins & _DEV_CORS_ORIGINS
+        if dev_origins_found:
+            raise ValueError(
+                f"CORS_ORIGINS includes development-only origins {dev_origins_found} "
+                f"when app_env={self.app_env!r}. Remove these and set production origins."
+            )
+
+        # --- HTTPS check (base URL convention) ---
+        # We cannot know the public base URL from config alone, but we check that
+        # CORS origins use HTTPS if they are public hosts (not localhost/127.x).
+        for origin in configured_origins:
+            parsed = urlparse(origin)
+            host = parsed.hostname or ""
+            if not host.startswith("localhost") and not host.startswith("127.") and parsed.scheme != "https":
                 raise ValueError(
-                    "auth_jwt_secret must be a strong secret (>= 32 chars) and not the "
-                    f"bundled dev default when app_env={self.app_env!r}. "
-                    "Set AUTH_JWT_SECRET in the environment before starting."
+                    f"CORS origin {origin!r} must use HTTPS when "
+                    f"app_env={self.app_env!r}."
                 )
+
         return self
 
 

@@ -4,12 +4,14 @@
 
 .DESCRIPTION
   Idempotent and safe to re-run. Performs:
-    1. Prerequisite checks (python + docker required; node/.NET optional).
+    1. Prerequisite checks (python, docker, pnpm, node, .NET).
     2. .env generation from .env.example (only if missing).
     3. PostgreSQL startup via docker compose.
     4. Wait for the database to become healthy.
     5. Apply Alembic migrations (`alembic upgrade head`) via the `migrate` service.
     6. Verify the schema loaded.
+    7. Install backend Python dependencies.
+    8. Install frontend Node dependencies (pnpm install).
 
   After this completes:  pwsh .\scripts\test.ps1 -All   should be green.
 
@@ -22,14 +24,20 @@
   Use when you point DATABASE_URL at an external Postgres that already has the
   EMA schema.
 
+.PARAMETER SkipFrontend
+  Skip frontend dependency installation (pnpm install). Use when you only need
+  the backend/API.
+
 .EXAMPLE
   pwsh .\scripts\bootstrap.ps1
   pwsh .\scripts\bootstrap.ps1 -Clean
   pwsh .\scripts\bootstrap.ps1 -NoDocker
+  pwsh .\scripts\bootstrap.ps1 -SkipFrontend
 #>
 param(
     [switch]$Clean,
-    [switch]$NoDocker
+    [switch]$NoDocker,
+    [switch]$SkipFrontend
 )
 
 $ErrorActionPreference = "Stop"
@@ -45,6 +53,7 @@ try {
     # ---------------------------------------------------------------- 1. prereqs
     Write-Section "Prerequisites"
     $missing = @()
+    $optional = @()
 
     $py = Get-Command python -ErrorAction SilentlyContinue
     if ($py) { Write-Ok "python  $((python --version 2>&1) -replace 'Python ','')" }
@@ -60,9 +69,22 @@ try {
         else { Write-Fail "docker not found (required; or re-run with -NoDocker)"; $missing += "docker" }
     }
 
+    # Node and pnpm are required for the web frontend (skip with -SkipFrontend).
+    if (-not $SkipFrontend) {
+        $node = Get-Command node -ErrorAction SilentlyContinue
+        if ($node) { Write-Ok "node    $(node --version)" } else { Write-Fail "node not found (required for web-console; use -SkipFrontend to skip)"; $missing += "node" }
+
+        $pnpm = Get-Command pnpm -ErrorAction SilentlyContinue
+        if ($pnpm) {
+            $pnpmVer = pnpm --version 2>&1
+            Write-Ok "pnpm   $pnpmVer"
+        } else { Write-Fail "pnpm not found (required for web-console; install via: npm install -g pnpm@9.15.0)"; $missing += "pnpm" }
+    }
+    else {
+        Write-Warn2 "frontend checks skipped (-SkipFrontend)"
+    }
+
     # Optional toolchains — warn only; not needed for API + tests.
-    $node = Get-Command node -ErrorAction SilentlyContinue
-    if ($node) { Write-Ok "node    $(node --version)" } else { Write-Warn2 "node not found (needed for web-console only)" }
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
     if ($dotnet) { Write-Ok "dotnet  $(dotnet --version)" } else { Write-Warn2 "dotnet not found (needed for Revit add-in only)" }
 
@@ -134,10 +156,38 @@ try {
     if ($rev) { Write-Ok "alembic revision: $rev" }
     else { Write-Warn2 "alembic_version is empty — migrations may not have run." }
 
+    # ----------------------------------------------------------- 7. backend deps
+    Write-Section "Backend Python dependencies"
+    $apiReq = Join-Path $root "apps/control-plane-api/requirements.txt"
+    if (Test-Path $apiReq) {
+        pip install -r $apiReq --quiet 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) { Write-Ok "Python dependencies installed from apps/control-plane-api/requirements.txt" }
+        else { Write-Warn2 "pip install had warnings (check output above)" }
+    }
+    else {
+        Write-Warn2 "requirements.txt not found at $apiReq — skipping"
+    }
+
+    # -------------------------------------------------------- 8. frontend deps
+    if (-not $SkipFrontend) {
+        Write-Section "Frontend dependencies (pnpm install)"
+        if (Test-Path "package.json") {
+            pnpm install 2>&1 | Out-Null
+            if ($LASTEXITCODE -eq 0) { Write-Ok "pnpm install completed" }
+            else { Write-Warn2 "pnpm install had issues (check output above)" }
+        }
+        else {
+            Write-Warn2 "package.json not found at root — skipping pnpm install"
+        }
+    }
+
+    # ------------------------------------------------------------- 9. summary
     Write-Section "Bootstrap complete"
-    Write-Host "Next:  pwsh .\scripts\test.ps1        # fast suite (no DB)"      -ForegroundColor White
-    Write-Host   "       pwsh .\scripts\test.ps1 -All   # full suite (uses the DB)" -ForegroundColor White
-    Write-Host   "       docker compose up -d api       # run the API on :8010"    -ForegroundColor White
+    Write-Host "Next:  pwsh .\scripts\test.ps1          # fast suite (no DB)"        -ForegroundColor White
+    Write-Host   "       pwsh .\scripts\test.ps1 -All   # full suite (uses the DB)"   -ForegroundColor White
+    Write-Host   "       pwsh .\scripts\dev.ps1          # start API + frontend"      -ForegroundColor White
+    Write-Host   "       docker compose up -d api         # API only on :8010"         -ForegroundColor White
+    Write-Host   "       pnpm run web:dev                 # frontend on :5173"         -ForegroundColor White
 }
 finally {
     Pop-Location

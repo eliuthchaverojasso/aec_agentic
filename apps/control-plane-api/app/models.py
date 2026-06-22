@@ -1,6 +1,5 @@
 from datetime import date, datetime
 from typing import Any
-
 from sqlalchemy import (
     BigInteger,
     Boolean,
@@ -254,6 +253,8 @@ class RequirementSourceFile(Base):
     row_count_skipped: Mapped[int | None] = mapped_column(Integer, nullable=True)
     export_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     ingested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    sheet_names: Mapped[str | None] = mapped_column(Text, nullable=True)
+    parser_version: Mapped[str | None] = mapped_column(String(20), nullable=True)
 
     __table_args__ = (UniqueConstraint("client_id", "file_hash"),)
 
@@ -283,6 +284,12 @@ class Requirement(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     first_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    source_sheet: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    source_row: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    source_cell_range: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    original_columns_json: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+    parser_version: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    import_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
 
     __table_args__ = (UniqueConstraint("client_id", "content_hash"),)
 

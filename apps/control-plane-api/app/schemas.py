@@ -1,7 +1,7 @@
 """Pydantic schemas for API request/response contracts."""
 
 from datetime import date, datetime
-from typing import Annotated, Any, Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -716,6 +716,8 @@ class RequirementSourceFileOut(ORMModel):
     row_count_skipped: int | None = None
     export_date: date | None = None
     ingested_at: datetime
+    sheet_names: str | None = None
+    parser_version: str | None = None
 
 
 class RequirementOut(ORMModel):
@@ -736,6 +738,12 @@ class RequirementOut(ORMModel):
     is_active: bool
     first_seen_at: datetime
     last_seen_at: datetime
+    source_sheet: str | None = None
+    source_row: int | None = None
+    source_cell_range: str | None = None
+    original_columns_json: dict[str, Any] | None = None
+    parser_version: str | None = None
+    import_id: str | None = None
 
 
 class RequirementListResponse(BaseModel):
@@ -744,6 +752,22 @@ class RequirementListResponse(BaseModel):
     page: int
     page_size: int
     items: list[RequirementOut]
+
+
+# Import modes for requirements ingestion.
+ImportMode = Literal["full_snapshot", "partial_update", "append_only"]
+
+
+class ImportDiffReport(BaseModel):
+    import_mode: ImportMode = "full_snapshot"
+    new_requirements: list[dict[str, Any]] = Field(default_factory=list)
+    updated_requirements: list[dict[str, Any]] = Field(default_factory=list)
+    deactivated_requirements: list[dict[str, Any]] = Field(default_factory=list)
+    unchanged_requirements: list[dict[str, Any]] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
+    per_discipline: dict[str, int] = Field(default_factory=dict)
+    per_sheet: dict[str, int] = Field(default_factory=dict)
 
 
 class RequirementIngestResponse(BaseModel):
@@ -760,6 +784,13 @@ class RequirementIngestResponse(BaseModel):
     export_date: date | None = None
     reused_existing_file: bool = False
     per_discipline: dict[str, int] = Field(default_factory=dict)
+    per_sheet: dict[str, int] = Field(default_factory=dict)
+    import_mode: str = "full_snapshot"
+    import_id: str | None = None
+    dry_run: bool = False
+    diff_report: ImportDiffReport | None = None
+    sheet_names: list[str] = Field(default_factory=list)
+    parser_version: str | None = None
 
 
 ComplianceStatus = Literal[
@@ -992,7 +1023,6 @@ class RequirementEvidenceCreate(BaseModel):
     source_label: str | None = None
     confidence: float | None = None
     review_note: str | None = None
-    reviewed_by: str | None = None
     document_id: int | None = None
     sheet_id: int | None = None
     model_element_id: str | None = None
@@ -1007,7 +1037,6 @@ class RequirementEvidenceUpdate(BaseModel):
     source_label: str | None = None
     confidence: float | None = None
     review_note: str | None = None
-    reviewed_by: str | None = None
     document_id: int | None = None
     sheet_id: int | None = None
     model_element_id: str | None = None

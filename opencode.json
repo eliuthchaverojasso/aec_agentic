@@ -1,0 +1,227 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "ollama/qwen3.6:27b",
+  "small_model": "ollama/granite4.1:30b",
+  "shell": "pwsh",
+  "enabled_providers": ["ollama", "openrouter", "opencode"],
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama Local",
+      "options": {
+        "baseURL": "http://localhost:11434/v1",
+        "timeout": 600000,
+        "chunkTimeout": 60000
+      },
+      "models": {
+        "qwen3.6:27b": {
+          "name": "Qwen 3.6 27B Local"
+        },
+        "granite4.1:30b": {
+          "name": "Granite 4.1 30B Local"
+        },
+        "gemma4:26b": {
+          "name": "Gemma 4 26B Local"
+        },
+        "bge-m3:latest": {
+          "name": "BGE-M3 Embeddings Local"
+        }
+      }
+    },
+    "openrouter": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenRouter",
+      "options": {
+        "baseURL": "https://openrouter.ai/api/v1",
+        "apiKey": "{env:OPENROUTER_API_KEY}",
+        "timeout": 600000,
+        "chunkTimeout": 60000
+      },
+      "models": {
+        "anthropic/claude-sonnet-4": {
+          "name": "Claude Sonnet 4"
+        },
+        "openai/gpt-4.1": {
+          "name": "GPT-4.1"
+        },
+        "google/gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro"
+        },
+        "deepseek/deepseek-r1": {
+          "name": "DeepSeek R1"
+        },
+        "qwen/qwen3-coder": {
+          "name": "Qwen3 Coder"
+        }
+      }
+    },
+    "opencode": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenCode Zen",
+      "options": {
+        "baseURL": "https://opencode.ai/zen/v1",
+        "apiKey": "{env:OPENCODE_API_KEY}",
+        "timeout": 600000,
+        "chunkTimeout": 60000
+      },
+      "models": {
+        "gpt-5.5": {
+          "name": "GPT 5.5 Zen"
+        },
+        "gpt-5.5-pro": {
+          "name": "GPT 5.5 Pro Zen"
+        },
+        "gpt-5.4": {
+          "name": "GPT 5.4 Zen"
+        },
+        "gpt-5.4-pro": {
+          "name": "GPT 5.4 Pro Zen"
+        },
+        "gpt-5.4-mini": {
+          "name": "GPT 5.4 Mini Zen"
+        },
+        "gpt-5.3-codex": {
+          "name": "GPT 5.3 Codex Zen"
+        },
+        "gpt-5.3-codex-spark": {
+          "name": "GPT 5.3 Codex Spark Zen"
+        },
+        "gpt-5.2": {
+          "name": "GPT 5.2 Zen"
+        },
+        "gpt-5.2-codex": {
+          "name": "GPT 5.2 Codex Zen"
+        },
+        "gpt-5.1-codex-max": {
+          "name": "GPT 5.1 Codex Max Zen"
+        },
+        "gpt-5-codex": {
+          "name": "GPT 5 Codex Zen"
+        },
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8 Zen"
+        },
+        "claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 Zen"
+        },
+        "claude-sonnet-4-5": {
+          "name": "Claude Sonnet 4.5 Zen"
+        },
+        "claude-sonnet-4": {
+          "name": "Claude Sonnet 4 Zen"
+        },
+        "claude-haiku-4-5": {
+          "name": "Claude Haiku 4.5 Zen"
+        },
+        "gemini-3.5-flash": {
+          "name": "Gemini 3.5 Flash Zen"
+        },
+        "gemini-3.1-pro": {
+          "name": "Gemini 3.1 Pro Zen"
+        },
+        "gemini-3-flash": {
+          "name": "Gemini 3 Flash Zen"
+        },
+        "qwen3.7-max": {
+          "name": "Qwen3.7 Max Zen"
+        },
+        "qwen3.6-plus": {
+          "name": "Qwen3.6 Plus Zen"
+        },
+        "qwen3.5-plus": {
+          "name": "Qwen3.5 Plus Zen"
+        },
+        "deepseek-v4-flash": {
+          "name": "DeepSeek V4 Flash Zen"
+        },
+        "deepseek-v4-flash-free": {
+          "name": "DeepSeek V4 Flash Free Zen"
+        },
+        "minimax-m2.7": {
+          "name": "MiniMax M2.7 Zen"
+        },
+        "glm-5.1": {
+          "name": "GLM 5.1 Zen"
+        },
+        "kimi-k2.6": {
+          "name": "Kimi K2.6 Zen"
+        },
+        "grok-build-0.1": {
+          "name": "Grok Build 0.1 Zen"
+        },
+        "big-pickle": {
+          "name": "Big Pickle Zen"
+        },
+        "mimo-v2.5-free": {
+          "name": "MiMo V2.5 Free Zen"
+        },
+        "nemotron-3-super-free": {
+          "name": "Nemotron 3 Super Free Zen"
+        }
+      }
+    }
+  },
+  "permission": {
+    "read": {
+      "*": "allow",
+      ".env": "deny",
+      ".env.*": "deny",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+      "*.pem": "deny",
+      "*.key": "deny",
+      "secrets/*": "deny",
+      "secrets/**": "deny"
+    },
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git branch*": "allow",
+      "Get-Location*": "allow",
+      "Get-Content*": "allow",
+      "Get-ChildItem*": "allow",
+      "Test-Path*": "allow",
+      "Select-String*": "allow",
+      "rg *": "allow",
+      "findstr *": "allow",
+      "where.exe *": "allow",
+      "Get-Command*": "allow",
+      "ollama list*": "allow",
+      "ollama ps*": "allow",
+      "opencode debug config*": "allow",
+      "npm run*": "ask",
+      "npm install*": "ask",
+      "pytest*": "ask",
+      "python -m pytest*": "ask",
+      "py -3.12 -m pytest*": "ask",
+      "docker compose ps*": "allow",
+      "docker compose logs*": "ask",
+      "docker compose up*": "ask",
+      "docker compose down*": "ask",
+      "git add*": "ask",
+      "git commit*": "ask",
+      "git restore*": "ask",
+      "git checkout*": "ask",
+      "git push*": "deny",
+      "rm *": "deny",
+      "del *": "deny",
+      "Remove-Item *": "deny"
+    }
+  },
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      ".git/**",
+      "Pipeline/pipeline/frontend/node_modules/**",
+      "Pipeline/pipeline/frontend/dist/**",
+      "**/tsconfig.*.tsbuildinfo",
+      "**/__pycache__/**",
+      "**/.pytest_cache/**"
+    ]
+  }
+}

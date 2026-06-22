@@ -12,8 +12,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
+from app.api.auth import get_current_user
 from app.database import get_db
 from app.models import (
+    AppUser,
     Project,
     RequirementAuditRecord,
     RequirementAuditRun,
@@ -167,6 +169,7 @@ def create_requirement_review_decision(
     run_id: int,
     record_id: int,
     payload: RequirementReviewDecisionCreate,
+    current_user: AppUser = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> RequirementReviewDecisionOut:
     _require_run(db, project_id, run_id)
@@ -174,12 +177,12 @@ def create_requirement_review_decision(
     if record is None or record.run_id != run_id:
         raise HTTPException(status_code=404, detail="Requirement audit record not found")
 
-    # Append-only: the engine decision on the record is immutable. The human
-    # review is recorded as a new, never-overwritten row.
+    # Reviewer identity is authority context, never caller-supplied.
+    # Strip any client-provided values and inject from the authenticated user.
     decision = RequirementReviewDecision(
         audit_record_id=record.id,
-        reviewer_user_id=payload.reviewer_user_id,
-        reviewer_name=payload.reviewer_name,
+        reviewer_user_id=current_user.id,
+        reviewer_name=current_user.name or current_user.email or f"user:{current_user.id}",
         action=payload.action,
         previous_status=record.decision_status,
         resulting_status=payload.resulting_status,

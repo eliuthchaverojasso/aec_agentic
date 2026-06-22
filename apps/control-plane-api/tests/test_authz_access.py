@@ -170,3 +170,89 @@ def test_user_can_access_project_matrix(env):
     org_member = session.get(AppUser, 11)
     assert authz.user_can_access_project(session, org_member, session.get(Project, 1)) is True
     assert authz.user_can_access_project(session, org_member, session.get(Project, 2)) is False
+
+
+# --------------------------------------------------------------------------- #
+# Role hierarchy helpers
+# --------------------------------------------------------------------------- #
+
+
+def test_has_minimum_role_exact_match():
+    assert authz.has_minimum_role("viewer", "viewer") is True
+    assert authz.has_minimum_role("member", "member") is True
+    assert authz.has_minimum_role("reviewer", "reviewer") is True
+    assert authz.has_minimum_role("manager", "manager") is True
+    assert authz.has_minimum_role("admin", "admin") is True
+    assert authz.has_minimum_role("owner", "owner") is True
+
+
+def test_has_minimum_role_higher_ok():
+    assert authz.has_minimum_role("admin", "viewer") is True
+    assert authz.has_minimum_role("owner", "member") is True
+    assert authz.has_minimum_role("manager", "reviewer") is True
+
+
+def test_has_minimum_role_insufficient():
+    assert authz.has_minimum_role("viewer", "member") is False
+    assert authz.has_minimum_role("member", "reviewer") is False
+    assert authz.has_minimum_role("reviewer", "manager") is False
+
+
+def test_has_minimum_role_none_or_unknown():
+    assert authz.has_minimum_role(None, "viewer") is False
+    assert authz.has_minimum_role("unknown", "viewer") is False
+
+
+def test_has_minimum_role_case_insensitive():
+    assert authz.has_minimum_role("Admin", "admin") is True
+    assert authz.has_minimum_role("OWNER", "viewer") is True
+
+
+# --------------------------------------------------------------------------- #
+# require_project_role dependency (exercised through the readiness endpoint
+# which uses require_project_access — role check is an additional gate)
+# --------------------------------------------------------------------------- #
+
+
+def test_superuser_bypasses_role_check(env):
+    """Superusers can access any project regardless of role."""
+    resolved = authz.require_project_role("manager")(
+        project=env.session.get(Project, 1),
+        db=env.session,
+        user=env.session.get(AppUser, 10),
+    )
+    assert resolved.id == 1
+
+
+def test_org_member_with_sufficient_role(env):
+    """Member role meets 'member' requirement."""
+    resolved = authz.require_project_role("member")(
+        project=env.session.get(Project, 1),
+        db=env.session,
+        user=env.session.get(AppUser, 11),
+    )
+    assert resolved.id == 1
+
+
+def test_org_member_with_insufficient_role_is_rejected(env):
+    """Member role does NOT meet 'manager' requirement."""
+    from fastapi import HTTPException
+    import pytest
+
+    with pytest.raises(HTTPException) as exc:
+        authz.require_project_role("manager")(
+            project=env.session.get(Project, 1),
+            db=env.session,
+            user=env.session.get(AppUser, 11),
+        )
+    assert exc.value.status_code == 403
+
+
+def test_project_guest_with_sufficient_role(env):
+    """Project guest has 'member' role on project 2."""
+    resolved = authz.require_project_role("member")(
+        project=env.session.get(Project, 2),
+        db=env.session,
+        user=env.session.get(AppUser, 13),
+    )
+    assert resolved.id == 2

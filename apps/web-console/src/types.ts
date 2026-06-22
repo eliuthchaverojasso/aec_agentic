@@ -225,7 +225,6 @@ export type RequirementEvidenceCreateInput = {
   source_label?: string | null;
   confidence?: number | null;
   review_note?: string | null;
-  reviewed_by?: string | null;
   document_id?: number | null;
   sheet_id?: number | null;
   model_element_id?: string | null;

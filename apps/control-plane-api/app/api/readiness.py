@@ -7,8 +7,10 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.auth import get_current_user
+from app.authz import require_project_access, user_can_access_project
 from app.database import get_db
-from app.models import Project
+from app.models import AppUser, Project, ReadinessAction
 from app.readiness.persistence import (
     list_readiness_actions,
     list_readiness_snapshots,
@@ -32,10 +34,12 @@ actions_router = APIRouter(prefix="/api/v1/readiness", tags=["readiness"])
     response_model=ProjectReadinessOut,
     summary="Computed delivery readiness for a project",
 )
-def get_project_readiness(project_id: int, db: Session = Depends(get_db)) -> ProjectReadinessOut:
-    project = db.get(Project, project_id)
-    if project is None:
-        raise HTTPException(status_code=404, detail="Project not found")
+def get_project_readiness(
+    project_id: int,
+    project: Project = Depends(require_project_access),
+    db: Session = Depends(get_db),
+) -> ProjectReadinessOut:
+    _ = project_id
     return build_project_readiness(db, project)
 
 
@@ -46,11 +50,10 @@ def get_project_readiness(project_id: int, db: Session = Depends(get_db)) -> Pro
 )
 def recalculate_project_readiness(
     project_id: int,
+    project: Project = Depends(require_project_access),
     db: Session = Depends(get_db),
 ) -> ReadinessSnapshotOut:
-    project = db.get(Project, project_id)
-    if project is None:
-        raise HTTPException(status_code=404, detail="Project not found")
+    _ = project_id
     readiness = build_project_readiness(db, project)
     return persist_readiness_snapshot(db, project, readiness)
 
@@ -62,10 +65,10 @@ def recalculate_project_readiness(
 )
 def get_project_readiness_snapshots(
     project_id: int,
+    project: Project = Depends(require_project_access),
     db: Session = Depends(get_db),
 ) -> list[ReadinessSnapshotOut]:
-    if db.get(Project, project_id) is None:
-        raise HTTPException(status_code=404, detail="Project not found")
+    _ = project
     return list_readiness_snapshots(db, project_id)
 
 
@@ -76,11 +79,9 @@ def get_project_readiness_snapshots(
 )
 def get_project_readiness_actions(
     project_id: int,
+    project: Project = Depends(require_project_access),
     db: Session = Depends(get_db),
 ) -> list[ReadinessActionOut]:
-    project = db.get(Project, project_id)
-    if project is None:
-        raise HTTPException(status_code=404, detail="Project not found")
     persisted = list_readiness_actions(db, project_id)
     if persisted:
         return persisted
@@ -115,9 +116,11 @@ def get_project_readiness_actions(
 )
 def create_project_readiness_snapshot(
     project_id: int,
+    project: Project = Depends(require_project_access),
     db: Session = Depends(get_db),
 ) -> ReadinessSnapshotOut:
-    return recalculate_project_readiness(project_id, db)
+    readiness = build_project_readiness(db, project)
+    return persist_readiness_snapshot(db, project, readiness)
 
 
 @router.post(
@@ -127,11 +130,9 @@ def create_project_readiness_snapshot(
 )
 def create_project_readiness_actions(
     project_id: int,
+    project: Project = Depends(require_project_access),
     db: Session = Depends(get_db),
 ) -> list[ReadinessActionOut]:
-    project = db.get(Project, project_id)
-    if project is None:
-        raise HTTPException(status_code=404, detail="Project not found")
     readiness = build_project_readiness(db, project)
     persist_readiness_snapshot(db, project, readiness)
     return list_readiness_actions(db, project_id)
@@ -145,10 +146,20 @@ def create_project_readiness_actions(
 def patch_readiness_action(
     action_id: int,
     payload: ReadinessActionUpdate,
+    current_user: AppUser = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> ReadinessActionOut:
+    action = db.get(ReadinessAction, action_id)
+    if action is None:
+        raise HTTPException(status_code=404, detail="Readiness action not found")
+    project = db.get(Project, action.project_id)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    if not user_can_access_project(db, current_user, project):
+        raise HTTPException(status_code=403, detail="Not authorized for this project")
+
     updated = update_readiness_action(db, action_id, payload.model_dump(exclude_unset=True))
-    if updated is None:
+    if updated is None:  # pragma: no cover - guarded above; protects concurrent deletion.
         raise HTTPException(status_code=404, detail="Readiness action not found")
     return updated
 

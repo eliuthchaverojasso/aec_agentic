@@ -1038,7 +1038,6 @@ export function RequirementDrawer({
         source_ref: latestEvidence?.source_ref || `manual:req:${requirement.requirement_id}`,
         source_label: latestEvidence?.source_label || `REQ-${requirement.requirement_id} Manual Review`,
         review_note: reviewNote.trim() || undefined,
-        reviewed_by: "local_demo",
       };
 
       const saved = latestEvidence

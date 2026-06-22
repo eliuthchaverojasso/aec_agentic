@@ -34,6 +34,7 @@ from app.models import (
 from app.schemas import (
     ClientCreate,
     ClientOut,
+    ImportMode,
     ProjectComplianceMatrix,
     ProjectComplianceRow,
     ProjectRequirementCounts,
@@ -126,6 +127,8 @@ def _resolve_landing_path(relative_path: str) -> Path:
 def ingest_requirements(
     client_id: int,
     file: UploadFile = File(..., description="SharePoint-exported xlsx of owner requirements"),
+    import_mode: ImportMode = Query(default="full_snapshot", description="Import mode: full_snapshot, partial_update, append_only"),
+    dry_run: bool = Query(default=False, description="If true, report diff without modifying database"),
     db: Session = Depends(get_db),
 ) -> RequirementIngestResponse:
     client = _resolve_client(db, client_id)
@@ -148,8 +151,11 @@ def ingest_requirements(
             client=client,
             xlsx_path=stored_path,
             original_filename=file.filename,
+            import_mode=import_mode,
+            dry_run=dry_run,
         )
-        db.commit()
+        if not dry_run:
+            db.commit()
     except Exception as exc:
         db.rollback()
         logger.exception("Requirements ingest failed for client=%s file=%s", client.code, file.filename)
@@ -166,6 +172,8 @@ def ingest_requirements(
 def ingest_requirements_from_path(
     client_id: int,
     relative_path: str = Form(..., description="Path relative to landing dir (xlsx)"),
+    import_mode: ImportMode = Query(default="full_snapshot", description="Import mode: full_snapshot, partial_update, append_only"),
+    dry_run: bool = Query(default=False, description="If true, report diff without modifying database"),
     db: Session = Depends(get_db),
 ) -> RequirementIngestResponse:
     client = _resolve_client(db, client_id)
@@ -182,8 +190,11 @@ def ingest_requirements_from_path(
             client=client,
             xlsx_path=stored_path,
             original_filename=stored_path.name,
+            import_mode=import_mode,
+            dry_run=dry_run,
         )
-        db.commit()
+        if not dry_run:
+            db.commit()
     except Exception as exc:
         db.rollback()
         logger.exception("Requirements ingest failed for client=%s file=%s", client.code, relative_path)

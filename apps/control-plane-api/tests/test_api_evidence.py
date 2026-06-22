@@ -1,5 +1,3 @@
-from datetime import datetime, timezone
-
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -63,7 +61,6 @@ def test_create_and_list_requirement_evidence(client: TestClient):
             "evidence_type": "manual",
             "source_label": "REQ-1",
             "review_note": "Candidate evidence for DD50",
-            "reviewed_by": "reviewer@example.com",
         },
     )
 
@@ -107,7 +104,7 @@ def test_update_requirement_evidence_review_status(client: TestClient):
     assert payload["review_status"] == "accepted"
     assert payload["evidence_status"] == "covered"
     assert payload["review_note"] == "Accepted after reviewer review."
-    assert payload["reviewed_by"] == "lead.reviewer@example.com"
+    assert payload["reviewed_by"] == "test-user@example.com"
 
 
 def test_project_requirements_surfaces_evidence_review_status(client: TestClient):

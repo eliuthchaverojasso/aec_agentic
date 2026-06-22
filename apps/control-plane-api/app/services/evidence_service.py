@@ -150,7 +150,7 @@ def update_requirement_evidence(
     db: Session,
     project_id: int,
     evidence_id: int,
-    payload: RequirementEvidenceUpdate,
+    payload: RequirementEvidenceUpdate | dict[str, Any],
 ) -> RequirementEvidence:
     existing = db.execute(
         select(RequirementEvidence).where(
@@ -160,7 +160,7 @@ def update_requirement_evidence(
     ).scalar_one_or_none()
     if existing is None:
         raise LookupError("Requirement evidence not found")
-    data = payload.model_dump(exclude_unset=True)
+    data = payload.model_dump(exclude_unset=True) if hasattr(payload, "model_dump") else dict(payload)
     merged = {
         **(existing.metadata_json or {}),
         **data,

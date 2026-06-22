@@ -3,24 +3,25 @@
 Ingests a SharePoint-style xlsx export of a district's requirement catalog into
 the `client` / `requirement_source_file` / `requirement` tables.
 
-Idempotent on `(client_id, file_hash)` and on `(client_id, content_hash)`:
-- If the same file is re-uploaded -> returns the existing source-file record.
-- If the same requirement text reappears -> bumps `last_seen_at` + metadata.
-- If a requirement previously seen is NOT present in the new file -> soft-delete
-  (`is_active = false`) so history is preserved.
-
-The ingestion is deliberately pure-Python (openpyxl + stdlib) and does not depend
-on pandas to keep the container image small.
+Supports:
+- Multi-sheet workbooks (all sheets are parsed)
+- Header detection per sheet (first row with known headers wins)
+- Provenance tracking (file, sheet, row, original columns)
+- Import modes: full_snapshot, partial_update, append_only
+- Dry-run mode (reports diff without writing to DB)
+- Idempotent on (client_id, file_hash) and (client_id, content_hash)
 """
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
 import re
+import uuid
 from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from openpyxl import load_workbook
 from sqlalchemy import select, update
@@ -30,6 +31,7 @@ from app.models import Client, Requirement, RequirementSourceFile
 
 logger = logging.getLogger(__name__)
 
+PARSER_VERSION = "2.0"
 
 # ----------------------------------------------------------------------------
 # Constants / normalization
@@ -56,18 +58,14 @@ VALID_DISCIPLINES = {
     "TECHNOLOGY",
 }
 
-# Pattern for placeholder/sentinel rows (emoji or literal text). Owner lists use
-# a "DRAG & DROP requirement HERE when DONE" template row at the top of each
-# discipline section.
 SENTINEL_PATTERNS = (
     re.compile(r"drag\s*&\s*drop\s+requirement\s+here", re.IGNORECASE),
-    re.compile(r"\U0001f60e"),  # :sunglasses: emoji used in the template
+    re.compile(r"\U0001f60e"),
 )
 
-# Allow dates from 1990-01-01 to "today + 5 years". Owner files have had bad
-# values like 3016-10-31 (clearly a typo); we keep the raw text out of the DB.
 MIN_DATE = datetime(1990, 1, 1, tzinfo=timezone.utc)
 
+ImportMode = Literal["full_snapshot", "partial_update", "append_only"]
 
 # ----------------------------------------------------------------------------
 # Helpers
@@ -102,39 +100,17 @@ def _is_sentinel(text: str) -> bool:
 
 
 def _is_reference_only_requirement(req_text: str, links: str | None, resource: str | None) -> bool:
-    """
-    Determine if a requirement is reference-only (not actionable).
-    
-    A reference-only requirement has text that indicates it points to external information
-    but contains no actionable content itself.
-    
-    Returns True if:
-    - Requirement text contains strong reference phrases like "refer to links column", 
-      "refer to hyperlink", "hyperlink to", "refer to links"
-    - And links or resource is present
-    
-    Returns False for normal requirements, even if they have resource metadata.
-    """
     if not req_text:
         return False
-    
-    # Normalize text for comparison
     normalized_text = req_text.lower().strip()
-    
-    # Reference phrases that indicate the requirement points to external links
     reference_phrases = [
         "refer to links column",
         "refer to hyperlink",
         "hyperlink to",
-        "refer to links"
+        "refer to links",
     ]
-    
-    # Check if any reference phrase is in the requirement text
     has_reference_phrase = any(phrase in normalized_text for phrase in reference_phrases)
-    
-    # Must have either links or resource present to be considered a reference row
     has_links_or_resource = bool(_normalize_text(links)) or bool(_normalize_text(resource))
-    
     return has_reference_phrase and has_links_or_resource
 
 
@@ -144,7 +120,6 @@ def _normalize_discipline(value: Any) -> str:
         return "OTHER"
     if s in VALID_DISCIPLINES:
         return s
-    # Common variants
     if s.startswith("ELEC"):
         return "ELECTRICAL"
     if s.startswith("LIGHT"):
@@ -183,7 +158,6 @@ def _coerce_date(value: Any) -> datetime | None:
             return None
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
-    # Reject absurd dates (e.g. 3016) -> store NULL, not raw garbage.
     now = datetime.now(timezone.utc)
     if dt < MIN_DATE or dt.year > now.year + 5:
         return None
@@ -208,10 +182,24 @@ def _parse_export_date_from_filename(name: str) -> date | None:
         return None
 
 
-def _header_map(ws) -> dict[str, int]:
+def _detect_header_row(ws, min_row: int = 1, max_row: int = 10) -> int | None:
+    """Score rows for header-like content. Returns the first row that has at
+    least 3 known canonical headers, or None if none found."""
+    for row_idx in range(min_row, min(max_row + 1, ws.max_row + 1)):
+        matched = 0
+        for col_idx in range(1, ws.max_column + 1):
+            raw = ws.cell(row_idx, col_idx).value
+            if raw is not None and str(raw).strip().upper() in CANONICAL_HEADERS:
+                matched += 1
+        if matched >= 3:
+            return row_idx
+    return None
+
+
+def _build_header_map(ws, header_row: int) -> dict[str, int]:
     mapping: dict[str, int] = {}
     for col in range(1, ws.max_column + 1):
-        raw = ws.cell(1, col).value
+        raw = ws.cell(header_row, col).value
         if raw is None:
             continue
         key = str(raw).strip().upper()
@@ -235,16 +223,39 @@ def ingest_requirements_file(
     client: Client,
     xlsx_path: Path,
     original_filename: str | None = None,
+    import_mode: ImportMode = "full_snapshot",
+    dry_run: bool = False,
+    parser_version: str = PARSER_VERSION,
 ) -> dict[str, Any]:
-    """Ingest a single xlsx file for the given client.
+    """Ingest an xlsx file for the given client.
 
-    Returns a dict with counts + the source_file record (already flushed).
+    Parameters
+    ----------
+    db : Session
+    client : Client
+    xlsx_path : Path
+        Path to the .xlsx file on disk.
+    original_filename : str, optional
+        Override for display (defaults to xlsx_path.name).
+    import_mode : str
+        ``full_snapshot`` (default) — deactivates requirements not seen.
+        ``partial_update`` — never deactivates; updates existing, adds new.
+        ``append_only`` — only adds new requirements; never updates or deactivates.
+    dry_run : bool
+        If True, report the diff without writing to the database.
+    parser_version : str
+        Version string stored in provenance.
+
+    Returns
+    -------
+    dict with counts, provenance, and optionally a diff_report (dry_run).
     """
     original_filename = original_filename or xlsx_path.name
     file_hash = _sha256_file(xlsx_path)
+    import_id = uuid.uuid4().hex
 
-    # Idempotency: same file bytes for the same client -> return existing record.
-    existing = db.execute(
+    # Idempotency: same file bytes for same client.
+    existing_source = db.execute(
         select(RequirementSourceFile).where(
             RequirementSourceFile.client_id == client.id,
             RequirementSourceFile.file_hash == file_hash,
@@ -252,147 +263,268 @@ def ingest_requirements_file(
     ).scalar_one_or_none()
 
     reused_existing_file = False
-    if existing is not None:
+    if existing_source is not None:
         logger.info(
-            "Requirements file already ingested (client=%s hash=%s), skipping re-parse",
+            "Requirements file already ingested (client=%s hash=%s), reusing record",
             client.code,
             file_hash[:12],
         )
         reused_existing_file = True
-        source_file = existing
+        source_file = existing_source
     else:
         source_file = RequirementSourceFile(
             client_id=client.id,
             original_filename=original_filename,
             file_hash=file_hash,
             export_date=_parse_export_date_from_filename(original_filename),
+            parser_version=parser_version,
         )
-        db.add(source_file)
-        db.flush()
 
     wb = load_workbook(xlsx_path, data_only=True, read_only=True)
-    ws = wb[wb.sheetnames[0]]
-    hmap = _header_map(ws)
+    sheet_names = list(wb.sheetnames)
+    if not source_file.sheet_names:
+        source_file.sheet_names = json.dumps(sheet_names)
 
-    if "requirement" not in hmap or "discipline" not in hmap:
-        raise ValueError(
-            f"Missing required columns in {original_filename}. "
-            f"Detected headers: {list(hmap.keys())}"
-        )
+    # Track per-sheet and per-discipline counts.
+    per_discipline: Counter[str] = Counter()
+    per_sheet: Counter[str] = Counter()
+
+    # For full_snapshot: track all content hashes seen across all sheets.
+    seen_hashes: set[str] = set()
+    # Track which hashes are new vs updated vs unchanged.
+    new_requirements: list[dict[str, Any]] = []
+    updated_requirements: list[dict[str, Any]] = []
+    unchanged_requirements: list[dict[str, Any]] = []
+    warnings: list[str] = []
+    errors: list[str] = []
 
     row_count_raw = 0
     row_count_skipped = 0
     row_count_new = 0
     row_count_updated = 0
-    per_discipline: Counter[str] = Counter()
-    seen_hashes: set[str] = set()
 
-    def _cell(row: tuple, key: str) -> Any:
-        col = hmap.get(key)
-        if col is None:
-            return None
-        # openpyxl read_only rows are 1-indexed tuples of Cell, but ws.iter_rows
-        # with values_only=True returns tuples of values (0-indexed). We use the
-        # latter so `col - 1` gives the index.
-        idx = col - 1
-        return row[idx] if 0 <= idx < len(row) else None
-
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        row_count_raw += 1
-        req_text_raw = _cell(row, "requirement")
-        req_text = _normalize_text(req_text_raw)
-
-        if not req_text:
-            row_count_skipped += 1
-            continue
-        if _is_sentinel(req_text):
-            row_count_skipped += 1
+    for sheet_name in sheet_names:
+        ws = wb[sheet_name]
+        header_row = _detect_header_row(ws)
+        if header_row is None:
+            warnings.append(f"Sheet '{sheet_name}': no known headers found in first 10 rows, skipping")
             continue
 
-        discipline = _normalize_discipline(_cell(row, "discipline"))
-        content_hash = _sha256_text(discipline, req_text.lower())
-        if content_hash in seen_hashes:
-            # Intra-file duplicate: keep first occurrence only.
-            row_count_skipped += 1
-            continue
-        seen_hashes.add(content_hash)
-
-        category = _normalize_text(_cell(row, "category")) or None
-        owner_status = _normalize_status(_cell(row, "status"))
-        resource = _normalize_text(_cell(row, "resource")) or None
-        links = _normalize_text(_cell(row, "links")) or None
-        modified_by = _normalize_text(_cell(row, "modified_by")) or None
-        date_updated = _coerce_date(_cell(row, "date_updated"))
-        sharepoint_path = _normalize_text(_cell(row, "path")) or None
-
-        existing_req = db.execute(
-            select(Requirement).where(
-                Requirement.client_id == client.id,
-                Requirement.content_hash == content_hash,
+        hmap = _build_header_map(ws, header_row)
+        if "requirement" not in hmap or "discipline" not in hmap:
+            warnings.append(
+                f"Sheet '{sheet_name}': missing required columns 'requirement' and 'discipline'. "
+                f"Found: {list(hmap.keys())}, skipping"
             )
-        ).scalar_one_or_none()
+            continue
 
-        if existing_req is None:
-            is_actionable = not _is_reference_only_requirement(req_text, links, resource)
-            db.add(
-                Requirement(
-                    client_id=client.id,
-                    source_file_id=source_file.id,
-                    discipline=discipline,
-                    category=category,
-                    requirement_text=req_text,
-                    content_hash=content_hash,
-                    owner_status=owner_status,
-                    resource=resource,
-                    links=links,
-                    modified_by=modified_by,
-                    date_updated=date_updated,
-                    sharepoint_path=sharepoint_path,
-                    is_actionable=is_actionable,
-                    is_active=True,
+        def _cell(row: tuple, key: str) -> Any:
+            col = hmap.get(key)
+            if col is None:
+                return None
+            idx = col - 1
+            return row[idx] if 0 <= idx < len(row) else None
+
+        sheet_row_count = 0
+
+        for row in ws.iter_rows(min_row=header_row + 1, values_only=True):
+            row_count_raw += 1
+            sheet_row_count += 1
+            source_row_number = header_row + sheet_row_count
+
+            req_text_raw = _cell(row, "requirement")
+            req_text = _normalize_text(req_text_raw)
+
+            if not req_text:
+                row_count_skipped += 1
+                continue
+            if _is_sentinel(req_text):
+                row_count_skipped += 1
+                continue
+
+            discipline = _normalize_discipline(_cell(row, "discipline"))
+            content_hash = _sha256_text(discipline, req_text.lower())
+            if content_hash in seen_hashes:
+                row_count_skipped += 1
+                continue
+            seen_hashes.add(content_hash)
+
+            category = _normalize_text(_cell(row, "category")) or None
+            owner_status = _normalize_status(_cell(row, "status"))
+            resource = _normalize_text(_cell(row, "resource")) or None
+            links = _normalize_text(_cell(row, "links")) or None
+            modified_by = _normalize_text(_cell(row, "modified_by")) or None
+            date_updated = _coerce_date(_cell(row, "date_updated"))
+            sharepoint_path = _normalize_text(_cell(row, "path")) or None
+
+            original_columns: dict[str, str] = {}
+            for canonical_name, col_idx in hmap.items():
+                val = _cell(row, canonical_name)
+                if val is not None:
+                    original_columns[canonical_name] = str(val)
+
+            existing_req = db.execute(
+                select(Requirement).where(
+                    Requirement.client_id == client.id,
+                    Requirement.content_hash == content_hash,
                 )
-            )
-            row_count_new += 1
-        else:
-            # Recalculate is_actionable for existing requirements during re-ingest
+            ).scalar_one_or_none()
+
             is_actionable = not _is_reference_only_requirement(req_text, links, resource)
-            existing_req.source_file_id = source_file.id
-            existing_req.category = category
-            existing_req.owner_status = owner_status
-            existing_req.resource = resource
-            existing_req.links = links
-            existing_req.modified_by = modified_by
-            existing_req.date_updated = date_updated
-            existing_req.sharepoint_path = sharepoint_path
-            existing_req.is_active = True
-            existing_req.is_actionable = is_actionable
-            existing_req.last_seen_at = datetime.now(timezone.utc)
-            row_count_updated += 1
 
-        per_discipline[discipline] += 1
+            provenance = {
+                "source_sheet": sheet_name,
+                "source_row": source_row_number,
+                "original_columns_json": original_columns if original_columns else None,
+                "parser_version": parser_version,
+                "import_id": import_id,
+            }
 
-    # Soft-delete requirements that were NOT seen in this file for this client.
-    deactivated_stmt = (
-        update(Requirement)
-        .where(
-            Requirement.client_id == client.id,
-            Requirement.is_active.is_(True),
-            Requirement.content_hash.notin_(seen_hashes) if seen_hashes else Requirement.content_hash.is_(None),
+            if existing_req is None:
+                if import_mode != "append_only":
+                    row_data = dict(
+                        client_id=client.id,
+                        source_file_id=source_file.id,
+                        discipline=discipline,
+                        category=category,
+                        requirement_text=req_text,
+                        content_hash=content_hash,
+                        owner_status=owner_status,
+                        resource=resource,
+                        links=links,
+                        modified_by=modified_by,
+                        date_updated=date_updated,
+                        sharepoint_path=sharepoint_path,
+                        is_actionable=is_actionable,
+                        is_active=True,
+                        **provenance,
+                    )
+                    new_requirements.append(row_data)
+                    if not dry_run:
+                        db.add(Requirement(**row_data))
+                row_count_new += 1
+            elif import_mode == "append_only":
+                unchanged_requirements.append({
+                    "content_hash": content_hash,
+                    "requirement_text": req_text,
+                    "discipline": discipline,
+                    "reason": "append_only mode: existing requirement skipped",
+                })
+            else:
+                if not dry_run:
+                    existing_req.source_file_id = source_file.id
+                    existing_req.source_sheet = sheet_name
+                    existing_req.source_row = source_row_number
+                    existing_req.original_columns_json = original_columns if original_columns else None
+                    existing_req.parser_version = parser_version
+                    existing_req.import_id = import_id
+                    existing_req.category = category
+                    existing_req.owner_status = owner_status
+                    existing_req.resource = resource
+                    existing_req.links = links
+                    existing_req.modified_by = modified_by
+                    existing_req.date_updated = date_updated
+                    existing_req.sharepoint_path = sharepoint_path
+                    existing_req.is_active = True
+                    existing_req.is_actionable = is_actionable
+                    existing_req.last_seen_at = datetime.now(timezone.utc)
+                row_count_updated += 1
+                updated_requirements.append({
+                    "content_hash": content_hash,
+                    "requirement_text": req_text,
+                    "discipline": discipline,
+                })
+
+            per_discipline[discipline] += 1
+            per_sheet[sheet_name] += 1
+
+    # Apply deactivation based on import mode.
+    deactivated_requirements: list[dict[str, Any]] = []
+
+    if import_mode == "full_snapshot" and not dry_run and seen_hashes:
+        existing_hashes = set(
+            db.execute(
+                select(Requirement.content_hash).where(
+                    Requirement.client_id == client.id,
+                    Requirement.is_active.is_(True),
+                )
+            ).scalars().all()
         )
-        .values(is_active=False)
-    )
-    result = db.execute(deactivated_stmt)
-    row_count_deactivated = int(result.rowcount or 0)
+        to_deactivate = existing_hashes - seen_hashes
+        if to_deactivate:
+            deactivated_rows = db.execute(
+                select(Requirement).where(
+                    Requirement.client_id == client.id,
+                    Requirement.content_hash.in_(to_deactivate),
+                )
+            ).scalars().all()
+            for r in deactivated_rows:
+                deactivated_requirements.append({
+                    "content_hash": r.content_hash,
+                    "requirement_text": r.requirement_text,
+                    "discipline": r.discipline,
+                })
+            db.execute(
+                update(Requirement)
+                .where(
+                    Requirement.client_id == client.id,
+                    Requirement.content_hash.in_(to_deactivate),
+                )
+                .values(is_active=False)
+            )
+    elif import_mode == "full_snapshot" and dry_run and seen_hashes:
+        existing_hashes = set(
+            db.execute(
+                select(Requirement.content_hash).where(
+                    Requirement.client_id == client.id,
+                    Requirement.is_active.is_(True),
+                )
+            ).scalars().all()
+        )
+        to_deactivate = existing_hashes - seen_hashes
+        if to_deactivate:
+            rows = db.execute(
+                select(Requirement).where(
+                    Requirement.client_id == client.id,
+                    Requirement.content_hash.in_(to_deactivate),
+                )
+            ).scalars().all()
+            for r in rows:
+                deactivated_requirements.append({
+                    "content_hash": r.content_hash,
+                    "requirement_text": r.requirement_text,
+                    "discipline": r.discipline,
+                })
 
     row_count_loaded = row_count_new + row_count_updated
+    row_count_deactivated = len(deactivated_requirements)
 
-    source_file.row_count_raw = row_count_raw
-    source_file.row_count_loaded = row_count_loaded
-    source_file.row_count_skipped = row_count_skipped
-
-    db.flush()
+    if not dry_run:
+        if not reused_existing_file:
+            db.add(source_file)
+            db.flush()
+        source_file.row_count_raw = row_count_raw
+        source_file.row_count_loaded = row_count_loaded
+        source_file.row_count_skipped = row_count_skipped
+        db.flush()
+    else:
+        source_file.id = -1
 
     wb.close()
+
+    diff_report = None
+    if dry_run:
+        diff_report = {
+            "import_mode": import_mode,
+            "new_requirements": new_requirements,
+            "updated_requirements": updated_requirements,
+            "deactivated_requirements": deactivated_requirements,
+            "unchanged_requirements": unchanged_requirements,
+            "warnings": warnings,
+            "errors": errors,
+            "per_discipline": dict(per_discipline),
+            "per_sheet": dict(per_sheet),
+        }
 
     return {
         "client_id": client.id,
@@ -408,4 +540,11 @@ def ingest_requirements_file(
         "export_date": source_file.export_date,
         "reused_existing_file": reused_existing_file,
         "per_discipline": dict(per_discipline),
+        "per_sheet": dict(per_sheet),
+        "import_mode": import_mode,
+        "import_id": import_id,
+        "dry_run": dry_run,
+        "diff_report": diff_report,
+        "sheet_names": sheet_names,
+        "parser_version": parser_version,
     }
